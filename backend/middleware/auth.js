@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const errorLanzado = require('../util/error');
+const errorLanzado = require('../util/error.util');
+const colores = require('colors');
 
 const permisos = (req, res, next, roles) => {
   try {
