@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const cors = require('cors');
 const colores = require('colors');
 
 require('dotenv').config();
 
-const cuentaUsuario = require('./routes/cuentaUsuario');
-
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // Morgan para mostrar información de las peticiones
@@ -23,7 +23,9 @@ app.use(
   })
 );
 
-app.use('/', cuentaUsuario);
+// Rutas
+app.use('/', require('./routes/cuentaUsuario.route'));
+app.use('/redSocial', require('./routes/redSocial.route'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));
