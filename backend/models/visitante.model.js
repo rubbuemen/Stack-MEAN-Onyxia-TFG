@@ -12,7 +12,7 @@ const visitanteSchema = new mongoose.Schema({
   fechaNacimiento: {
     type: Date,
     validate: {
-      validator: function (fechaNacimiento) {
+      validator: (fechaNacimiento) => {
         return fechaNacimiento < new Date();
       },
       message: 'Inserte una fecha de nacimiento en pasado',

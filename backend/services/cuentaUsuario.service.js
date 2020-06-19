@@ -2,6 +2,7 @@ const errorLanzado = require('../util/error.util');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const { RedSocial } = require('../models/redSocial.model');
 const { Visitante } = require('../models/visitante.model');
+const { Miembro } = require('../models/miembro.model');
 const bcrypt = require('bcryptjs');
 
 exports.getUsuarioLogeado = async (usuario) => {
@@ -18,10 +19,13 @@ exports.registrarse = async (parametros) => {
   try {
     const checkUsuario = await CuentaUsuario.findOne({ usuario: parametros.usuario });
     if (checkUsuario) throw errorLanzado(403, 'El usuario introducido ya existe');
-    const checkEmail = await Visitante.findOne({ correoElectronico: parametros.correoElectronico }); // || Miembro.findOne con correoElectronico
+    const checkEmail =
+      (await Visitante.findOne({ correoElectronico: parametros.correoElectronico })) ||
+      (await Miembro.findOne({ correoElectronico: parametros.correoElectronico }));
     if (checkEmail) throw errorLanzado(403, 'El correo electrónico introducido ya existe');
     if (parametros.numeroTelefono) {
-      const checkTelefono = await Visitante.findOne({ numeroTelefono: parametros.numeroTelefono }); // || Miembro.findOne con correoElectronico
+      const checkTelefono =
+        (await Visitante.findOne({ numeroTelefono: parametros.numeroTelefono })) || (await Miembro.findOne({ numeroTelefono: parametros.numeroTelefono }));
       if (checkTelefono) throw errorLanzado(403, 'El número de teléfono introducido ya existe');
     }
     cuentaUsuario = new CuentaUsuario({
@@ -53,4 +57,10 @@ exports.registrarse = async (parametros) => {
     }
     throw error;
   }
+};
+
+exports.checkUsuarioBaneado = async (usuarioLogeado) => {
+  const cuentaUsuario = await CuentaUsuario.findOne({ usuario: usuarioLogeado.usuario });
+  if (!cuentaUsuario.estado) throw errorLanzado(403, 'El usuario introducido está baneado');
+  return cuentaUsuario;
 };

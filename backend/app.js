@@ -26,6 +26,7 @@ app.use(
 // Rutas
 app.use('/', require('./routes/cuentaUsuario.route'));
 app.use('/redSocial', require('./routes/redSocial.route'));
+app.use('/actor', require('./routes/actor.route'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));
