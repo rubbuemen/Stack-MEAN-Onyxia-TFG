@@ -34,7 +34,11 @@ const miembroSchema = new mongoose.Schema({
     unique: [true, 'El número de socio insertado ya existe, inserte otro'],
   },
   fotografia: {
-    type: String,
+    type: {
+      data: Buffer,
+      mimetype: String,
+      size: Number,
+    },
     required: [true, 'Inserte una fotografía'],
   },
   alias: {

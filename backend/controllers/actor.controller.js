@@ -1,6 +1,8 @@
 const errorLanzado = require('../util/error.util');
+const convertirImagenABase64 = require('../util/funciones.util');
 const actorService = require('../services/actor.service');
 const cuentaUsuarioService = require('../services/cuentaUsuario.service');
+const { checkUsuarioBaneado } = require('../services/cuentaUsuario.service');
 const colores = require('colors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -26,6 +28,7 @@ exports.getMisDatos = async (req, res) => {
 exports.editarMisDatos = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
+    await checkUsuarioBaneado(usuarioLogeado);
     const {
       nombre,
       apellidos,
@@ -34,7 +37,6 @@ exports.editarMisDatos = async (req, res) => {
       contraseñaNueva,
       fechaNacimiento,
       correoElectronico,
-      fotografia,
       alias,
       numeroTelefono,
       direccion,
@@ -42,6 +44,7 @@ exports.editarMisDatos = async (req, res) => {
       aficiones,
       tieneCochePropio,
     } = req.body;
+    const fotografia = req.file;
     if (usuarioLogeado.autoridad === 'VISITANTE') {
       if (!nombre || !apellidos || !usuario || !fechaNacimiento || !correoElectronico)
         throw errorLanzado(400, 'Hay campos obligatorios del formulario que no se han enviado');
@@ -77,8 +80,6 @@ exports.editarMisDatos = async (req, res) => {
     if (usuario.length < 5 || usuario.length > 32) throw errorLanzado(400, 'El usuario insertado debe contener entre 5 y 32 caracteres');
     if (contraseñaNueva && (contraseñaNueva.length < 5 || contraseñaNueva.length > 32))
       throw errorLanzado(400, 'La contraseña insertada debe contener entre 5 y 32 caracteres');
-
-    //Dni
     if (dni) {
       let checkDni = true;
       const validChars = 'TRWAGMYFPDXBNJZSQVHLCKET';
@@ -95,7 +96,8 @@ exports.editarMisDatos = async (req, res) => {
       if (!checkDni)
         throw errorLanzado(400, 'El DNI insertado no mantiene el formato nacional NNNNNNNNL, el formato extrangero LNNNNNNNL o simplemente no es válido');
     }
-    const { actor, cuentaUsuario } = await actorService.editarMisDatos(req.body, usuarioLogeado);
+    req.file.data = convertirImagenABase64(fotografia);
+    const { actor, cuentaUsuario } = await actorService.editarMisDatos(req.body, req.file, usuarioLogeado);
     const jwtToken = jwt.sign({ _id: cuentaUsuario._id, usuario: cuentaUsuario.usuario, autoridad: cuentaUsuario.autoridad }, process.env.SECRET_KEY, {
       expiresIn: '1d',
     });

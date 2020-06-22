@@ -4,7 +4,7 @@ const { Miembro } = require('../models/miembro.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const bcrypt = require('bcryptjs');
 
-exports.editarMisDatos = async (parametros, usuarioLogeado) => {
+exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
   const cuentaUsuarioActual = await CuentaUsuario.findOne({ _id: usuarioLogeado._id });
   try {
     let actor;
@@ -63,7 +63,11 @@ exports.editarMisDatos = async (parametros, usuarioLogeado) => {
           apellidos: parametros.apellidos,
           fechaNacimiento: parametros.fechaNacimiento,
           correoElectronico: parametros.correoElectronico,
-          fotografia: parametros.fotografia,
+          fotografia: {
+            data: imagen.data,
+            mimetype: imagen.mimetype,
+            size: imagen.size,
+          },
           alias: parametros.alias,
           numeroTelefono: parametros.numeroTelefono,
           direccion: parametros.direccion,
