@@ -1,8 +1,19 @@
-const errorLanzado = require('../util/error.util');
+const { errorLanzado } = require('../util/error.util');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const bcrypt = require('bcryptjs');
+
+exports.getMisDatos = async (usuarioLogeado) => {
+  const misDatos =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })
+      .populate({ path: 'redSocials' })
+      .populate({ path: 'cuentaUsuario' })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })
+      .populate({ path: 'redSocials' })
+      .populate({ path: 'cuentaUsuario' }));
+  return misDatos;
+};
 
 exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
   const cuentaUsuarioActual = await CuentaUsuario.findOne({ _id: usuarioLogeado._id });
@@ -93,13 +104,20 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
   }
 };
 
-exports.getMisDatos = async (usuarioLogeado) => {
-  const misDatos =
-    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })
-      .populate({ path: 'redSocials' })
-      .populate({ path: 'cuentaUsuario' })) ||
-    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })
-      .populate({ path: 'redSocials' })
-      .populate({ path: 'cuentaUsuario' }));
-  return misDatos;
+exports.getVisitantes = async () => {
+  const visitantes = await Visitante.find().populate({ path: 'cuentaUsuario' });
+  return visitantes;
+};
+
+exports.getMiembros = async () => {
+  const miembros = await Miembro.find().populate({ path: 'cuentaUsuario' });
+  return miembros;
+};
+
+exports.getDatosByActorId = async (actorId) => {
+  const datosActor =
+    (await Visitante.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' })) ||
+    (await Miembro.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' }));
+  if (!datosActor) throw errorLanzado(404, 'La ID del actor indicado no existe');
+  return datosActor;
 };

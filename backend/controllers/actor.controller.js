@@ -1,34 +1,23 @@
-const errorLanzado = require('../util/error.util');
+const { errorLanzado, controlError } = require('../util/error.util');
 const convertirImagenABase64 = require('../util/funciones.util');
 const actorService = require('../services/actor.service');
 const cuentaUsuarioService = require('../services/cuentaUsuario.service');
-const { checkUsuarioBaneado } = require('../services/cuentaUsuario.service');
-const colores = require('colors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.getMisDatos = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
-    await checkUsuarioBaneado(usuarioLogeado);
     const misDatos = await actorService.getMisDatos(usuarioLogeado);
     return res.status(200).send({ misDatos });
   } catch (error) {
-    if (error.status && error.message) {
-      console.error(colores.red('[Error ' + error.status + ']'));
-      console.error(colores.red(error.stack));
-      return res.status(error.status).send({ error: error.message });
-    } else {
-      console.error(colores.red(error));
-      return res.status(500).send({ error });
-    }
+    return controlError(error, res);
   }
 };
 
 exports.editarMisDatos = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
-    await checkUsuarioBaneado(usuarioLogeado);
     const {
       nombre,
       apellidos,
@@ -103,13 +92,34 @@ exports.editarMisDatos = async (req, res) => {
     });
     return res.status(200).send({ jwtToken, actor });
   } catch (error) {
-    if (error.status && error.message) {
-      console.error(colores.red('[Error ' + error.status + ']'));
-      console.error(colores.red(error.stack));
-      return res.status(error.status).send({ error: error.message });
-    } else {
-      console.error(colores.red(error));
-      return res.status(500).send({ error });
-    }
+    return controlError(error, res);
+  }
+};
+
+exports.getVisitantes = async (req, res) => {
+  try {
+    const visitantes = await actorService.getVisitantes();
+    return res.status(200).send({ visitantes });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getMiembros = async (req, res) => {
+  try {
+    const miembros = await actorService.getMiembros();
+    return res.status(200).send({ miembros });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getDatosByActorId = async (req, res) => {
+  try {
+    const actorId = req.params.actorId;
+    const datosActor = await actorService.getDatosByActorId(actorId);
+    return res.status(200).send({ datosActor });
+  } catch (error) {
+    return controlError(error, res);
   }
 };
