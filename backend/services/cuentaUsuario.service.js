@@ -1,4 +1,4 @@
-const errorLanzado = require('../util/error.util');
+const { errorLanzado } = require('../util/error.util');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const { RedSocial } = require('../models/redSocial.model');
 const { Visitante } = require('../models/visitante.model');
@@ -59,8 +59,7 @@ exports.registrarse = async (parametros) => {
   }
 };
 
-exports.checkUsuarioBaneado = async (usuarioLogeado) => {
+exports.checkEstadoUsuario = async (usuarioLogeado) => {
   const cuentaUsuario = await CuentaUsuario.findOne({ usuario: usuarioLogeado.usuario });
-  if (!cuentaUsuario.estado) throw errorLanzado(403, 'El usuario introducido está baneado');
-  return cuentaUsuario;
+  if (!cuentaUsuario.estado) throw errorLanzado(403, 'Usted ha sido baneado y por tanto no puede realizar ninguna acción');
 };

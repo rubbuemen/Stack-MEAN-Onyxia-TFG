@@ -1,4 +1,4 @@
-const errorLanzado = require('../util/error.util');
+const { errorLanzado } = require('../util/error.util');
 const { RedSocial } = require('../models/redSocial.model');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');

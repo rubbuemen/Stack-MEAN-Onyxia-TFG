@@ -1,8 +1,7 @@
-const errorLanzado = require('../util/error.util');
+const { errorLanzado, controlError } = require('../util/error.util');
 const cuentaUsuarioService = require('../services/cuentaUsuario.service');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const colores = require('colors');
 
 exports.login = async (req, res) => {
   try {
@@ -16,14 +15,7 @@ exports.login = async (req, res) => {
     });
     return res.status(200).send({ jwtToken });
   } catch (error) {
-    if (error.status && error.message) {
-      console.error(colores.red('[Error ' + error.status + ']'));
-      console.error(colores.red(error.stack));
-      return res.status(error.status).send({ error: error.message });
-    } else {
-      console.error(colores.red(error));
-      return res.status(500).send({ error });
-    }
+    return controlError(error, res);
   }
 };
 
@@ -61,13 +53,6 @@ exports.registrarse = async (req, res) => {
     const visitante = await cuentaUsuarioService.registrarse(req.body);
     return res.status(200).send({ visitante });
   } catch (error) {
-    if (error.status && error.message) {
-      console.error(colores.red('[Error ' + error.status + ']'));
-      console.error(colores.red(error.stack));
-      return res.status(error.status).send({ error: error.message });
-    } else {
-      console.error(colores.red(error));
-      return res.status(500).send({ error });
-    }
+    return controlError(error, res);
   }
 };
