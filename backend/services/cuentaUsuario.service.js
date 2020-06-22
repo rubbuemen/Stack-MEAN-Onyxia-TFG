@@ -63,3 +63,31 @@ exports.checkEstadoUsuario = async (usuarioLogeado) => {
   const cuentaUsuario = await CuentaUsuario.findOne({ usuario: usuarioLogeado.usuario });
   if (!cuentaUsuario.estado) throw errorLanzado(403, 'Usted ha sido baneado y por tanto no puede realizar ninguna acción');
 };
+
+exports.banearCuenta = async (userId) => {
+  const checkExistencia = await CuentaUsuario.findById(userId);
+  if (!checkExistencia) throw errorLanzado(404, 'La cuenta de usuario que intenta banear no existe');
+  if (!checkExistencia.estado) throw errorLanzado(403, 'No puede banear al usuario porque ya lo está');
+  const cuentaUsuario = await CuentaUsuario.findOneAndUpdate(
+    { _id: userId },
+    {
+      estado: false,
+    },
+    { new: true }
+  );
+  return cuentaUsuario;
+};
+
+exports.desbanearCuenta = async (userId) => {
+  const checkExistencia = await CuentaUsuario.findById(userId);
+  if (!checkExistencia) throw errorLanzado(404, 'La cuenta de usuario que intenta desbanear no existe');
+  if (checkExistencia.estado) throw errorLanzado(403, 'No puede desbanear al usuario porque ya lo está');
+  const cuentaUsuario = await CuentaUsuario.findOneAndUpdate(
+    { _id: userId },
+    {
+      estado: true,
+    },
+    { new: true }
+  );
+  return cuentaUsuario;
+};

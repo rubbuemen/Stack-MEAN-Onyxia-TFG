@@ -56,3 +56,23 @@ exports.registrarse = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.banearCuenta = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const cuentaUsuario = await cuentaUsuarioService.banearCuenta(userId);
+    return res.status(200).send({ cuentaUsuario });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.desbanearCuenta = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const cuentaUsuario = await cuentaUsuarioService.desbanearCuenta(userId);
+    return res.status(200).send({ cuentaUsuario });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
