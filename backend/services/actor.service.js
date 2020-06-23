@@ -3,8 +3,6 @@ const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const bcrypt = require('bcryptjs');
-const cron = require('cron');
-const d3 = require('d3-time');
 
 exports.getMisDatos = async (usuarioLogeado) => {
   const misDatos =
@@ -251,34 +249,4 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
     );
     throw error;
   }
-};
-
-exports.comprobarFechaPenalizacion = async () => {
-  const rebuildPeriod = '*/30 * * * *'; // Se comprueba cada media hora
-  const job = new cron.CronJob(
-    rebuildPeriod,
-    async () => {
-      console.log('Comprobando penalizaciones...');
-      const miembros = await Miembro.find();
-      miembros.forEach(async (miembro) => {
-        if (miembro.fechaUltimaPenalizacion) {
-          const dias = d3.timeDay.count(miembro.fechaUltimaPenalizacion, new Date());
-          const pasadoMes = dias >= 30 && miembro.cantidadPenalizaciones !== 0;
-          if (pasadoMes) {
-            await Miembro.findByIdAndUpdate(
-              { _id: miembro._id },
-              {
-                cantidadPenalizaciones: 0,
-              },
-              { new: true }
-            );
-          }
-        }
-      });
-    },
-    null,
-    true,
-    'Europe/Madrid'
-  );
-  job.start();
 };

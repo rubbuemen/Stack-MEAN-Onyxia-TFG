@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const colores = require('colors');
-const { comprobarFechaPenalizacion } = require('./services/actor.service');
+const { comprobarFechaPenalizacion } = require('./services/miembro.service');
 
 require('dotenv').config();
 
@@ -28,6 +28,7 @@ app.use(
 app.use('/', require('./routes/cuentaUsuario.route'));
 app.use('/redSocial', require('./routes/redSocial.route'));
 app.use('/actor', require('./routes/actor.route'));
+app.use('/miembro', require('./routes/miembro.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
