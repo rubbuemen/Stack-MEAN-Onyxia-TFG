@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const colores = require('colors');
+const { comprobarFechaPenalizacion } = require('./services/actor.service');
 
 require('dotenv').config();
 
@@ -12,7 +13,7 @@ app.use(express.json());
 
 // Morgan para mostrar información de las peticiones
 app.use(
-  morgan(function (tokens, req, res) {
+  morgan((tokens, req, res) => {
     return (
       colores.blue('[' + tokens.method(req, res) + ' ' + colores.blue(tokens.status(req, res)) + ']') +
       ' ' +
@@ -27,6 +28,9 @@ app.use(
 app.use('/', require('./routes/cuentaUsuario.route'));
 app.use('/redSocial', require('./routes/redSocial.route'));
 app.use('/actor', require('./routes/actor.route'));
+
+//Comprobar penalizaciones miembros
+comprobarFechaPenalizacion();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));

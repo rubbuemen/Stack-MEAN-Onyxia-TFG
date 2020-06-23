@@ -9,5 +9,6 @@ router.put('/edit', upload.single('fotografia'), auth.actor_registrado, (req, re
 router.get('/visitantes', auth.presidente, (req, res) => actorController.getVisitantes(req, res));
 router.get('/miembros', auth.presidente, (req, res) => actorController.getMiembros(req, res));
 router.get('/:actorId', auth.presidente, (req, res) => actorController.getDatosByActorId(req, res));
+router.put('/edit/:actorId', upload.single('fotografia'), auth.presidente, (req, res) => actorController.editarDatosActorId(req, res));
 
 module.exports = router;
