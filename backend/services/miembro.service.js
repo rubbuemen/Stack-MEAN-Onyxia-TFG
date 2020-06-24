@@ -56,6 +56,7 @@ exports.getMiembrosVigentes = async () => {
 exports.darBajaMiembro = async (miembroId) => {
   const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de baja no existe');
+  if (!checkExistencia.estaDeAlta) throw errorLanzado(403, 'El miembro que intenta dar de baja ya lo está');
   const cuentaUsuarioActual = checkExistencia.cuentaUsuario;
   const miembro = await Miembro.findOneAndUpdate(
     { _id: miembroId },
@@ -68,6 +69,28 @@ exports.darBajaMiembro = async (miembroId) => {
     { _id: cuentaUsuarioActual._id },
     {
       estado: false,
+    },
+    { new: true }
+  );
+  return miembro;
+};
+
+exports.darAltaExMiembro = async (miembroId) => {
+  const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
+  if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de alta no existe');
+  if (checkExistencia.estaDeAlta) throw errorLanzado(403, 'El miembro que intenta dar de alta ya lo está');
+  const cuentaUsuarioActual = checkExistencia.cuentaUsuario;
+  const miembro = await Miembro.findOneAndUpdate(
+    { _id: miembroId },
+    {
+      estaDeAlta: true,
+    },
+    { new: true }
+  );
+  await CuentaUsuario.findOneAndUpdate(
+    { _id: cuentaUsuarioActual._id },
+    {
+      estado: true,
     },
     { new: true }
   );
