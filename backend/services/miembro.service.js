@@ -1,5 +1,6 @@
 const { errorLanzado } = require('../util/error.util');
 const { Miembro } = require('../models/miembro.model');
+const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const cron = require('cron');
 const d3 = require('d3-time');
 
@@ -36,7 +37,7 @@ exports.comprobarFechaPenalizacion = async () => {
 exports.penalizarMiembro = async (miembroId) => {
   const checkExistencia = await Miembro.findById(miembroId);
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta penalizar no existe');
-  const cuentaUsuario = await Miembro.findOneAndUpdate(
+  const miembro = await Miembro.findOneAndUpdate(
     { _id: miembroId },
     {
       cantidadPenalizaciones: checkExistencia.cantidadPenalizaciones + 1,
@@ -44,5 +45,31 @@ exports.penalizarMiembro = async (miembroId) => {
     },
     { new: true }
   );
-  return cuentaUsuario;
+  return miembro;
+};
+
+exports.getMiembrosVigentes = async () => {
+  const miembros = await Miembro.find({ estaDeAlta: true }).populate({ path: 'cuentaUsuario' });
+  return miembros;
+};
+
+exports.darBajaMiembro = async (miembroId) => {
+  const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
+  if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de baja no existe');
+  const cuentaUsuarioActual = checkExistencia.cuentaUsuario;
+  const miembro = await Miembro.findOneAndUpdate(
+    { _id: miembroId },
+    {
+      estaDeAlta: false,
+    },
+    { new: true }
+  );
+  await CuentaUsuario.findOneAndUpdate(
+    { _id: cuentaUsuarioActual._id },
+    {
+      estado: false,
+    },
+    { new: true }
+  );
+  return miembro;
 };

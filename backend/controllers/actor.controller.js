@@ -210,13 +210,14 @@ exports.editarDatosActorId = async (req, res) => {
   }
 };
 
+//TODO: comprobar que para que pueda ser miembro, debe tener el formulario con el estado de pagado
 exports.hacerMiembroActorId = async (req, res) => {
   try {
     const actorId = req.params.actorId;
     const { nombre, apellidos, fechaNacimiento, correoElectronico, alias, numeroTelefono, direccion, dni, aficiones, tieneCochePropio } = req.body;
     const fotografia = req.file;
     let actor = await actorService.getDatosByActorId(actorId);
-    // En front, comprobar que si tiene alguno de los campos que ya viene de visistante, entonces ponerlo en el formulario
+    //TODO: En front, comprobar que si tiene alguno de los campos que ya viene de visistante, entonces ponerlo en el formulario
     if (
       !nombre ||
       !apellidos ||

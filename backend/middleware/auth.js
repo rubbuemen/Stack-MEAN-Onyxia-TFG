@@ -27,8 +27,11 @@ exports.presidente = (req, res, next) => permisos(req, res, next, ['PRESIDENTE']
 // Actor registrado
 exports.actor_registrado = (req, res, next) => permisos(req, res, next, ['VISITANTE', 'MIEMBRO', 'VOCAL', 'SECRETARIO', 'VICEPRESIDENTE', 'PRESIDENTE']);
 
+// Miembro de la asociación
+exports.aso_miembro = (req, res, next) => permisos(req, res, next, ['MIEMBRO', 'VOCAL', 'SECRETARIO', 'VICEPRESIDENTE', 'PRESIDENTE']);
+
 // Junta directiva
-exports.junta_directiva = (req, res, next) => permisos(req, res, next, ['MIEMBRO', 'VOCAL', 'SECRETARIO', 'VICEPRESIDENTE', 'PRESIDENTE']);
+exports.junta_directiva = (req, res, next) => permisos(req, res, next, ['VOCAL', 'SECRETARIO', 'VICEPRESIDENTE', 'PRESIDENTE']);
 
 // Secretario y presidente
 exports.secretario_presidente = (req, res, next) => permisos(req, res, next, ['SECRETARIO', 'PRESIDENTE']);
