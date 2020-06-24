@@ -210,7 +210,6 @@ exports.editarDatosActorId = async (req, res) => {
   }
 };
 
-//TODO: comprobar que para que pueda ser miembro, debe tener el formulario con el estado de pagado
 exports.hacerMiembroActorId = async (req, res) => {
   try {
     const actorId = req.params.actorId;

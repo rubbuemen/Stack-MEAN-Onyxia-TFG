@@ -3,6 +3,7 @@ const { Miembro } = require('../models/miembro.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const cron = require('cron');
 const d3 = require('d3-time');
+const { SolicitudMiembro } = require('../models/solicitudMiembro.model');
 
 exports.comprobarFechaPenalizacion = async () => {
   const rebuildPeriod = '*/30 * * * *'; // Se comprueba cada media hora
@@ -76,11 +77,14 @@ exports.darBajaMiembro = async (miembroId) => {
 };
 
 exports.darAltaExMiembro = async (miembroId) => {
-  const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
+  const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' }).populate({ path: 'solicitudMiembro' });
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de alta no existe');
   if (checkExistencia.estaDeAlta) throw errorLanzado(403, 'El miembro que intenta dar de alta ya lo está');
   const cuentaUsuarioActual = checkExistencia.cuentaUsuario;
-  const miembro = await Miembro.findOneAndUpdate(
+  const checkSolicitudPagada = checkExistencia.solicitudMiembro;
+  if (!checkSolicitudPagada || !checkSolicitudPagada.estaPagado)
+    throw errorLanzado(403, 'No se puede hacer miembro a un ex-miembro que no tiene su cuota en la solicitud para ser miembro pagada');
+  miembro = await Miembro.findOneAndUpdate(
     { _id: miembroId },
     {
       estaDeAlta: true,
@@ -95,4 +99,19 @@ exports.darAltaExMiembro = async (miembroId) => {
     { new: true }
   );
   return miembro;
+};
+
+exports.reiniciarCuotaMiembros = async () => {
+  const rebuildPeriod = '0 0 1 */6 *'; // Se comprueba cada 6 meses
+  const job = new cron.CronJob(
+    rebuildPeriod,
+    async () => {
+      console.log('Reiniciando cuotas...');
+      await SolicitudMiembro.updateMany({ estaPagado: false });
+    },
+    null,
+    true,
+    'Europe/Madrid'
+  );
+  job.start();
 };

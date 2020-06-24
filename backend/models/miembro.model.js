@@ -129,6 +129,11 @@ const miembroSchema = new mongoose.Schema({
       ref: 'RedSocial',
     },
   ],
+  solicitudMiembro: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SolicitudMiembro',
+    required: [true, 'Es obligatorio tener una solicitud para ser miembro'],
+  },
 });
 
 const miembro = mongoose.model('Miembro', miembroSchema);

@@ -45,6 +45,10 @@ const visitanteSchema = new mongoose.Schema({
       ref: 'RedSocial',
     },
   ],
+  solicitudMiembro: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SolicitudMiembro',
+  },
 });
 
 const visitante = mongoose.model('Visitante', visitanteSchema);

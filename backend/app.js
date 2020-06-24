@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const colores = require('colors');
-const { comprobarFechaPenalizacion } = require('./services/miembro.service');
+const { comprobarFechaPenalizacion, reiniciarCuotaMiembros } = require('./services/miembro.service');
 
 require('dotenv').config();
 
@@ -29,9 +29,13 @@ app.use('/', require('./routes/cuentaUsuario.route'));
 app.use('/redSocial', require('./routes/redSocial.route'));
 app.use('/actor', require('./routes/actor.route'));
 app.use('/miembro', require('./routes/miembro.route'));
+app.use('/solicitudMiembro', require('./routes/solicitudMiembro.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
+
+//Reiniciar cuotas miembros
+reiniciarCuotaMiembros();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));

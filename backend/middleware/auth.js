@@ -5,8 +5,8 @@ const { checkEstadoUsuario } = require('../services/cuentaUsuario.service');
 const permisos = async (req, res, next, roles) => {
   try {
     const token = req.headers.authorization.replace('Bearer ', '');
-    const payload = await jwt.verify(token, process.env.SECRET_KEY); // Comparamos el token actual con la palabra secreta
     if (!token) throw errorLanzado(401, 'Acceso Denegado. No existe ningún token');
+    const payload = await jwt.verify(token, process.env.SECRET_KEY); // Comparamos el token actual con la palabra secreta
     if (!roles.includes(payload.autoridad)) throw errorLanzado(403, 'El rol del usuario no está permitido');
     req.cuentaUsuario = payload;
     await checkEstadoUsuario(req.cuentaUsuario);
