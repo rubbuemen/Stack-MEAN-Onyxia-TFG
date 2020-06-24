@@ -10,5 +10,6 @@ router.get('/visitantes', auth.presidente, (req, res) => actorController.getVisi
 router.get('/miembros', auth.presidente, (req, res) => actorController.getMiembros(req, res));
 router.get('/:actorId', auth.presidente, (req, res) => actorController.getDatosByActorId(req, res));
 router.put('/edit/:actorId', upload.single('fotografia'), auth.presidente, (req, res) => actorController.editarDatosActorId(req, res));
+router.post('/hacerMiembro/:actorId', upload.single('fotografia'), auth.secretario_presidente, (req, res) => actorController.hacerMiembroActorId(req, res));
 
 module.exports = router;

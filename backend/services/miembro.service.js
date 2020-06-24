@@ -1,6 +1,5 @@
 const { errorLanzado } = require('../util/error.util');
 const { Miembro } = require('../models/miembro.model');
-const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const cron = require('cron');
 const d3 = require('d3-time');
 

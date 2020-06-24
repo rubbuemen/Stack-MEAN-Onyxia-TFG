@@ -44,7 +44,7 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
     actor =
       (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
 
-    const cuentaUsuario = await CuentaUsuario.findOneAndUpdate(
+    await CuentaUsuario.findOneAndUpdate(
       { _id: usuarioLogeado._id },
       {
         usuario: parametros.usuario,
@@ -62,7 +62,6 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
           correoElectronico: parametros.correoElectronico,
           alias: parametros.alias,
           numeroTelefono: parametros.numeroTelefono,
-          cuentaUsuario: cuentaUsuario,
         },
         { new: true }
       );
@@ -85,7 +84,6 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
           dni: parametros.dni,
           aficiones: parametros.aficiones,
           tieneCochePropio: parametros.tieneCochePropio,
-          cuentaUsuario: cuentaUsuario,
         },
         { new: true }
       );
@@ -182,7 +180,7 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
       }
     }
 
-    const cuentaUsuario = await CuentaUsuario.findOneAndUpdate(
+    await CuentaUsuario.findOneAndUpdate(
       { _id: cuentaUsuarioActual._id },
       {
         usuario: parametros.usuario,
@@ -202,7 +200,6 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
           correoElectronico: parametros.correoElectronico,
           alias: parametros.alias,
           numeroTelefono: parametros.numeroTelefono,
-          cuentaUsuario: cuentaUsuario,
         },
         { new: true }
       );
@@ -230,7 +227,6 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
           estaDeAlta: parametros.estaDeAlta,
           cantidadPenalizaciones: parametros.cantidadPenalizaciones,
           fechaUltimaPenalizacion: fechaUltimaPenalizacion,
-          cuentaUsuario: cuentaUsuario,
         },
         { new: true }
       );
@@ -247,6 +243,58 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
       },
       { new: true }
     );
+    throw error;
+  }
+};
+
+exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
+  let actor = await Visitante.findOne({ _id: actorId }).populate({ path: 'cuentaUsuario' });
+  const cuentaUsuarioActual = actor.cuentaUsuario;
+  try {
+    const checkEmail =
+      (await Visitante.findOne({ correoElectronico: parametros.correoElectronico })) ||
+      (await Miembro.findOne({ correoElectronico: parametros.correoElectronico }));
+    if (checkEmail && checkEmail.correoElectronico !== actor.correoElectronico) throw errorLanzado(403, 'El correo electrónico introducido ya existe');
+    const checkTelefono =
+      (await Visitante.findOne({ numeroTelefono: parametros.numeroTelefono })) || (await Miembro.findOne({ numeroTelefono: parametros.numeroTelefono }));
+    if (checkTelefono && checkTelefono.numeroTelefono !== actor.numeroTelefono) throw errorLanzado(403, 'El número de teléfono introducido ya existe');
+    const checkAlias = await Miembro.findOne({ alias: parametros.alias });
+    if (checkAlias && checkAlias.alias !== actor.alias) throw errorLanzado(403, 'El alias introducido ya existe');
+    const checkDni = await Miembro.findOne({ dni: parametros.dni });
+    if (checkDni) throw errorLanzado(403, 'El DNI introducido ya existe');
+
+    actor = await Visitante.findOneAndDelete(actorId);
+    await CuentaUsuario.findOneAndUpdate(
+      { _id: cuentaUsuarioActual._id },
+      {
+        autoridad: 'MIEMBRO',
+      },
+      { new: true }
+    );
+    let miembro = new Miembro(parametros);
+    miembro.fotografia = {
+      data: imagen.data,
+      mimetype: imagen.mimetype,
+      size: imagen.size,
+    };
+    miembro._id = actor._id;
+    miembro.redSocials = actor.redSocials;
+    miembro.cuentaUsuario = actor.cuentaUsuario;
+    miembro = await miembro.save();
+    return miembro;
+  } catch (error) {
+    actor = await Visitante.findOne({ _id: actorId });
+    if (!actor) {
+      const visitante = new Visitante(actor);
+      await visitante.save();
+      await CuentaUsuario.findOneAndUpdate(
+        { _id: cuentaUsuarioActual._id },
+        {
+          autoridad: 'VISITANTE',
+        },
+        { new: true }
+      );
+    }
     throw error;
   }
 };

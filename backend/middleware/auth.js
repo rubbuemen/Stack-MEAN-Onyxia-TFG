@@ -1,26 +1,18 @@
 const jwt = require('jsonwebtoken');
-const errorLanzado = require('../util/error.util');
-const colores = require('colors');
+const { errorLanzado, controlError } = require('../util/error.util');
 const { checkEstadoUsuario } = require('../services/cuentaUsuario.service');
 
 const permisos = async (req, res, next, roles) => {
   try {
     const token = req.headers.authorization.replace('Bearer ', '');
-    const payload = jwt.verify(token, process.env.SECRET_KEY); // Comparamos el token actual con la palabra secreta
+    const payload = await jwt.verify(token, process.env.SECRET_KEY); // Comparamos el token actual con la palabra secreta
     if (!token) throw errorLanzado(401, 'Acceso Denegado. No existe ningún token');
     if (!roles.includes(payload.autoridad)) throw errorLanzado(403, 'El rol del usuario no está permitido');
     req.cuentaUsuario = payload;
     await checkEstadoUsuario(req.cuentaUsuario);
     next();
   } catch (error) {
-    if (error.status && error.message) {
-      console.error(colores.red('[Error ' + error.status + ']'));
-      console.error(colores.red(error.stack));
-      return res.status(error.status).send({ error: error.message });
-    } else {
-      console.log(colores.red(error));
-      return res.status(401).send({ error: 'Acceso denegado. Token inválido' });
-    }
+    return controlError(error, res);
   }
 };
 
