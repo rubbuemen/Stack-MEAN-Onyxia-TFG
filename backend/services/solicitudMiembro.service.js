@@ -2,6 +2,7 @@ const { errorLanzado } = require('../util/error.util');
 const { SolicitudMiembro } = require('../models/solicitudMiembro.model');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
+const { RedSocial } = require('../models/redSocial.model');
 
 exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   let actorConectado;
@@ -30,4 +31,429 @@ exports.getEstadoSolicitudMiembro = async (usuarioLogeado) => {
     select: 'estadoSolicitud estaPagado -_id',
   });
   return actorConectado.solicitudMiembro;
+};
+
+exports.getSolicitudesMiembros = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
+};
+
+exports.getSolicitudesMiembrosPendientes = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    { $match: { estadoSolicitud: 'PENDIENTE' } },
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
+};
+
+exports.getSolicitudesMiembrosAceptadas = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    { $match: { estadoSolicitud: 'ACEPTADO' } },
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
+};
+
+exports.getSolicitudesMiembrosRechazadas = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    { $match: { estadoSolicitud: 'RECHAZADO' } },
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
+};
+
+exports.getSolicitudesMiembrosPagadas = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    { $match: { estaPagado: true } },
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
+};
+
+exports.getSolicitudesMiembrosNoPagadas = async () => {
+  const solicitudesMiembros = SolicitudMiembro.aggregate([
+    { $match: { estaPagado: false } },
+    {
+      $lookup: {
+        from: Visitante.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'visitante',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: '_id',
+        foreignField: 'solicitudMiembro',
+        as: 'miembro',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'visitante.redSocials',
+        foreignField: '_id',
+        as: 'visitante.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$visitante.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: RedSocial.collection.name,
+        localField: 'miembro.redSocials',
+        foreignField: '_id',
+        as: 'miembro.redSocials',
+      },
+    },
+    {
+      $unwind: {
+        path: '$miembro.redSocials',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: Miembro.collection.name,
+        localField: 'miembrosConocidos',
+        foreignField: '_id',
+        as: 'miembrosConocidos',
+      },
+    },
+  ]);
+  return solicitudesMiembros;
 };

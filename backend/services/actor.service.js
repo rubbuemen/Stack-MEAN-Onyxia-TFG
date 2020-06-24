@@ -123,7 +123,7 @@ exports.getDatosByActorId = async (actorId) => {
 exports.getUltimoNumeroSocio = async () => {
   let ultimoNumeroSocio;
   const miembro = await Miembro.findOne().sort({ numeroSocio: -1 }).limit(1);
-  if (!miembro) ultimoNumeroSocio = 0;
+  if (!miembro.numeroSocio) ultimoNumeroSocio = 0;
   else ultimoNumeroSocio = miembro.numeroSocio;
   return ultimoNumeroSocio;
 };
