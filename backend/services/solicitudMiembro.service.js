@@ -23,3 +23,11 @@ exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
     throw error;
   }
 };
+
+exports.getEstadoSolicitudMiembro = async (usuarioLogeado) => {
+  const actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+    path: 'solicitudMiembro',
+    select: 'estadoSolicitud estaPagado -_id',
+  });
+  return actorConectado.solicitudMiembro;
+};

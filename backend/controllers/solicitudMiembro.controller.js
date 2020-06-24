@@ -15,3 +15,13 @@ exports.rellenarSolicitudMiembro = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.getEstadoSolicitudMiembro = async (req, res) => {
+  try {
+    const usuarioLogeado = req.cuentaUsuario;
+    const solicitudMiembro = await solicitudMiembroService.getEstadoSolicitudMiembro(usuarioLogeado);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};

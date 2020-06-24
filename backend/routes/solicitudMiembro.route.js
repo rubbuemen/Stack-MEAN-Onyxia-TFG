@@ -4,5 +4,6 @@ const solicitudMiembroController = require('../controllers/solicitudMiembro.cont
 const auth = require('../middleware/auth');
 
 router.post('/', auth.visitante, (req, res) => solicitudMiembroController.rellenarSolicitudMiembro(req, res));
+router.get('/estado', auth.visitante, (req, res) => solicitudMiembroController.getEstadoSolicitudMiembro(req, res));
 
 module.exports = router;
