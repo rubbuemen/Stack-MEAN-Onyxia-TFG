@@ -13,5 +13,6 @@ router.get('/listPagadas', auth.presidente, (req, res) => solicitudMiembroContro
 router.get('/listPendientePago', auth.presidente, (req, res) => solicitudMiembroController.getSolicitudesMiembrosNoPagadas(req, res));
 router.put('/aceptar/:solicitudMiembroId', auth.presidente, (req, res) => solicitudMiembroController.aceptarSolicitudMiembro(req, res));
 router.put('/rechazar/:solicitudMiembroId', auth.presidente, (req, res) => solicitudMiembroController.rechazarSolicitudMiembro(req, res));
+router.put('/establecerPagado/:solicitudMiembroId', auth.presidente, (req, res) => solicitudMiembroController.establecerPagadoSolicitudMiembro(req, res));
 
 module.exports = router;

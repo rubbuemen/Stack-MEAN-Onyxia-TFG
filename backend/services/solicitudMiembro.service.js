@@ -460,7 +460,7 @@ exports.getSolicitudesMiembrosNoPagadas = async () => {
 
 exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
   const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
-  if (!checkExistencia) throw errorLanzado(404, 'Las solicitud de miembro que intenta aceptar no existe');
+  if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro que intenta aceptar no existe');
   if (checkExistencia.estadoSolicitud === 'ACEPTADO') throw errorLanzado(403, 'La solicitud de miembro que intenta aceptar ya lo está');
   if (checkExistencia.estadoSolicitud === 'RECHAZADO') throw errorLanzado(403, 'La solicitud de miembro que intenta aceptar ha sido ya rechazada');
   solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
@@ -475,13 +475,29 @@ exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
 
 exports.rechazarSolicitudMiembro = async (solicitudMiembroId) => {
   const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
-  if (!checkExistencia) throw errorLanzado(404, 'Las solicitud de miembro que intenta rechazar no existe');
+  if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro que intenta rechazar no existe');
   if (checkExistencia.estadoSolicitud === 'RECHAZADO') throw errorLanzado(403, 'La solicitud de miembro que intenta rechazar ya lo está');
   if (checkExistencia.estadoSolicitud === 'ACEPTADO') throw errorLanzado(403, 'La solicitud de miembro que intenta rechazar ha sido ya aceptada');
   solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
     { _id: solicitudMiembroId },
     {
       estadoSolicitud: 'RECHAZADO',
+    },
+    { new: true }
+  );
+  return solicitudMiembro;
+};
+
+exports.establecerPagadoSolicitudMiembro = async (solicitudMiembroId) => {
+  const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
+  if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro a la que intenta establecer como pagado manualmente no existe');
+  if (checkExistencia.estadoSolicitud !== 'ACEPTADO')
+    throw errorLanzado(403, 'La solicitud de miembro no se puede establacer como pagado manualmente porque no está aceptada');
+  if (checkExistencia.estaPagado) throw errorLanzado(403, 'La solicitud de miembro a la que intenta establacer como pagado manualmente ya lo está');
+  solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
+    { _id: solicitudMiembroId },
+    {
+      estaPagado: true,
     },
     { new: true }
   );
