@@ -457,3 +457,18 @@ exports.getSolicitudesMiembrosNoPagadas = async () => {
   ]);
   return solicitudesMiembros;
 };
+
+exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
+  const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
+  if (!checkExistencia) throw errorLanzado(404, 'Las solicitud de miembro que intenta aceptar no existe');
+  if (checkExistencia.estadoSolicitud === 'ACEPTADO') throw errorLanzado(403, 'La solicitud de miembro que intenta aceptar ya lo está');
+  if (checkExistencia.estadoSolicitud === 'RECHAZADO') throw errorLanzado(403, 'La solicitud de miembro que intenta aceptar ha sido ya rechazada');
+  solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
+    { _id: solicitudMiembroId },
+    {
+      estadoSolicitud: 'ACEPTADO',
+    },
+    { new: true }
+  );
+  return solicitudMiembro;
+};

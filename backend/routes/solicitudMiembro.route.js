@@ -11,5 +11,6 @@ router.get('/listAceptadas', auth.presidente, (req, res) => solicitudMiembroCont
 router.get('/listRechazadas', auth.presidente, (req, res) => solicitudMiembroController.getSolicitudesMiembrosRechazadas(req, res));
 router.get('/listPagadas', auth.presidente, (req, res) => solicitudMiembroController.getSolicitudesMiembrosPagadas(req, res));
 router.get('/listPendientePago', auth.presidente, (req, res) => solicitudMiembroController.getSolicitudesMiembrosNoPagadas(req, res));
+router.put('/aceptar/:solicitudMiembroId', auth.presidente, (req, res) => solicitudMiembroController.aceptarSolicitudMiembro(req, res));
 
 module.exports = router;

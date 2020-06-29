@@ -79,3 +79,13 @@ exports.getSolicitudesMiembrosNoPagadas = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.aceptarSolicitudMiembro = async (req, res) => {
+  try {
+    const solicitudMiembroId = req.params.solicitudMiembroId;
+    const solicitudMiembro = await solicitudMiembroService.aceptarSolicitudMiembro(solicitudMiembroId);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
