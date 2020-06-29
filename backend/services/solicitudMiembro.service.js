@@ -472,3 +472,18 @@ exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
   );
   return solicitudMiembro;
 };
+
+exports.rechazarSolicitudMiembro = async (solicitudMiembroId) => {
+  const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
+  if (!checkExistencia) throw errorLanzado(404, 'Las solicitud de miembro que intenta rechazar no existe');
+  if (checkExistencia.estadoSolicitud === 'RECHAZADO') throw errorLanzado(403, 'La solicitud de miembro que intenta rechazar ya lo está');
+  if (checkExistencia.estadoSolicitud === 'ACEPTADO') throw errorLanzado(403, 'La solicitud de miembro que intenta rechazar ha sido ya aceptada');
+  solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
+    { _id: solicitudMiembroId },
+    {
+      estadoSolicitud: 'RECHAZADO',
+    },
+    { new: true }
+  );
+  return solicitudMiembro;
+};

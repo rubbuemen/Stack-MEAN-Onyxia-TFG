@@ -89,3 +89,13 @@ exports.aceptarSolicitudMiembro = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.rechazarSolicitudMiembro = async (req, res) => {
+  try {
+    const solicitudMiembroId = req.params.solicitudMiembroId;
+    const solicitudMiembro = await solicitudMiembroService.rechazarSolicitudMiembro(solicitudMiembroId);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
