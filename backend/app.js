@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const colores = require('colors');
 const { comprobarFechaPenalizacion, reiniciarCuotaMiembros } = require('./services/miembro.service');
+const { eliminarSolicitudesMiembroRechazadas } = require('./services/solicitudMiembro.service');
 
 require('dotenv').config();
 
@@ -36,6 +37,9 @@ comprobarFechaPenalizacion();
 
 //Reiniciar cuotas miembros
 reiniciarCuotaMiembros();
+
+//Eliminar solicitudes de miembros rechazadas
+eliminarSolicitudesMiembroRechazadas();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));

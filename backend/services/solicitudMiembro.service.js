@@ -3,6 +3,7 @@ const { SolicitudMiembro } = require('../models/solicitudMiembro.model');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
 const { RedSocial } = require('../models/redSocial.model');
+const cron = require('cron');
 
 exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   let actorConectado;
@@ -34,7 +35,7 @@ exports.getEstadoSolicitudMiembro = async (usuarioLogeado) => {
 };
 
 exports.getSolicitudesMiembros = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     {
       $lookup: {
         from: Visitante.collection.name,
@@ -104,7 +105,7 @@ exports.getSolicitudesMiembros = async () => {
 };
 
 exports.getSolicitudesMiembrosPendientes = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     { $match: { estadoSolicitud: 'PENDIENTE' } },
     {
       $lookup: {
@@ -175,7 +176,7 @@ exports.getSolicitudesMiembrosPendientes = async () => {
 };
 
 exports.getSolicitudesMiembrosAceptadas = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     { $match: { estadoSolicitud: 'ACEPTADO' } },
     {
       $lookup: {
@@ -246,7 +247,7 @@ exports.getSolicitudesMiembrosAceptadas = async () => {
 };
 
 exports.getSolicitudesMiembrosRechazadas = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     { $match: { estadoSolicitud: 'RECHAZADO' } },
     {
       $lookup: {
@@ -317,7 +318,7 @@ exports.getSolicitudesMiembrosRechazadas = async () => {
 };
 
 exports.getSolicitudesMiembrosPagadas = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     { $match: { estaPagado: true } },
     {
       $lookup: {
@@ -388,7 +389,7 @@ exports.getSolicitudesMiembrosPagadas = async () => {
 };
 
 exports.getSolicitudesMiembrosNoPagadas = async () => {
-  const solicitudesMiembros = SolicitudMiembro.aggregate([
+  const solicitudesMiembros = await SolicitudMiembro.aggregate([
     { $match: { estaPagado: false } },
     {
       $lookup: {
@@ -502,4 +503,45 @@ exports.establecerPagadoSolicitudMiembro = async (solicitudMiembroId) => {
     { new: true }
   );
   return solicitudMiembro;
+};
+
+exports.eliminarSolicitudesMiembroRechazadas = async () => {
+  const rebuildPeriod = '0 0 1 * *'; // Se comprueba cada 1 mes
+  const job = new cron.CronJob(
+    rebuildPeriod,
+    async () => {
+      console.log('Eliminando solicitudes de miembro rechazadas...');
+      const solicitudesMiembro = await SolicitudMiembro.aggregate([
+        { $match: { estadoSolicitud: 'RECHAZADO' } },
+        {
+          $lookup: {
+            from: Visitante.collection.name,
+            localField: '_id',
+            foreignField: 'solicitudMiembro',
+            as: 'visitante',
+          },
+        },
+        {
+          $unwind: {
+            path: '$visitante',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
+      solicitudesMiembro.forEach(async (solicitudMiembro) => {
+        await Visitante.findByIdAndUpdate(
+          { _id: solicitudMiembro.visitante._id },
+          {
+            $unset: { solicitudMiembro },
+          },
+          { new: true }
+        );
+      });
+      await SolicitudMiembro.deleteMany({ estadoSolicitud: 'RECHAZADO' });
+    },
+    null,
+    true,
+    'Europe/Madrid'
+  );
+  job.start();
 };
