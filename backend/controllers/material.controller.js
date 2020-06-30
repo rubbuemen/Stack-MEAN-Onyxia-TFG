@@ -48,12 +48,12 @@ exports.editarMaterial = async (req, res) => {
   }
 };
 
-// exports.eliminarMaterial = async (req, res) => {
-//   try {
-//     const materialId = req.params.id;
-//     const material = await materialService.eliminarMaterial(materialId);
-//     return res.status(200).send({ material });
-//   } catch (error) {
-//     return controlError(error, res);
-//   }
-// };
+exports.eliminarMaterial = async (req, res) => {
+  try {
+    const materialId = req.params.id;
+    const material = await materialService.eliminarMaterial(materialId);
+    return res.status(200).send({ material });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};

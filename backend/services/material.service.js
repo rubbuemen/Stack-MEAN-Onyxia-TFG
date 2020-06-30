@@ -4,6 +4,7 @@ const { Miembro } = require('../models/miembro.model');
 const { Actividad } = require('../models/actividad.model');
 const { Inventario } = require('../models/inventario.model');
 const { Evento } = require('../models/evento.model');
+const { asyncForEach } = require('../util/funciones.util');
 
 exports.getMaterialesByActividadId = async (actividadId) => {
   const actividad = await Actividad.findById(actividadId).populate({ path: 'materiales' });
@@ -40,7 +41,7 @@ exports.crearMaterial = async (parametros, imagen, usuarioLogeado) => {
 
 exports.editarMaterial = async (parametros, imagen, materialId) => {
   const checkExistencia = await Material.findById(materialId);
-  if (!checkExistencia) throw errorLanzado(404, 'La material que intenta editar no existe');
+  if (!checkExistencia) throw errorLanzado(404, 'El material que intenta editar no existe');
   const checkNombre = await Material.findOne({ nombre: parametros.nombre });
   if (checkNombre && checkNombre.nombre !== checkExistencia.nombre) throw errorLanzado(403, 'El nombre introducido ya existe');
   const material = await Material.findOneAndUpdate(
@@ -59,13 +60,14 @@ exports.editarMaterial = async (parametros, imagen, materialId) => {
   return material;
 };
 
-// exports.eliminarMaterial = async (materialId) => {
-//   const checkExistencia = await Material.findById(materialId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La material que intenta eliminar no existe');
-//   const estaEnEvento = await Evento.findOne({ materiales: { $in: [checkExistencia._id] } });
-//   if (estaEnEvento) throw errorLanzado(403, 'No se puede eliminar la material porque está asociada al evento ' + estaEnEvento.nombre);
-//   const estaEnAsociacionMaterialMiembroTramo = await MaterialMiembroTramo.findOne({ materiales: { $in: [checkExistencia._id] } });
-//   if (estaEnAsociacionMaterialMiembroTramo) throw errorLanzado(403, 'No se puede eliminar la material porque está asociada al horario de un evento');
-//   const material = await Material.findOneAndDelete(materialId);
-//   return material;
-// };
+exports.eliminarMaterial = async (materialId) => {
+  const checkExistencia = await Material.findById(materialId).populate({ path: 'inventarios' });
+  if (!checkExistencia) throw errorLanzado(404, 'El material que intenta eliminar no existe');
+  if (checkExistencia.cantidadEnUso !== 0) throw errorLanzado(403, 'No se puede eliminar el material porque hay inventario de este en uso');
+  const inventarios = checkExistencia.inventarios;
+  await asyncForEach(inventarios, async (inventario) => {
+    await Inventario.findByIdAndDelete(inventario._id);
+  });
+  const material = await Material.findOneAndDelete(materialId);
+  return material;
+};
