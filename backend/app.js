@@ -32,6 +32,8 @@ app.use('/actor', require('./routes/actor.route'));
 app.use('/miembro', require('./routes/miembro.route'));
 app.use('/solicitudMiembro', require('./routes/solicitudMiembro.route'));
 app.use('/actividad', require('./routes/actividad.route'));
+app.use('/material', require('./routes/material.route'));
+app.use('/inventario', require('./routes/inventario.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
