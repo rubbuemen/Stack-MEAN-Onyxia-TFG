@@ -1,6 +1,6 @@
 const { errorLanzado, controlError } = require('../util/error.util');
 const actividadService = require('../services/actividad.service');
-const convertirImagenABase64 = require('../util/funciones.util');
+const { convertirImagenABase64 } = require('../util/funciones.util');
 
 exports.getActividadesPublicas = async (req, res) => {
   try {
@@ -28,6 +28,20 @@ exports.crearActividad = async (req, res) => {
     if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     req.file.data = convertirImagenABase64(fotografia);
     const actividad = await actividadService.crearActividad(req.body, req.file, usuarioLogeado);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.editarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const { nombre, descripcion, reglas, enVigor } = req.body;
+    const fotografia = req.file;
+    if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    req.file.data = convertirImagenABase64(fotografia);
+    const actividad = await actividadService.editarActividad(req.body, req.file, actividadId);
     return res.status(200).send({ actividad });
   } catch (error) {
     return controlError(error, res);
