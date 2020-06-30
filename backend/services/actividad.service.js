@@ -66,3 +66,35 @@ exports.eliminarActividad = async (actividadId) => {
   const actividad = await Actividad.findOneAndDelete(actividadId);
   return actividad;
 };
+
+exports.publicarActividad = async (actividadId) => {
+  const checkExistencia = await Actividad.findById(actividadId);
+  if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta publicar no existe');
+  if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La actividad que intenta publicar ya lo está');
+  const actividad = await Actividad.findOneAndUpdate(
+    { _id: actividadId },
+    {
+      estaPublicado: true,
+    },
+    { new: true }
+  );
+  return actividad;
+};
+
+exports.ocultarActividad = async (actividadId) => {
+  const checkExistencia = await Actividad.findById(actividadId);
+  if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta ocultar no existe');
+  if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La actividad que intenta ocultar ya lo está');
+  const estaEnEvento = await Evento.findOne({ actividades: { $in: [checkExistencia._id] } });
+  if (estaEnEvento) throw errorLanzado(403, 'No se puede ocultar la actividad porque está asociada al evento ' + estaEnEvento.nombre);
+  const estaEnAsociacionActividadMiembroTramo = await ActividadMiembroTramo.findOne({ actividades: { $in: [checkExistencia._id] } });
+  if (estaEnAsociacionActividadMiembroTramo) throw errorLanzado(403, 'No se puede ocultar la actividad porque está asociada al horario de un evento');
+  const actividad = await Actividad.findOneAndUpdate(
+    { _id: actividadId },
+    {
+      estaPublicado: false,
+    },
+    { new: true }
+  );
+  return actividad;
+};

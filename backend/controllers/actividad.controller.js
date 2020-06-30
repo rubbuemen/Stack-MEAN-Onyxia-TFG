@@ -57,3 +57,23 @@ exports.eliminarActividad = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.publicarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.publicarActividad(actividadId);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.ocultarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.ocultarActividad(actividadId);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
