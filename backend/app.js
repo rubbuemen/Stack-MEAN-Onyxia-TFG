@@ -31,6 +31,7 @@ app.use('/redSocial', require('./routes/redSocial.route'));
 app.use('/actor', require('./routes/actor.route'));
 app.use('/miembro', require('./routes/miembro.route'));
 app.use('/solicitudMiembro', require('./routes/solicitudMiembro.route'));
+app.use('/actividad', require('./routes/actividad.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
