@@ -98,3 +98,31 @@ exports.ocultarActividad = async (actividadId) => {
   );
   return actividad;
 };
+
+exports.descatalogarActividad = async (actividadId) => {
+  const checkExistencia = await Actividad.findById(actividadId);
+  if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta descatalogar no existe');
+  if (!checkExistencia.enVigor) throw errorLanzado(403, 'La actividad que intenta descatalogar ya lo está');
+  const actividad = await Actividad.findOneAndUpdate(
+    { _id: actividadId },
+    {
+      enVigor: false,
+    },
+    { new: true }
+  );
+  return actividad;
+};
+
+exports.catalogarActividad = async (actividadId) => {
+  const checkExistencia = await Actividad.findById(actividadId);
+  if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta catalogar no existe');
+  if (checkExistencia.enVigor) throw errorLanzado(403, 'La actividad que intenta catalogar ya lo está');
+  const actividad = await Actividad.findOneAndUpdate(
+    { _id: actividadId },
+    {
+      enVigor: true,
+    },
+    { new: true }
+  );
+  return actividad;
+};

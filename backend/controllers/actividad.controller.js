@@ -77,3 +77,23 @@ exports.ocultarActividad = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.descatalogarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.descatalogarActividad(actividadId);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.catalogarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.catalogarActividad(actividadId);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
