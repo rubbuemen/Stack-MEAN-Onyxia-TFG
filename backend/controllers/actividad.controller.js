@@ -47,3 +47,13 @@ exports.editarActividad = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.eliminarActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.eliminarActividad(actividadId);
+    return res.status(200).send({ actividad });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};

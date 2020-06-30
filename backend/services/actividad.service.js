@@ -2,6 +2,8 @@ const { errorLanzado } = require('../util/error.util');
 const { Actividad } = require('../models/actividad.model');
 const { Miembro } = require('../models/miembro.model');
 const { Material } = require('../models/material.model');
+const { Evento } = require('../models/evento.model');
+const { ActividadMiembroTramo } = require('../models/actividadMiembroTramo.model');
 
 exports.getActividadesPublicas = async () => {
   const actividades = await Actividad.find({ estaPublicado: true }).populate({ path: 'miembroCreador' });
@@ -51,5 +53,16 @@ exports.editarActividad = async (parametros, imagen, actividadId) => {
     },
     { new: true }
   );
+  return actividad;
+};
+
+exports.eliminarActividad = async (actividadId) => {
+  const checkExistencia = await Actividad.findById(actividadId);
+  if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta eliminar no existe');
+  const estaEnEvento = await Evento.findOne({ actividades: { $in: [checkExistencia._id] } });
+  if (estaEnEvento) throw errorLanzado(403, 'No se puede eliminar la actividad porque está asociada al evento ' + estaEnEvento.nombre);
+  const estaEnAsociacionActividadMiembroTramo = await ActividadMiembroTramo.findOne({ actividades: { $in: [checkExistencia._id] } });
+  if (estaEnAsociacionActividadMiembroTramo) throw errorLanzado(403, 'No se puede eliminar la actividad porque está asociada al horario de un evento');
+  const actividad = await Actividad.findOneAndDelete(actividadId);
   return actividad;
 };
