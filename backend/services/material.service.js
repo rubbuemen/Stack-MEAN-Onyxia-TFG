@@ -3,7 +3,6 @@ const { Material } = require('../models/material.model');
 const { Miembro } = require('../models/miembro.model');
 const { Actividad } = require('../models/actividad.model');
 const { Inventario } = require('../models/inventario.model');
-const { Evento } = require('../models/evento.model');
 const { asyncForEach } = require('../util/funciones.util');
 
 exports.getMaterialesByActividadId = async (actividadId) => {
