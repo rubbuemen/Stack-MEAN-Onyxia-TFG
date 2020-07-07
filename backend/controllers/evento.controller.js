@@ -20,12 +20,17 @@ exports.getEventos = async (req, res) => {
 };
 
 exports.crearEvento = async (req, res) => {
+  // Se añade una fecha de día de evento, se podrá añadir más una vez creado
+  // Se añade un tramo horario, se podrá añadir más una vez creado
   try {
     const usuarioLogeado = req.cuentaUsuario;
-    const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha } = req.body;
-    if (!nombre || !descripcion || !lugar || !cupoInscripciones || esFueraSevilla === undefined || !actividadesEvento || !fecha)
+    const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha, horaInicio, horaFin } = req.body;
+    if (!nombre || !descripcion || !lugar || !cupoInscripciones || esFueraSevilla === undefined || !actividadesEvento || !fecha || !horaInicio || !horaFin)
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     if (cupoInscripciones < 0) throw errorLanzado(400, 'El cupo de inscripciones no puede ser menor a 0');
+    if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(horaInicio)) throw errorLanzado(400, 'La hora de inicio del tramo horario no mantiene el formato hh:mm');
+    if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(horaFin)) throw errorLanzado(400, 'La hora de fin del tramo horario no mantiene el formato hh:mm');
+    if (horaInicio >= horaFin) throw errorLanzado(400, 'La hora de inicio debe ser anterior a la hora de fin del tramo horario');
     req.body.fecha = new Date(fecha);
     if (req.body.fecha <= new Date()) throw errorLanzado(400, 'La fecha del día del evento insertado no es futuro');
     req.body.estadoEvento = 'PENDIENTE';
@@ -39,7 +44,7 @@ exports.crearEvento = async (req, res) => {
 // exports.editarEvento = async (req, res) => {
 //   try {
 //     const eventoId = req.params.id;
-//     const { nombre, descripcion, reglas, enVigor } = req.body;
+//     const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha } = req.body;
 //     const fotografia = req.file;
 //     if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
 //     req.file.data = convertirImagenABase64(fotografia);

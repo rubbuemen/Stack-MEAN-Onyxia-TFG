@@ -1,6 +1,7 @@
 const { errorLanzado } = require('../util/error.util');
 const { Evento } = require('../models/evento.model');
 const { Miembro } = require('../models/miembro.model');
+const { TramoHorario } = require('../models/tramoHorario.model');
 const { DiaEvento } = require('../models/diaEvento.model');
 const { Actividad } = require('../models/actividad.model');
 const { Material } = require('../models/material.model');
@@ -19,6 +20,7 @@ exports.getEventos = async () => {
 };
 
 exports.crearEvento = async (parametros, usuarioLogeado) => {
+  let tramoHorario;
   let diaEvento;
   let evento;
   try {
@@ -43,7 +45,10 @@ exports.crearEvento = async (parametros, usuarioLogeado) => {
     });
 
     const miembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+    tramoHorario = new TramoHorario(parametros);
+    tramoHorario = await tramoHorario.save();
     diaEvento = new DiaEvento(parametros);
+    diaEvento.tramosHorarios.push(tramoHorario);
     diaEvento = await diaEvento.save();
     evento = new Evento(parametros);
     evento.diasEvento.push(diaEvento);
@@ -81,6 +86,11 @@ exports.crearEvento = async (parametros, usuarioLogeado) => {
     });
     return evento;
   } catch (error) {
+    if (tramoHorario) {
+      const checkTramoInDia = await DiaEvento.findOne({ tramosHorarios: { $in: [tramoHorario._id] } });
+      if (checkTramoInDia) await DiaEvento.updateOne({ _id: diaEvento._id }, { $pull: { tramosHorarios: tramoHorarios._id } });
+      await TramoHorario.findByIdAndDelete(tramoHorario._id);
+    }
     if (diaEvento) {
       const checkDiaEventoInEvento = await Evento.findOne({ diasEvento: { $in: [diaEvento._id] } });
       if (checkDiaEventoInEvento) await Evento.updateOne({ _id: evento._id }, { $pull: { diasEvento: diaEvento._id } });
