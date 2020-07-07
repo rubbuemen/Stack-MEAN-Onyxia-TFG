@@ -10,3 +10,8 @@ exports.asyncForEach = async function asyncForEach(array, callback) {
     await callback(array[index], index, array);
   }
 };
+
+exports.esHoy = function esHoy(fecha) {
+  const hoy = new Date();
+  return fecha.getDate() == hoy.getDate() && fecha.getMonth() == hoy.getMonth() && fecha.getFullYear() == hoy.getFullYear();
+};

@@ -1,5 +1,5 @@
 const { errorLanzado, controlError } = require('../util/error.util');
-const convertirImagenABase64 = require('../util/funciones.util');
+const { convertirImagenABase64 } = require('../util/funciones.util');
 const actorService = require('../services/actor.service');
 const cuentaUsuarioService = require('../services/cuentaUsuario.service');
 const bcrypt = require('bcryptjs');

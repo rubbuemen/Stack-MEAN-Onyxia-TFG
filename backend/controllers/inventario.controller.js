@@ -15,7 +15,7 @@ exports.addInventarioParaMaterialId = async (req, res) => {
   try {
     const materialId = req.params.materialId;
     const { estadoMaterial, esPropio } = req.body;
-    if (!estadoMaterial || !esPropio) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!estadoMaterial || esPropio === undefined) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     estados = ['OPERATIVO', 'DETERIORADO'];
     if (!estados.includes(estadoMaterial)) throw errorLanzado(400, 'El estado del material no está definido');
     const inventario = await inventarioService.addInventarioParaMaterialId(req.body, materialId);

@@ -1,7 +1,6 @@
 const { errorLanzado } = require('../util/error.util');
 const { Actividad } = require('../models/actividad.model');
 const { Miembro } = require('../models/miembro.model');
-const { Material } = require('../models/material.model');
 const { Evento } = require('../models/evento.model');
 const { ActividadMiembroTramo } = require('../models/actividadMiembroTramo.model');
 
@@ -16,7 +15,7 @@ exports.getActividades = async () => {
 };
 
 exports.crearActividad = async (parametros, imagen, usuarioLogeado) => {
-  // Si vienen materiales en los parámetros, se añadirán
+  // Habrá un listado de materiales (materiales para req.body -> parametros) y se seleccionará de manera multiple los que se quieran
   const miembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
   let actividad = new Actividad(parametros);
   actividad.fotografia = {
@@ -30,7 +29,7 @@ exports.crearActividad = async (parametros, imagen, usuarioLogeado) => {
 };
 
 exports.editarActividad = async (parametros, imagen, actividadId) => {
-  // Si vienen materiales en los parámetros, se añadirán
+  // Habrá un listado de materiales (materiales para req.body -> parametros) y se seleccionará de manera multiple los que se quieran
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta editar no existe');
   let materiales = checkExistencia.materiales;

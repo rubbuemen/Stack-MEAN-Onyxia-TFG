@@ -58,6 +58,12 @@ const eventoSchema = new mongoose.Schema({
       ref: 'InscripcionEvento',
     },
   ],
+  inventarios: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Inventario',
+    },
+  ],
 });
 
 const evento = mongoose.model('Evento', eventoSchema);
