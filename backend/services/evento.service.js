@@ -274,19 +274,51 @@ exports.ocultarEvento = async (eventoId) => {
   return evento;
 };
 
-// exports.descatalogarEvento = async (eventoId) => {
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta descatalogar no existe');
-//   if (!checkExistencia.enVigor) throw errorLanzado(403, 'La evento que intenta descatalogar ya lo está');
-//   const evento = await Evento.findOneAndUpdate(
-//     { _id: eventoId },
-//     {
-//       enVigor: false,
-//     },
-//     { new: true }
-//   );
-//   return evento;
-// };
+exports.cancelarEvento = async (eventoId) => {
+  let evento = await Evento.findById(eventoId);
+  if (!evento) throw errorLanzado(404, 'La evento que intenta cancelar no existe');
+  if (evento.estadoEvento !== 'PENDIENTE') throw errorLanzado(403, 'El evento que intenta cancelar debe estar en un estado de pendiente de realizarse');
+  await asyncForEach(evento.inscripcionesEvento, async (inscripcion) => {
+    await InscripcionEvento.findOneAndUpdate(
+      { _id: inscripcion },
+      {
+        estadoInscripcion: 'RECHAZADO',
+      },
+      { new: true }
+    );
+  });
+  await asyncForEach(evento.actividadesEvento, async (actividad) => {
+    const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
+    await asyncForEach(act.materiales, async (material) => {
+      await Material.findOneAndUpdate(
+        { _id: material._id },
+        {
+          cantidadDisponible: material.cantidadDisponible + 1,
+          cantidadEnUso: material.cantidadEnUso - 1,
+        },
+        { new: true }
+      );
+    });
+  });
+  await asyncForEach(evento.inventarios, async (inventario) => {
+    await Inventario.findOneAndUpdate(
+      { _id: inventario },
+      {
+        enUso: false,
+      },
+      { new: true }
+    );
+  });
+  evento = await Evento.findOneAndUpdate(
+    { _id: eventoId },
+    {
+      estadoEvento: 'CANCELADO',
+      $unset: { inventarios: 1 },
+    },
+    { new: true }
+  );
+  return evento;
+};
 
 // exports.catalogarEvento = async (eventoId) => {
 //   const checkExistencia = await Evento.findById(eventoId);
