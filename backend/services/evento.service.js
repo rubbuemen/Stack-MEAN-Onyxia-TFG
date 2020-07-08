@@ -155,16 +155,16 @@ exports.cambiarEventosARealizados = async () => {
                 },
                 { new: true }
               );
-              await asyncForEach(evento.inventarios, async (inventario) => {
-                await Inventario.findOneAndUpdate(
-                  { _id: inventario },
-                  {
-                    enUso: false,
-                  },
-                  { new: true }
-                );
-              });
             });
+          });
+          await asyncForEach(evento.inventarios, async (inventario) => {
+            await Inventario.findOneAndUpdate(
+              { _id: inventario },
+              {
+                enUso: false,
+              },
+              { new: true }
+            );
           });
           await Evento.findByIdAndUpdate(
             { _id: evento._id },
@@ -206,16 +206,43 @@ exports.editarEvento = async (parametros, eventoId) => {
   return evento;
 };
 
-// exports.eliminarEvento = async (eventoId) => {
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta eliminar no existe');
-//   const estaEnEvento = await Evento.findOne({ eventos: { $in: [checkExistencia._id] } });
-//   if (estaEnEvento) throw errorLanzado(403, 'No se puede eliminar la evento porque está asociada al evento ' + estaEnEvento.nombre);
-//   const estaEnAsociacionEventoMiembroTramo = await EventoMiembroTramo.findOne({ eventos: { $in: [checkExistencia._id] } });
-//   if (estaEnAsociacionEventoMiembroTramo) throw errorLanzado(403, 'No se puede eliminar la evento porque está asociada al horario de un evento');
-//   const evento = await Evento.findOneAndDelete(eventoId);
-//   return evento;
-// };
+exports.eliminarEvento = async (eventoId) => {
+  let evento = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento' });
+  if (!evento) throw errorLanzado(404, 'La evento que intenta eliminar no existe');
+  const cantidadInscripciones = evento.inscripcionesEvento.length;
+  if (cantidadInscripciones !== 0) throw errorLanzado(403, 'El evento no se puede eliminar porque ya se han realizado inscripciones a este');
+  await asyncForEach(evento.actividadesEvento, async (actividad) => {
+    const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
+    await asyncForEach(act.materiales, async (material) => {
+      await Material.findOneAndUpdate(
+        { _id: material._id },
+        {
+          cantidadDisponible: material.cantidadDisponible + 1,
+          cantidadEnUso: material.cantidadEnUso - 1,
+        },
+        { new: true }
+      );
+    });
+  });
+  await asyncForEach(evento.inventarios, async (inventario) => {
+    await Inventario.findOneAndUpdate(
+      { _id: inventario },
+      {
+        enUso: false,
+      },
+      { new: true }
+    );
+  });
+  await asyncForEach(evento.diasEvento, async (dia) => {
+    const d = await DiaEvento.findById(dia);
+    await asyncForEach(d.tramosHorarios, async (tramo) => {
+      await TramoHorario.findByIdAndDelete(tramo);
+    });
+    await DiaEvento.findByIdAndDelete(dia);
+  });
+  evento = await Evento.findByIdAndDelete(eventoId);
+  return evento;
+};
 
 // exports.publicarEvento = async (eventoId) => {
 //   const checkExistencia = await Evento.findById(eventoId);
