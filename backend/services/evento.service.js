@@ -1,5 +1,6 @@
 const { errorLanzado } = require('../util/error.util');
 const { Evento } = require('../models/evento.model');
+const { InscripcionEvento } = require('../models/inscripcionEvento.model');
 const { Miembro } = require('../models/miembro.model');
 const { TramoHorario } = require('../models/tramoHorario.model');
 const { DiaEvento } = require('../models/diaEvento.model');
@@ -183,32 +184,27 @@ exports.cambiarEventosARealizados = async () => {
   job.start();
 };
 
-// exports.editarEvento = async (parametros, imagen, eventoId) => {
-//   // Habrá un listado de materiales (materiales para req.body -> parametros) y se seleccionará de manera multiple los que se quieran
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta editar no existe');
-//   let materiales = checkExistencia.materiales;
-//   if (parametros.materiales) {
-//     materiales = parametros.materiales;
-//   }
-//   const evento = await Evento.findOneAndUpdate(
-//     { _id: eventoId },
-//     {
-//       nombre: parametros.nombre,
-//       descripcion: parametros.descripcion,
-//       reglas: parametros.reglas,
-//       enVigor: parametros.enVigor,
-//       materiales: materiales,
-//       fotografia: {
-//         data: imagen.data,
-//         mimetype: imagen.mimetype,
-//         size: imagen.size,
-//       },
-//     },
-//     { new: true }
-//   );
-//   return evento;
-// };
+exports.editarEvento = async (parametros, eventoId) => {
+  const checkExistencia = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento', match: { estadoInscripcion: 'ACEPTADO' } });
+  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta editar no existe');
+  if (checkExistencia.estadoEvento !== 'PENDIENTE')
+    throw errorLanzado(403, 'El evento que intenta editar no puede editarse porque está en un estado diferente a pendiente');
+  const cantidadInscripciones = checkExistencia.inscripcionesEvento.length;
+  if (cantidadInscripciones > parametros.cupoInscripciones)
+    throw errorLanzado(403, 'El cupo de inscripciones no puede ser menor que ' + cantidadInscripciones + ' inscripciones que hay al evento actualmente');
+  const evento = await Evento.findOneAndUpdate(
+    { _id: eventoId },
+    {
+      nombre: parametros.nombre,
+      descripcion: parametros.descripcion,
+      lugar: parametros.lugar,
+      cupoInscripciones: parametros.cupoInscripciones,
+      actividadesEvento: parametros.actividadesEvento,
+    },
+    { new: true }
+  );
+  return evento;
+};
 
 // exports.eliminarEvento = async (eventoId) => {
 //   const checkExistencia = await Evento.findById(eventoId);

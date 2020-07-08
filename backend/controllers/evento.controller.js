@@ -41,19 +41,18 @@ exports.crearEvento = async (req, res) => {
   }
 };
 
-// exports.editarEvento = async (req, res) => {
-//   try {
-//     const eventoId = req.params.id;
-//     const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha } = req.body;
-//     const fotografia = req.file;
-//     if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
-//     req.file.data = convertirImagenABase64(fotografia);
-//     const evento = await eventoService.editarEvento(req.body, req.file, eventoId);
-//     return res.status(200).send({ evento });
-//   } catch (error) {
-//     return controlError(error, res);
-//   }
-// };
+exports.editarEvento = async (req, res) => {
+  try {
+    const eventoId = req.params.id;
+    const { nombre, descripcion, lugar, cupoInscripciones, actividadesEvento } = req.body;
+    if (!nombre || !descripcion || !lugar || !cupoInscripciones || !actividadesEvento)
+      throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    const evento = await eventoService.editarEvento(req.body, eventoId);
+    return res.status(200).send({ evento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
 
 // exports.eliminarEvento = async (req, res) => {
 //   try {
