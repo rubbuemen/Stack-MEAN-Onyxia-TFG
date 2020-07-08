@@ -36,6 +36,8 @@ app.use('/actividad', require('./routes/actividad.route'));
 app.use('/material', require('./routes/material.route'));
 app.use('/inventario', require('./routes/inventario.route'));
 app.use('/evento', require('./routes/evento.route'));
+app.use('/diaEvento', require('./routes/diaEvento.route'));
+app.use('/tramoHorario', require('./routes/tramoHorario.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();

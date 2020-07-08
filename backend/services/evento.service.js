@@ -319,17 +319,3 @@ exports.cancelarEvento = async (eventoId) => {
   );
   return evento;
 };
-
-// exports.catalogarEvento = async (eventoId) => {
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta catalogar no existe');
-//   if (checkExistencia.enVigor) throw errorLanzado(403, 'La evento que intenta catalogar ya lo está');
-//   const evento = await Evento.findOneAndUpdate(
-//     { _id: eventoId },
-//     {
-//       enVigor: true,
-//     },
-//     { new: true }
-//   );
-//   return evento;
-// };
