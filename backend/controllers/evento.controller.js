@@ -74,15 +74,15 @@ exports.publicarEvento = async (req, res) => {
   }
 };
 
-// exports.ocultarEvento = async (req, res) => {
-//   try {
-//     const eventoId = req.params.id;
-//     const evento = await eventoService.ocultarEvento(eventoId);
-//     return res.status(200).send({ evento });
-//   } catch (error) {
-//     return controlError(error, res);
-//   }
-// };
+exports.ocultarEvento = async (req, res) => {
+  try {
+    const eventoId = req.params.id;
+    const evento = await eventoService.ocultarEvento(eventoId);
+    return res.status(200).send({ evento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
 
 // exports.descatalogarEvento = async (req, res) => {
 //   try {

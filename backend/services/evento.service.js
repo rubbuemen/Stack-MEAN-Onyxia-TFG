@@ -258,23 +258,21 @@ exports.publicarEvento = async (eventoId) => {
   return evento;
 };
 
-// exports.ocultarEvento = async (eventoId) => {
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta ocultar no existe');
-//   if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta ocultar ya lo está');
-//   const estaEnEvento = await Evento.findOne({ eventos: { $in: [checkExistencia._id] } });
-//   if (estaEnEvento) throw errorLanzado(403, 'No se puede ocultar la evento porque está asociada al evento ' + estaEnEvento.nombre);
-//   const estaEnAsociacionEventoMiembroTramo = await EventoMiembroTramo.findOne({ eventos: { $in: [checkExistencia._id] } });
-//   if (estaEnAsociacionEventoMiembroTramo) throw errorLanzado(403, 'No se puede ocultar la evento porque está asociada al horario de un evento');
-//   const evento = await Evento.findOneAndUpdate(
-//     { _id: eventoId },
-//     {
-//       estaPublicado: false,
-//     },
-//     { new: true }
-//   );
-//   return evento;
-// };
+exports.ocultarEvento = async (eventoId) => {
+  const checkExistencia = await Evento.findById(eventoId);
+  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta ocultar no existe');
+  if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta ocultar ya lo está');
+  const cantidadInscripciones = checkExistencia.inscripcionesEvento.length;
+  if (cantidadInscripciones !== 0) throw errorLanzado(403, 'El evento no se puede ocultar porque ya se han realizado inscripciones a este');
+  const evento = await Evento.findOneAndUpdate(
+    { _id: eventoId },
+    {
+      estaPublicado: false,
+    },
+    { new: true }
+  );
+  return evento;
+};
 
 // exports.descatalogarEvento = async (eventoId) => {
 //   const checkExistencia = await Evento.findById(eventoId);
