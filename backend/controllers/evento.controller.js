@@ -64,15 +64,15 @@ exports.eliminarEvento = async (req, res) => {
   }
 };
 
-// exports.publicarEvento = async (req, res) => {
-//   try {
-//     const eventoId = req.params.id;
-//     const evento = await eventoService.publicarEvento(eventoId);
-//     return res.status(200).send({ evento });
-//   } catch (error) {
-//     return controlError(error, res);
-//   }
-// };
+exports.publicarEvento = async (req, res) => {
+  try {
+    const eventoId = req.params.id;
+    const evento = await eventoService.publicarEvento(eventoId);
+    return res.status(200).send({ evento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
 
 // exports.ocultarEvento = async (req, res) => {
 //   try {

@@ -244,19 +244,19 @@ exports.eliminarEvento = async (eventoId) => {
   return evento;
 };
 
-// exports.publicarEvento = async (eventoId) => {
-//   const checkExistencia = await Evento.findById(eventoId);
-//   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta publicar no existe');
-//   if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta publicar ya lo está');
-//   const evento = await Evento.findOneAndUpdate(
-//     { _id: eventoId },
-//     {
-//       estaPublicado: true,
-//     },
-//     { new: true }
-//   );
-//   return evento;
-// };
+exports.publicarEvento = async (eventoId) => {
+  const checkExistencia = await Evento.findById(eventoId);
+  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta publicar no existe');
+  if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta publicar ya lo está');
+  const evento = await Evento.findOneAndUpdate(
+    { _id: eventoId },
+    {
+      estaPublicado: true,
+    },
+    { new: true }
+  );
+  return evento;
+};
 
 // exports.ocultarEvento = async (eventoId) => {
 //   const checkExistencia = await Evento.findById(eventoId);
