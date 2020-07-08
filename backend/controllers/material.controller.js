@@ -21,7 +21,8 @@ exports.crearMaterial = async (req, res) => {
     req.body.cantidadDisponible = 1;
     req.body.cantidadEnUso = 0;
     const fotografia = req.file;
-    if (!nombre || !descripcion || !estadoMaterial || !esPropio) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!nombre || !descripcion || !estadoMaterial || esPropio === undefined)
+      throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     estados = ['OPERATIVO', 'DETERIORADO'];
     if (!estados.includes(estadoMaterial)) throw errorLanzado(400, 'El estado del material no está definido');
     req.file.data = convertirImagenABase64(fotografia);

@@ -25,7 +25,8 @@ exports.crearActividad = async (req, res) => {
     const usuarioLogeado = req.cuentaUsuario;
     const { nombre, descripcion, reglas, enVigor } = req.body;
     const fotografia = req.file;
-    if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!nombre || !descripcion || !reglas || enVigor === undefined || !fotografia)
+      throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     req.file.data = convertirImagenABase64(fotografia);
     const actividad = await actividadService.crearActividad(req.body, req.file, usuarioLogeado);
     return res.status(200).send({ actividad });
@@ -39,7 +40,8 @@ exports.editarActividad = async (req, res) => {
     const actividadId = req.params.id;
     const { nombre, descripcion, reglas, enVigor } = req.body;
     const fotografia = req.file;
-    if (!nombre || !descripcion || !reglas || !enVigor || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!nombre || !descripcion || !reglas || enVigor === undefined || !fotografia)
+      throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     req.file.data = convertirImagenABase64(fotografia);
     const actividad = await actividadService.editarActividad(req.body, req.file, actividadId);
     return res.status(200).send({ actividad });

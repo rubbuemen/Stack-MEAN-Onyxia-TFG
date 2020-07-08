@@ -5,7 +5,7 @@ exports.rellenarSolicitudMiembro = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
     const { tieneCochePropio, comoHaConocidoAsociacion, intereses, habilidades, ideas } = req.body;
-    if (!tieneCochePropio || !comoHaConocidoAsociacion || !intereses || !habilidades || !ideas)
+    if (tieneCochePropio === undefined || !comoHaConocidoAsociacion || !intereses || !habilidades || !ideas)
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const interesesValidos = ['BAILE', 'DIBUJO', 'SOFTCOMBAT', 'TALLERESMANUALIDADES', 'VIDEOJUEGOS', 'COSPLAY'];
     if (!intereses.every((interes) => interesesValidos.includes(interes))) throw errorLanzado(400, 'Los intereses indicados no están definidos');

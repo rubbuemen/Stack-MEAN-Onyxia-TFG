@@ -164,9 +164,9 @@ exports.editarDatosActorId = async (req, res) => {
         !direccion ||
         !dni ||
         !aficiones ||
-        !tieneCochePropio ||
+        tieneCochePropio === undefined ||
         !rol ||
-        !estaDeAlta ||
+        estaDeAlta === undefined ||
         !cantidadPenalizaciones
       )
         throw errorLanzado(400, 'Hay campos obligatorios del formulario que no se han enviado');
@@ -228,7 +228,7 @@ exports.hacerMiembroActorId = async (req, res) => {
       !direccion ||
       !dni ||
       !aficiones ||
-      !tieneCochePropio
+      tieneCochePropio === undefined
     )
       throw errorLanzado(400, 'Hay campos obligatorios del formulario que no se han enviado');
 
