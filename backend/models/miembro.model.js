@@ -134,6 +134,12 @@ const miembroSchema = new mongoose.Schema({
     ref: 'SolicitudMiembro',
     required: [true, 'Es obligatorio tener una solicitud para ser miembro'],
   },
+  inscripcionesEvento: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'InscripcionEvento',
+    },
+  ],
   asociacionesActividadMiembroTramo: [
     {
       type: mongoose.Schema.Types.ObjectId,

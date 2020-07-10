@@ -4,6 +4,7 @@ const inscripcionEventoSchema = new mongoose.Schema({
   estadoInscripcion: {
     type: String,
     required: [true, 'Especifique el estado de la inscripción al evento'],
+    default: 'PENDIENTE',
     enum: ['PENDIENTE', 'ACEPTADO', 'RECHAZADO'],
   },
   problemaAlimenticio: {

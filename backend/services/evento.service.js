@@ -89,7 +89,7 @@ exports.crearEvento = async (parametros, usuarioLogeado) => {
   } catch (error) {
     if (tramoHorario) {
       const checkTramoInDia = await DiaEvento.findOne({ tramosHorarios: { $in: [tramoHorario._id] } });
-      if (checkTramoInDia) await DiaEvento.updateOne({ _id: diaEvento._id }, { $pull: { tramosHorarios: tramoHorarios._id } });
+      if (checkTramoInDia) await DiaEvento.updateOne({ _id: diaEvento._id }, { $pull: { tramosHorarios: tramoHorario._id } });
       await TramoHorario.findByIdAndDelete(tramoHorario._id);
     }
     if (diaEvento) {
