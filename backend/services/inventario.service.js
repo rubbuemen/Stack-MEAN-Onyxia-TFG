@@ -51,9 +51,11 @@ exports.descatalogarInventario = async (inventarioId) => {
     inventario = await Inventario.findOneAndDelete(inventarioId);
     return inventario;
   } catch (error) {
-    const checkInvetarioInMaterial = await Material.findOne({ inventarios: { $in: [inventario._id] } });
-    if (!checkInvetarioInMaterial)
-      await Material.updateOne({ _id: material._id }, { cantidadDisponible: material.cantidadDisponible + 1, $push: { inventarios: inventario._id } });
+    if (inventario) {
+      const checkInvetarioInMaterial = await Material.findOne({ inventarios: { $in: [inventario._id] } });
+      if (!checkInvetarioInMaterial)
+        await Material.updateOne({ _id: material._id }, { cantidadDisponible: material.cantidadDisponible + 1, $push: { inventarios: inventario._id } });
+    }
     throw error;
   }
 };

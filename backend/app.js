@@ -39,6 +39,7 @@ app.use('/evento', require('./routes/evento.route'));
 app.use('/diaEvento', require('./routes/diaEvento.route'));
 app.use('/tramoHorario', require('./routes/tramoHorario.route'));
 app.use('/inscripcionEvento', require('./routes/inscripcionEvento.route'));
+app.use('/actividadMiembroTramo', require('./routes/actividadMiembroTramo.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
