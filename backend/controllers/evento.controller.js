@@ -93,13 +93,3 @@ exports.cancelarEvento = async (req, res) => {
     return controlError(error, res);
   }
 };
-
-// exports.catalogarEvento = async (req, res) => {
-//   try {
-//     const eventoId = req.params.id;
-//     const evento = await eventoService.catalogarEvento(eventoId);
-//     return res.status(200).send({ evento });
-//   } catch (error) {
-//     return controlError(error, res);
-//   }
-// };

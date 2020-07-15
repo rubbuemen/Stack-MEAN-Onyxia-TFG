@@ -146,6 +146,12 @@ const miembroSchema = new mongoose.Schema({
       ref: 'ActividadMiembroTramo',
     },
   ],
+  asistenciasMiembroReunion: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AsistenciaMiembroReunion',
+    },
+  ],
 });
 
 const miembro = mongoose.model('Miembro', miembroSchema);

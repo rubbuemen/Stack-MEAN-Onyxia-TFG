@@ -102,7 +102,7 @@ exports.crearEvento = async (parametros, usuarioLogeado) => {
 };
 
 exports.cambiarEventosAEnProgreso = async () => {
-  const rebuildPeriod = '0 0 * * *'; // Se comprueba cada 1 día
+  const rebuildPeriod = '0 9 * * *'; // Se comprueba cada día a las 9:00
   const job = new cron.CronJob(
     rebuildPeriod,
     async () => {

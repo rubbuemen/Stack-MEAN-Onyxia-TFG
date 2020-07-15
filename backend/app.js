@@ -6,6 +6,7 @@ const colores = require('colors');
 const { comprobarFechaPenalizacion, reiniciarCuotaMiembros } = require('./services/miembro.service');
 const { eliminarSolicitudesMiembroRechazadas } = require('./services/solicitudMiembro.service');
 const { cambiarEventosAEnProgreso, cambiarEventosARealizados } = require('./services/evento.service');
+const { cambiarReunionesAEnProgreso, cambiarReunionesARealizado } = require('./services/reunion.service');
 
 require('dotenv').config();
 
@@ -40,6 +41,8 @@ app.use('/diaEvento', require('./routes/diaEvento.route'));
 app.use('/tramoHorario', require('./routes/tramoHorario.route'));
 app.use('/inscripcionEvento', require('./routes/inscripcionEvento.route'));
 app.use('/actividadMiembroTramo', require('./routes/actividadMiembroTramo.route'));
+app.use('/reunion', require('./routes/reunion.route'));
+app.use('/asistenciaMiembroReunion', require('./routes/asistenciaMiembroReunion.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
@@ -53,6 +56,10 @@ eliminarSolicitudesMiembroRechazadas();
 //Eventos
 cambiarEventosAEnProgreso();
 cambiarEventosARealizados();
+
+//Reuniones
+cambiarReunionesAEnProgreso();
+cambiarReunionesARealizado();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Escuchando puerto ' + port));
