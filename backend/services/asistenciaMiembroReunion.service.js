@@ -2,7 +2,6 @@ const { errorLanzado } = require('../util/error.util');
 const { Reunion } = require('../models/reunion.model');
 const { Miembro } = require('../models/miembro.model');
 const { AsistenciaMiembroReunion } = require('../models/asistenciaMiembroReunion.model');
-const { asyncForEach, esHoy } = require('../util/funciones.util');
 
 exports.getAsistenciasReunion = async (reunionId) => {
   const asistencias = await AsistenciaMiembroReunion.find({ reunion: reunionId }).populate({ path: 'miembro' });

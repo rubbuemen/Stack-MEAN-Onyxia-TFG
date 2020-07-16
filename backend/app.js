@@ -43,6 +43,8 @@ app.use('/inscripcionEvento', require('./routes/inscripcionEvento.route'));
 app.use('/actividadMiembroTramo', require('./routes/actividadMiembroTramo.route'));
 app.use('/reunion', require('./routes/reunion.route'));
 app.use('/asistenciaMiembroReunion', require('./routes/asistenciaMiembroReunion.route'));
+app.use('/albumFotografia', require('./routes/albumFotografia.route'));
+app.use('/fotografia', require('./routes/fotografia.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
