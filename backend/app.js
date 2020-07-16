@@ -45,6 +45,7 @@ app.use('/reunion', require('./routes/reunion.route'));
 app.use('/asistenciaMiembroReunion', require('./routes/asistenciaMiembroReunion.route'));
 app.use('/albumFotografia', require('./routes/albumFotografia.route'));
 app.use('/fotografia', require('./routes/fotografia.route'));
+app.use('/noticia', require('./routes/noticia.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
