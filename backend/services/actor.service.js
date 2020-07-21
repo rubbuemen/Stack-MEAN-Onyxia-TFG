@@ -2,6 +2,8 @@ const { errorLanzado } = require('../util/error.util');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
+const { Notificacion } = require('../models/notificacion.model');
+const { asyncForEach } = require('../util/funciones.util');
 const bcrypt = require('bcryptjs');
 
 exports.getMisDatos = async (usuarioLogeado) => {
@@ -283,6 +285,28 @@ exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
       mimetype: imagen.mimetype,
       size: imagen.size,
     };
+    let notificaciones = await Notificacion.find({ receptoresVisitantes: { $in: [actor._id] } });
+    await asyncForEach(notificaciones, async (notificacion) => {
+      await Notificacion.findOneAndUpdate(
+        { _id: notificacion._id },
+        {
+          $pull: { receptoresVisitantes: actor._id },
+          $push: { receptoresMiembros: actor._id },
+        },
+        { new: true }
+      );
+    });
+    notificaciones = await Notificacion.find({ emisorVisitante: actor._id });
+    await asyncForEach(notificaciones, async (notificacion) => {
+      await Notificacion.findOneAndUpdate(
+        { _id: notificacion._id },
+        {
+          $unset: { emisorVisitante: 1 },
+          emisorMiembro: actor._id,
+        },
+        { new: true }
+      );
+    });
     miembro._id = actor._id;
     miembro.redSocials = actor.redSocials;
     miembro.buzones = actor.buzones;
