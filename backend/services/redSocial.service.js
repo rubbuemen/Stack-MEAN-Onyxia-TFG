@@ -35,7 +35,7 @@ exports.editarRedSocial = async (parametros, usuarioLogeado, redSocialId) => {
   const actorConectado =
     (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
   const propietarioEntidad =
-    (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [parametros._id] } }));
+    (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [redSocialId] } }));
 
   if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
   const redSocial = await RedSocial.findOneAndUpdate(
@@ -62,7 +62,7 @@ exports.eliminarRedSocial = async (usuarioLogeado, redSocialId) => {
       propietarioEntidad = await Visitante.findOne({ redSocials: { $in: [redSocialId] } });
     } else {
       actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
-      propietarioEntidad = await Miembro.findOne({ redSocials: { $in: [parametros._id] } });
+      propietarioEntidad = await Miembro.findOne({ redSocials: { $in: [redSocialId] } });
     }
     if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
     if (usuarioLogeado.autoridad === 'VISITANTE') {
