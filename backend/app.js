@@ -48,6 +48,8 @@ app.use('/fotografia', require('./routes/fotografia.route'));
 app.use('/noticia', require('./routes/noticia.route'));
 app.use('/buzon', require('./routes/buzon.route'));
 app.use('/notificacion', require('./routes/notificacion.route'));
+app.use('/configuracion', require('./routes/configuracion.route'));
+app.use('/banner', require('./routes/banner.route'));
 
 //Comprobar penalizaciones miembros
 comprobarFechaPenalizacion();
