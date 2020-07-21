@@ -59,11 +59,10 @@ exports.eliminarRedSocial = async (usuarioLogeado, redSocialId) => {
     if (!redSocial) throw errorLanzado(404, 'La red social que intenta eliminar no existe');
     if (usuarioLogeado.autoridad === 'VISITANTE') {
       actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
-      propietarioEntidad = await Visitante.findOne({ redSocials: { $in: [redSocialId] } });
     } else {
       actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
-      propietarioEntidad = await Miembro.findOne({ redSocials: { $in: [redSocialId] } });
     }
+    propietarioEntidad = (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [redSocialId] } }));
     if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
     if (usuarioLogeado.autoridad === 'VISITANTE') {
       await Visitante.updateOne({ _id: actorConectado._id }, { $pull: { redSocials: redSocial._id } });

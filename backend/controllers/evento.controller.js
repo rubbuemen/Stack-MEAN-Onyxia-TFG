@@ -66,8 +66,9 @@ exports.eliminarEvento = async (req, res) => {
 
 exports.publicarEvento = async (req, res) => {
   try {
+    const usuarioLogeado = req.cuentaUsuario;
     const eventoId = req.params.id;
-    const evento = await eventoService.publicarEvento(eventoId);
+    const evento = await eventoService.publicarEvento(eventoId, usuarioLogeado);
     return res.status(200).send({ evento });
   } catch (error) {
     return controlError(error, res);

@@ -49,6 +49,12 @@ const visitanteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'SolicitudMiembro',
   },
+  buzones: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Buzon',
+    },
+  ],
 });
 
 const visitante = mongoose.model('Visitante', visitanteSchema);

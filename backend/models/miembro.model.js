@@ -152,6 +152,12 @@ const miembroSchema = new mongoose.Schema({
       ref: 'AsistenciaMiembroReunion',
     },
   ],
+  buzones: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Buzon',
+    },
+  ],
 });
 
 const miembro = mongoose.model('Miembro', miembroSchema);

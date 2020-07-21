@@ -9,6 +9,7 @@ const { Material } = require('../models/material.model');
 const { Inventario } = require('../models/inventario.model');
 const { asyncForEach, esHoy } = require('../util/funciones.util');
 const cron = require('cron');
+const { enviarNotificacionAutomatica } = require('./notificacion.service');
 
 exports.getEventosPublicos = async () => {
   const eventos = await Evento.find({ estaPublicado: true }).populate({ path: 'miembroCreador' });
@@ -244,8 +245,8 @@ exports.eliminarEvento = async (eventoId) => {
   return evento;
 };
 
-exports.publicarEvento = async (eventoId) => {
-  const checkExistencia = await Evento.findById(eventoId);
+exports.publicarEvento = async (eventoId, usuarioLogeado) => {
+  const checkExistencia = await Evento.findById(eventoId).populate({ path: 'diasEvento' });
   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta publicar no existe');
   if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta publicar ya lo está');
   const evento = await Evento.findOneAndUpdate(
@@ -254,6 +255,44 @@ exports.publicarEvento = async (eventoId) => {
       estaPublicado: true,
     },
     { new: true }
+  );
+  const receptores = await Miembro.find({ estaDeAlta: true });
+  const primerDia = checkExistencia.diasEvento[0].fecha;
+  const ultimoDia = checkExistencia.diasEvento[checkExistencia.diasEvento.length - 1].fecha;
+  let mensajeDia;
+  if (primerDia == ultimoDia) {
+    mensajeDia = 'el día ' + primerDia.getDate() + '/' + (primerDia.getMonth() + 1) + '/' + primerDia.getFullYear();
+  } else {
+    mensajeDia =
+      'los días ' +
+      primerDia.getDate() +
+      '/' +
+      (primerDia.getMonth() + 1) +
+      '/' +
+      primerDia.getFullYear() +
+      ' - ' +
+      ultimoDia.getDate() +
+      '/' +
+      (ultimoDia.getMonth() + 1) +
+      '/' +
+      ultimoDia.getFullYear();
+  }
+  await enviarNotificacionAutomatica(
+    {
+      asunto: 'Un nuevo evento ha sido publicado: ' + evento.nombre,
+      cuerpo:
+        'El evento ' +
+        evento.nombre +
+        ' ha sido publicado. Dicho evento se celebrará en ' +
+        evento.lugar +
+        ' durante ' +
+        mensajeDia +
+        '. El cupo inicial para poder inscribirse es de ' +
+        evento.cupoInscripciones +
+        ' miembros.',
+      receptoresMiembros: receptores,
+    },
+    usuarioLogeado
   );
   return evento;
 };

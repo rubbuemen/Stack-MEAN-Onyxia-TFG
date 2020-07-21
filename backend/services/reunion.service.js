@@ -4,6 +4,7 @@ const { Miembro } = require('../models/miembro.model');
 const { AsistenciaMiembroReunion } = require('../models/asistenciaMiembroReunion.model');
 const { asyncForEach, esHoy } = require('../util/funciones.util');
 const cron = require('cron');
+const { enviarNotificacionAutomatica } = require('./notificacion.service');
 
 exports.getReuniones = async () => {
   const reuniones = await Reunion.find();
@@ -20,10 +21,16 @@ exports.getReunionesRealizadas = async () => {
   return reuniones;
 };
 
-exports.crearReunion = async (parametros) => {
+exports.crearReunion = async (parametros, usuarioLogeado) => {
   let reunion;
+  let miembros;
   try {
-    miembros = await Miembro.find({ estaDeAlta: true });
+    if (parametros.tipoReunion === 'ASOCIACION') {
+      miembros = await Miembro.find({ estaDeAlta: true });
+    } else {
+      miembros = await Miembro.find({ rol: { $ne: 'ESTANDAR' }, estaDeAlta: true });
+    }
+
     reunion = new Reunion(parametros);
     reunion = await reunion.save();
     await asyncForEach(miembros, async (miembro) => {
@@ -46,6 +53,25 @@ exports.crearReunion = async (parametros) => {
         { new: true }
       );
     });
+    const receptores = miembros;
+    const mensajeDia = 'día ' + reunion.fecha.getDate() + '/' + (reunion.fecha.getMonth() + 1) + '/' + reunion.fecha.getFullYear();
+    await enviarNotificacionAutomatica(
+      {
+        asunto: 'Una nueva reunión ha sido publicada para el ' + mensajeDia,
+        cuerpo:
+          'Se ha publicado una reunión que se celebrará el ' +
+          mensajeDia +
+          ' aproximadamente de ' +
+          reunion.horaInicio +
+          ' a ' +
+          reunion.horaFin +
+          ' en ' +
+          reunion.lugar +
+          '. Recuerda que es necesario que marques si vas a asistir o no, por defecto estará marcado que no vas a asistir.',
+        receptoresMiembros: receptores,
+      },
+      usuarioLogeado
+    );
     return reunion;
   } catch (error) {
     if (reunion) {

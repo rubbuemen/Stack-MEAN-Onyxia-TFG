@@ -82,8 +82,9 @@ exports.getSolicitudesMiembrosNoPagadas = async (req, res) => {
 
 exports.aceptarSolicitudMiembro = async (req, res) => {
   try {
+    const usuarioLogeado = req.cuentaUsuario;
     const solicitudMiembroId = req.params.solicitudMiembroId;
-    const solicitudMiembro = await solicitudMiembroService.aceptarSolicitudMiembro(solicitudMiembroId);
+    const solicitudMiembro = await solicitudMiembroService.aceptarSolicitudMiembro(solicitudMiembroId, usuarioLogeado);
     return res.status(200).send({ solicitudMiembro });
   } catch (error) {
     return controlError(error, res);
@@ -92,8 +93,9 @@ exports.aceptarSolicitudMiembro = async (req, res) => {
 
 exports.rechazarSolicitudMiembro = async (req, res) => {
   try {
+    const usuarioLogeado = req.cuentaUsuario;
     const solicitudMiembroId = req.params.solicitudMiembroId;
-    const solicitudMiembro = await solicitudMiembroService.rechazarSolicitudMiembro(solicitudMiembroId);
+    const solicitudMiembro = await solicitudMiembroService.rechazarSolicitudMiembro(solicitudMiembroId, usuarioLogeado);
     return res.status(200).send({ solicitudMiembro });
   } catch (error) {
     return controlError(error, res);

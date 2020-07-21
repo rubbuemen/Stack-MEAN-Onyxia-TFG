@@ -30,6 +30,7 @@ exports.getReunionesRealizadas = async (req, res) => {
 
 exports.crearReunion = async (req, res) => {
   try {
+    const usuarioLogeado = req.cuentaUsuario;
     const { fecha, horaInicio, horaFin, lugar, tipoReunion } = req.body;
     if (!fecha || !horaInicio || !horaFin || !lugar || !tipoReunion) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     req.body.fecha = new Date(fecha);
@@ -39,7 +40,7 @@ exports.crearReunion = async (req, res) => {
     if (horaInicio >= horaFin) throw errorLanzado(400, 'La hora de inicio debe ser anterior a la hora de fin de la reunión');
     tipos = ['ASOCIACION', 'JUNTADIRECTIVA'];
     if (!tipos.includes(tipoReunion)) throw errorLanzado(400, 'El tipo de reunión no está definido');
-    const reunion = await reunionService.crearReunion(req.body);
+    const reunion = await reunionService.crearReunion(req.body, usuarioLogeado);
     return res.status(200).send({ reunion });
   } catch (error) {
     return controlError(error, res);

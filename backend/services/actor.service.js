@@ -248,7 +248,10 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
 };
 
 exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
-  let actor = await Visitante.findOne({ _id: actorId }).populate({ path: 'cuentaUsuario' }).populate({ path: 'solicitudMiembro' });
+  let actor = await Visitante.findOne({ _id: actorId })
+    .populate({ path: 'cuentaUsuario' })
+    .populate({ path: 'solicitudMiembro' })
+    .populate({ path: 'buzones' });
   const cuentaUsuarioActual = actor.cuentaUsuario;
   try {
     const checkSolicitudPagada = actor.solicitudMiembro;
@@ -266,7 +269,7 @@ exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
     const checkDni = await Miembro.findOne({ dni: parametros.dni });
     if (checkDni) throw errorLanzado(403, 'El DNI introducido ya existe');
 
-    await Visitante.findOneAndDelete(actorId);
+    await Visitante.findByIdAndDelete(actor._id);
     await CuentaUsuario.findOneAndUpdate(
       { _id: cuentaUsuarioActual._id },
       {
@@ -282,6 +285,7 @@ exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
     };
     miembro._id = actor._id;
     miembro.redSocials = actor.redSocials;
+    miembro.buzones = actor.buzones;
     miembro.cuentaUsuario = actor.cuentaUsuario;
     miembro.solicitudMiembro = actor.solicitudMiembro;
     miembro = await miembro.save();

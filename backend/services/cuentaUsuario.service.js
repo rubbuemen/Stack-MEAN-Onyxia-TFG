@@ -3,6 +3,7 @@ const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const { RedSocial } = require('../models/redSocial.model');
 const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
+const { Buzon } = require('../models/buzon.model');
 const bcrypt = require('bcryptjs');
 
 exports.getUsuarioLogeado = async (usuario) => {
@@ -16,6 +17,9 @@ exports.registrarse = async (parametros) => {
   let cuentaUsuario;
   let redSocial;
   let visitante;
+  let buzonEntrada;
+  let buzonSalida;
+  let buzonEliminados;
   try {
     const checkUsuario = await CuentaUsuario.findOne({ usuario: parametros.usuario });
     if (checkUsuario) throw errorLanzado(403, 'El usuario introducido ya existe');
@@ -43,9 +47,18 @@ exports.registrarse = async (parametros) => {
       redSocial = await redSocial.save();
     }
     parametros.fechaNacimiento = new Date(parametros.fechaNacimiento);
+    buzonEntrada = new Buzon({ nombre: 'Buzón de entrada', esPorDefecto: true });
+    buzonEntrada = await buzonEntrada.save();
+    buzonSalida = new Buzon({ nombre: 'Buzón de salida', esPorDefecto: true });
+    buzonSalida = await buzonSalida.save();
+    buzonEliminados = new Buzon({ nombre: 'Buzón de eliminados', esPorDefecto: true });
+    buzonEliminados = await buzonEliminados.save();
     visitante = new Visitante(parametros);
     visitante.cuentaUsuario = cuentaUsuario;
     if (redSocial) visitante.redSocials.push(redSocial);
+    visitante.buzones.push(buzonEntrada);
+    visitante.buzones.push(buzonSalida);
+    visitante.buzones.push(buzonEliminados);
     visitante = await visitante.save();
     return visitante;
   } catch (error) {
@@ -54,6 +67,21 @@ exports.registrarse = async (parametros) => {
       const checkRedSocialInVisitante = await Visitante.findOne({ redSocials: { $in: [redSocial._id] } });
       if (checkRedSocialInVisitante) await Visitante.updateOne({ _id: visitante._id }, { $pull: { redSocials: redSocial._id } });
       await RedSocial.findByIdAndDelete(redSocial._id);
+    }
+    if (buzonEntrada) {
+      const checkBuzonEntradaInVisitante = await Visitante.findOne({ buzones: { $in: [buzonEntrada._id] } });
+      if (checkBuzonEntradaInVisitante) await Visitante.updateOne({ _id: visitante._id }, { $pull: { buzones: buzonEntrada._id } });
+      await Buzon.findByIdAndDelete(buzonEntrada._id);
+    }
+    if (buzonSalida) {
+      const checkBuzonSalidaInVisitante = await Visitante.findOne({ buzones: { $in: [buzonSalida._id] } });
+      if (checkBuzonSalidaInVisitante) await Visitante.updateOne({ _id: visitante._id }, { $pull: { buzones: buzonSalida._id } });
+      await Buzon.findByIdAndDelete(buzonSalida._id);
+    }
+    if (buzonEliminados) {
+      const checkBuzonEliminadosInVisitante = await Visitante.findOne({ buzones: { $in: [buzonEliminados._id] } });
+      if (checkBuzonEliminadosInVisitante) await Visitante.updateOne({ _id: visitante._id }, { $pull: { buzones: buzonEliminados._id } });
+      await Buzon.findByIdAndDelete(buzonEliminados._id);
     }
     throw error;
   }

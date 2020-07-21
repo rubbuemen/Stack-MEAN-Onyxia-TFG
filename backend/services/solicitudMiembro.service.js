@@ -4,6 +4,7 @@ const { Visitante } = require('../models/visitante.model');
 const { Miembro } = require('../models/miembro.model');
 const { RedSocial } = require('../models/redSocial.model');
 const cron = require('cron');
+const { enviarNotificacionAutomatica } = require('./notificacion.service');
 
 exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   let actorConectado;
@@ -459,7 +460,7 @@ exports.getSolicitudesMiembrosNoPagadas = async () => {
   return solicitudesMiembros;
 };
 
-exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
+exports.aceptarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) => {
   const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
   if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro que intenta aceptar no existe');
   if (checkExistencia.estadoSolicitud === 'ACEPTADO') throw errorLanzado(403, 'La solicitud de miembro que intenta aceptar ya lo está');
@@ -471,10 +472,20 @@ exports.aceptarSolicitudMiembro = async (solicitudMiembroId) => {
     },
     { new: true }
   );
+  const receptores = await Visitante.find({ solicitudMiembro: { _id: solicitudMiembro._id } });
+  await enviarNotificacionAutomatica(
+    {
+      asunto: 'Solicitud para ser miembro aceptada',
+      cuerpo:
+        '!Felicidades! Tu solicitud para ser miembro ha sido aceptada, a continuación procede a realizar el pago para formalizar la inscripción y pasar a ser miembro',
+      receptoresVisitantes: receptores,
+    },
+    usuarioLogeado
+  );
   return solicitudMiembro;
 };
 
-exports.rechazarSolicitudMiembro = async (solicitudMiembroId) => {
+exports.rechazarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) => {
   const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
   if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro que intenta rechazar no existe');
   if (checkExistencia.estadoSolicitud === 'RECHAZADO') throw errorLanzado(403, 'La solicitud de miembro que intenta rechazar ya lo está');
@@ -485,6 +496,15 @@ exports.rechazarSolicitudMiembro = async (solicitudMiembroId) => {
       estadoSolicitud: 'RECHAZADO',
     },
     { new: true }
+  );
+  const receptores = await Visitante.find({ solicitudMiembro: { _id: solicitudMiembro._id } });
+  await enviarNotificacionAutomatica(
+    {
+      asunto: 'Solicitud para ser miembro rechazada',
+      cuerpo: 'Lo sentimos, tu solicitud para ser miembro ha sido rechazada. Si quieres, puedes volver a intentar solicitar ser miembro una vez pase un mes.',
+      receptoresVisitantes: receptores,
+    },
+    usuarioLogeado
   );
   return solicitudMiembro;
 };
