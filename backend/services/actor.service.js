@@ -46,7 +46,7 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
     actor =
       (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
 
-    await CuentaUsuario.findOneAndUpdate(
+    const cuentaUsuario = await CuentaUsuario.findOneAndUpdate(
       { _id: usuarioLogeado._id },
       {
         usuario: parametros.usuario,
