@@ -19,6 +19,18 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.renovarToken = async (req, res) => {
+  try {
+    const cuentaUsuario = await cuentaUsuarioService.getUsuarioLogeado(req.cuentaUsuario.usuario);
+    const jwtToken = jwt.sign({ _id: cuentaUsuario._id, usuario: cuentaUsuario.usuario, autoridad: cuentaUsuario.autoridad }, process.env.SECRET_KEY, {
+      expiresIn: '1d',
+    });
+    return res.status(200).send({ jwtToken });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.registrarse = async (req, res) => {
   try {
     const {
@@ -51,7 +63,14 @@ exports.registrarse = async (req, res) => {
     if (enlaceRedSocial && !/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(enlaceRedSocial))
       throw errorLanzado(400, 'El enlace debe tener formato de URL');
     const visitante = await cuentaUsuarioService.registrarse(req.body);
-    return res.status(200).send({ visitante });
+    const jwtToken = jwt.sign(
+      { _id: visitante.cuentaUsuario._id, usuario: visitante.cuentaUsuario.usuario, autoridad: visitante.cuentaUsuario.autoridad },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: '1d',
+      }
+    );
+    return res.status(200).send({ jwtToken, visitante });
   } catch (error) {
     return controlError(error, res);
   }
