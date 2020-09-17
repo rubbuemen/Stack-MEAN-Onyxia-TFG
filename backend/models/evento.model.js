@@ -9,6 +9,13 @@ const eventoSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Inserte una descripción'],
   },
+  imagen: {
+    type: {
+      data: Buffer,
+      mimetype: String,
+      size: Number,
+    },
+  },
   lugar: {
     type: String,
     required: [true, 'Inserte un lugar'],

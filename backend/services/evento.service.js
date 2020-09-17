@@ -21,26 +21,26 @@ exports.getEventos = async () => {
   return eventos;
 };
 
-exports.crearEvento = async (parametros, usuarioLogeado) => {
+exports.crearEvento = async (parametros, img, usuarioLogeado) => {
   let tramoHorario;
   let diaEvento;
   let evento;
   try {
-    await asyncForEach(parametros.actividadesEvento, async (actividadId) => {
+    await asyncForEach(parametros.actividadesEvento, async actividadId => {
       const actividad = await Actividad.findById(actividadId);
       if (!actividad.estaPublicado || !actividad.enVigor)
         throw errorLanzado(403, 'La actividad ' + actividad.nombre + ' no puede ser asignada al evento porque no está publicada o en vigor');
     });
     //Por cada actividad, comprobar si para cada material hay cantidad disponible
     let mapMaterialCantidadNecesaria = {};
-    await asyncForEach(parametros.actividadesEvento, async (actividad) => {
+    await asyncForEach(parametros.actividadesEvento, async actividad => {
       const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
       if (act.materiales.length === 0) throw errorLanzado(403, 'No hay materiales asignados a la actividad ' + act.nombre);
-      act.materiales.forEach((material) => {
+      act.materiales.forEach(material => {
         mapMaterialCantidadNecesaria[material.id] = mapMaterialCantidadNecesaria[material.id] || 0;
         mapMaterialCantidadNecesaria[material.id] = mapMaterialCantidadNecesaria[material.id] + 1;
       });
-      await asyncForEach(act.materiales, async (material) => {
+      await asyncForEach(act.materiales, async material => {
         if (material.cantidadDisponible < mapMaterialCantidadNecesaria[material.id])
           throw errorLanzado(403, 'El material ' + material.nombre + ' no tienen cantidad disponible para su uso en la actividad');
       });
@@ -53,14 +53,21 @@ exports.crearEvento = async (parametros, usuarioLogeado) => {
     diaEvento.tramosHorarios.push(tramoHorario);
     diaEvento = await diaEvento.save();
     evento = new Evento(parametros);
+    if (img) {
+      evento.imagen = {
+        data: img.data,
+        mimetype: img.mimetype,
+        size: img.size,
+      };
+    }
     evento.diasEvento.push(diaEvento);
     evento.miembroCreador = miembro;
     evento = await evento.save();
 
     //Tras asignar las actividades al evento, recorrer cada material, sumarle cantidadEnUso y restarle cantidadDisponible.
-    await asyncForEach(evento.actividadesEvento, async (actividad) => {
+    await asyncForEach(evento.actividadesEvento, async actividad => {
       const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
-      await asyncForEach(act.materiales, async (material) => {
+      await asyncForEach(act.materiales, async material => {
         await Material.findOneAndUpdate(
           { _id: material._id },
           {
@@ -109,8 +116,8 @@ exports.cambiarEventosAEnProgreso = async () => {
     async () => {
       console.log('Verificando eventos pendientes...');
       const eventos = await Evento.find({ estadoEvento: 'PENDIENTE' }).populate({ path: 'diasEvento' });
-      eventos.forEach(async (evento) => {
-        evento.diasEvento.forEach(async (diaEvento) => {
+      eventos.forEach(async evento => {
+        evento.diasEvento.forEach(async diaEvento => {
           if (esHoy(diaEvento.fecha)) {
             await Evento.findByIdAndUpdate(
               { _id: evento._id },
@@ -137,17 +144,17 @@ exports.cambiarEventosARealizados = async () => {
     async () => {
       console.log('Verificando eventos acabados...');
       const eventos = await Evento.find({ estadoEvento: 'ENPROGRESO' }).populate({ path: 'diasEvento' });
-      eventos.forEach(async (evento) => {
+      eventos.forEach(async evento => {
         todasFechasDiferentes = true;
-        evento.diasEvento.forEach(async (diaEvento) => {
+        evento.diasEvento.forEach(async diaEvento => {
           if (esHoy(diaEvento.fecha)) {
             todasFechasDiferentes = false;
           }
         });
         if (todasFechasDiferentes) {
-          await asyncForEach(evento.actividadesEvento, async (actividad) => {
+          await asyncForEach(evento.actividadesEvento, async actividad => {
             const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
-            await asyncForEach(act.materiales, async (material) => {
+            await asyncForEach(act.materiales, async material => {
               await Material.findOneAndUpdate(
                 { _id: material._id },
                 {
@@ -158,7 +165,7 @@ exports.cambiarEventosARealizados = async () => {
               );
             });
           });
-          await asyncForEach(evento.inventarios, async (inventario) => {
+          await asyncForEach(evento.inventarios, async inventario => {
             await Inventario.findOneAndUpdate(
               { _id: inventario },
               {
@@ -185,7 +192,7 @@ exports.cambiarEventosARealizados = async () => {
   job.start();
 };
 
-exports.editarEvento = async (parametros, eventoId) => {
+exports.editarEvento = async (parametros, img, eventoId) => {
   const checkExistencia = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento', match: { estadoInscripcion: 'ACEPTADO' } });
   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta editar no existe');
   if (checkExistencia.estadoEvento !== 'PENDIENTE')
@@ -193,28 +200,55 @@ exports.editarEvento = async (parametros, eventoId) => {
   const cantidadInscripciones = checkExistencia.inscripcionesEvento.length;
   if (cantidadInscripciones > parametros.cupoInscripciones)
     throw errorLanzado(403, 'El cupo de inscripciones no puede ser menor que ' + cantidadInscripciones + ' inscripciones que hay al evento actualmente');
-  const evento = await Evento.findOneAndUpdate(
-    { _id: eventoId },
-    {
-      nombre: parametros.nombre,
-      descripcion: parametros.descripcion,
-      lugar: parametros.lugar,
-      cupoInscripciones: parametros.cupoInscripciones,
-      actividadesEvento: parametros.actividadesEvento,
-    },
-    { new: true }
-  );
+  let evento;
+  if (img) {
+    evento = await Evento.findOneAndUpdate(
+      { _id: eventoId },
+      {
+        nombre: parametros.nombre,
+        descripcion: parametros.descripcion,
+        lugar: parametros.lugar,
+        cupoInscripciones: parametros.cupoInscripciones,
+        actividadesEvento: parametros.actividadesEvento,
+        imagen: {
+          data: img.data,
+          mimetype: img.mimetype,
+          size: img.size,
+        },
+      },
+      { new: true }
+    );
+  } else {
+    evento = await Evento.findOneAndUpdate(
+      { _id: eventoId },
+      {
+        nombre: parametros.nombre,
+        descripcion: parametros.descripcion,
+        lugar: parametros.lugar,
+        cupoInscripciones: parametros.cupoInscripciones,
+        actividadesEvento: parametros.actividadesEvento,
+      },
+      { new: true }
+    );
+    evento = await Evento.findOneAndUpdate(
+      { _id: evento._id },
+      {
+        $unset: { imagen: 1 },
+      },
+      { new: true }
+    );
+  }
   return evento;
 };
 
-exports.eliminarEvento = async (eventoId) => {
+exports.eliminarEvento = async eventoId => {
   let evento = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento' });
   if (!evento) throw errorLanzado(404, 'La evento que intenta eliminar no existe');
   const cantidadInscripciones = evento.inscripcionesEvento.length;
   if (cantidadInscripciones !== 0) throw errorLanzado(403, 'El evento no se puede eliminar porque ya se han realizado inscripciones a este');
-  await asyncForEach(evento.actividadesEvento, async (actividad) => {
+  await asyncForEach(evento.actividadesEvento, async actividad => {
     const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
-    await asyncForEach(act.materiales, async (material) => {
+    await asyncForEach(act.materiales, async material => {
       await Material.findOneAndUpdate(
         { _id: material._id },
         {
@@ -225,7 +259,7 @@ exports.eliminarEvento = async (eventoId) => {
       );
     });
   });
-  await asyncForEach(evento.inventarios, async (inventario) => {
+  await asyncForEach(evento.inventarios, async inventario => {
     await Inventario.findOneAndUpdate(
       { _id: inventario },
       {
@@ -234,9 +268,9 @@ exports.eliminarEvento = async (eventoId) => {
       { new: true }
     );
   });
-  await asyncForEach(evento.diasEvento, async (dia) => {
+  await asyncForEach(evento.diasEvento, async dia => {
     const d = await DiaEvento.findById(dia);
-    await asyncForEach(d.tramosHorarios, async (tramo) => {
+    await asyncForEach(d.tramosHorarios, async tramo => {
       await TramoHorario.findByIdAndDelete(tramo);
     });
     await DiaEvento.findByIdAndDelete(dia);
@@ -297,7 +331,7 @@ exports.publicarEvento = async (eventoId, usuarioLogeado) => {
   return evento;
 };
 
-exports.ocultarEvento = async (eventoId) => {
+exports.ocultarEvento = async eventoId => {
   const checkExistencia = await Evento.findById(eventoId);
   if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta ocultar no existe');
   if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta ocultar ya lo está');
@@ -313,11 +347,11 @@ exports.ocultarEvento = async (eventoId) => {
   return evento;
 };
 
-exports.cancelarEvento = async (eventoId) => {
+exports.cancelarEvento = async eventoId => {
   let evento = await Evento.findById(eventoId);
   if (!evento) throw errorLanzado(404, 'La evento que intenta cancelar no existe');
   if (evento.estadoEvento !== 'PENDIENTE') throw errorLanzado(403, 'El evento que intenta cancelar debe estar en un estado de pendiente de realizarse');
-  await asyncForEach(evento.inscripcionesEvento, async (inscripcion) => {
+  await asyncForEach(evento.inscripcionesEvento, async inscripcion => {
     await InscripcionEvento.findOneAndUpdate(
       { _id: inscripcion },
       {
@@ -326,9 +360,9 @@ exports.cancelarEvento = async (eventoId) => {
       { new: true }
     );
   });
-  await asyncForEach(evento.actividadesEvento, async (actividad) => {
+  await asyncForEach(evento.actividadesEvento, async actividad => {
     const act = await Actividad.findById(actividad).populate({ path: 'materiales' });
-    await asyncForEach(act.materiales, async (material) => {
+    await asyncForEach(act.materiales, async material => {
       await Material.findOneAndUpdate(
         { _id: material._id },
         {
@@ -339,7 +373,7 @@ exports.cancelarEvento = async (eventoId) => {
       );
     });
   });
-  await asyncForEach(evento.inventarios, async (inventario) => {
+  await asyncForEach(evento.inventarios, async inventario => {
     await Inventario.findOneAndUpdate(
       { _id: inventario },
       {

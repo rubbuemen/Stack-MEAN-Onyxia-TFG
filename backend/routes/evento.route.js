@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const eventoController = require('../controllers/evento.controller');
 const auth = require('../middleware/auth');
+const upload = require('../middleware/file');
 
-router.post('/', auth.junta_directiva, (req, res) => eventoController.crearEvento(req, res));
-router.put('/edit/:id', auth.junta_directiva, (req, res) => eventoController.editarEvento(req, res));
+router.post('/', upload.single('imagen'), auth.junta_directiva, (req, res) => eventoController.crearEvento(req, res));
+router.put('/edit/:id', upload.single('imagen'), auth.junta_directiva, (req, res) => eventoController.editarEvento(req, res));
 router.delete('/delete/:id', auth.junta_directiva, (req, res) => eventoController.eliminarEvento(req, res));
 router.put('/publicar/:id', auth.junta_directiva, (req, res) => eventoController.publicarEvento(req, res));
 router.put('/ocultar/:id', auth.junta_directiva, (req, res) => eventoController.ocultarEvento(req, res));
