@@ -28,9 +28,9 @@ const actividadSchema = new mongoose.Schema({
   },
   fechaPublicacion: {
     type: Date,
-    required: [true, 'No se ha asignado ninguna fecha de publicación del evento'],
+    required: [true, 'No se ha asignado ninguna fecha de publicación de la actividad'],
     validate: {
-      validator: (fechaPublicacion) => {
+      validator: fechaPublicacion => {
         return fechaPublicacion < new Date();
       },
       message: 'Inserte una fecha de publicación en pasado',
