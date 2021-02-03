@@ -5,6 +5,7 @@ const { Miembros } = require('./seeders/miembro.seeder');
 const { Buzones } = require('./seeders/buzon.seeder');
 const { SolicitudesMiembros } = require('./seeders/solicitudMiembro.seeder');
 const { CuentasUsuarios } = require('./seeders/cuentaUsuario.seeder');
+const { Configuracion } = require('./seeders/configuracion.seeder');
 
 const mongoDBHostname = process.env.DB_HOSTNAME || 'localhost';
 const mongoDBPort = process.env.DB_PORT || '27017';
@@ -26,6 +27,6 @@ module.exports.connect = async () =>
     useCreateIndex: true,
   });
 
-module.exports.seedersList = { CuentasUsuarios, RedesSociales, Buzones, SolicitudesMiembros, Miembros };
+module.exports.seedersList = { CuentasUsuarios, RedesSociales, Buzones, SolicitudesMiembros, Miembros, Configuracion };
 
 //md-seed run --dropdb
