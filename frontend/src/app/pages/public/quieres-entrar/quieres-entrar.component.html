@@ -1,0 +1,95 @@
+ <main class="public">
+   <article class="w-100 bg-grey">
+     <div class="container">
+       <section class="row justify-content-center">
+         <div class="col">
+           <div class="card border-0 bg-grey">
+             <div class="card-body text-center">
+               <h1 class="card-title text-dark-purple font-weight-bold">¿Quieres formar parte de Onyxia?</h1>
+               <div class="card-text text-justify">
+                 <p>Siempre estamos abiertos a nuevos integrantes. Nos reunimos un domingo al mes y en esas reuniones siempre suele entrar gente nueva de la
+                   lista de personas que quieren formar parte de Onyxia.
+                 </p>
+                 <p>Mira el apartado de nuestra página web "sobre nosotros" para saber todo lo referente a Onyxia y si te gusta la idea de formar parte de
+                   nuestra asociación, rellena la solicitud y en unos días nos pondremos en contacto contigo.</p>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+     </div>
+   </article>
+
+   <article class="w-100 bg-grey pb-5">
+     <div class="container">
+       <div class="card card-form">
+         <section class="card-heading"></section>
+         <section class="card-body p-5">
+           <h2 class="title">Solicitud para ser socio</h2>
+           <form method="POST">
+             <div class="form-row">
+               <div class="form-group col-12 col-md-6">
+                 <label for="comoHaConocidoAsociacion" class="sr-only">¿Cómo nos has conocido?</label>
+                 <div class="input-group">
+                   <input id="comoHaConocidoAsociacion" type="text" class="form-control" placeholder="¿Cómo nos has conocido?" required>
+                 </div>
+               </div>
+               <div class="form-group col-12 col-md-6 select-style">
+                 <label for="intereses" class="sr-only">Intereses</label>
+                 <div class="input-group">
+                   <select id="intereses" class="form-control selectpicker" title="Intereses" multiple aria-describedby="intereses-help" required>
+                     <option>Baile / K-Pop</option>
+                     <option>Dibujo</option>
+                     <option>Softcombat</option>
+                     <option>Talleres y manualidades</option>
+                     <option>Videojuegos</option>
+                     <option>Cosplay</option>
+                   </select>
+                 </div>
+                 <small id="intereses-help" class="form-text text-muted pl-1">Puedes seleccionar varios intereses</small>
+               </div>
+             </div>
+             <div class="form-row">
+               <div class="form-group col-12 col-md-6">
+                 <label for="habilidades" class="sr-only">Habilidades</label>
+                 <div class="input-group">
+                   <input id="habilidades" type="text" class="form-control" placeholder="Habilidades" required>
+                 </div>
+               </div>
+               <div class="form-group col-12 col-md-6">
+                 <label for="ideas" class="sr-only">Ideas</label>
+                 <div class="input-group">
+                   <input id="ideas" type="text" class="form-control" placeholder="Ideas" required>
+                 </div>
+               </div>
+             </div>
+             <div class="form-row">
+               <div class="form-group col-12 col-md-6 select-style">
+                 <label for="cochePropio" class="sr-only">¿Dispones de coche propio?</label>
+                 <div class="input-group">
+                   <select id="cochePropio" class="form-control selectpicker" title="¿Dispones de coche propio?" required>
+                     <option>Sí</option>
+                     <option>No</option>
+                   </select>
+                 </div>
+               </div>
+               <div class="form-group col-12 col-md-6 select-style">
+                 <label for="miembrosConocidos" class="sr-only">Miembros conocidos</label>
+                 <div class="input-group">
+                   <select id="miembrosConocidos" class="form-control selectpicker" title="Miembros conocidos" multiple
+                     aria-describedby="miembrosConocidos-help">
+                     <option>Rubén Bueno Menéndez</option>
+                     <option>Pepito Perez Espinosa</option>
+                     <option>Otro nombre random</option>
+                   </select>
+                 </div>
+                 <small id="miembrosConocidos-help" class="form-text text-muted pl-1">Puedes seleccionar varios miembros o incluso ninguno</small>
+               </div>
+             </div>
+             <button class="btn btn-primary" type="submit">Enviar</button>
+           </form>
+         </section>
+       </div>
+     </div>
+   </article>
+ </main>

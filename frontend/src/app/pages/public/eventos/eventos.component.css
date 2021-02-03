@@ -1,0 +1,9 @@
+.posts p.card-text {
+  font-size: 15px;
+  line-height: 1.7em;
+}
+
+.card-img-top {
+  max-height: 300px;
+  object-fit: cover;
+}

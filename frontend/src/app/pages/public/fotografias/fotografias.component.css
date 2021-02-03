@@ -1,0 +1,10 @@
+.thumb {
+  margin-bottom: 30px;
+}
+
+img.zoom {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 5px;
+  object-fit: cover;
+}

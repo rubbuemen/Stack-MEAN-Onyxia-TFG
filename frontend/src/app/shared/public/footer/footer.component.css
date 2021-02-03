@@ -1,0 +1,257 @@
+.page-footer {
+  color: #fff;
+}
+
+.page-footer p,
+.page-footer a {
+  font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.stylish-color-dark {
+  background-color: #3e4551;
+}
+
+.title-card {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #5b2b79;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  -webkit-box-shadow: -4px 2px 15px 4px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: -4px 2px 15px 4px rgba(0, 0, 0, 0.22);
+  box-shadow: -4px 2px 15px 4px rgba(0, 0, 0, 0.22);
+  border-radius: 3px;
+}
+
+.indice-footer li {
+  margin-bottom: 26px;
+}
+
+.instagram-header {
+  background: rgb(28, 27, 27, 0.3);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  box-sizing: border-box;
+  height: 60px;
+  border-radius: 3%;
+}
+
+.instagram-user {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.instagram-user-image-wrapper {
+  background: linear-gradient(40deg, #f99b4a 15%, #dd3071 50%, #c72e8d 85%);
+  min-width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 4px;
+  box-sizing: border-box;
+  margin-right: 12px;
+}
+
+.instagram-user-name-wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.instagram-user-image-wrapper > a {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.instagram-user-image {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgb(28, 27, 27);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.btn-floating fa-icon {
+  display: inline-block;
+  width: inherit;
+  color: #fff;
+  text-align: center;
+}
+
+.btn-floating fa-icon {
+  font-size: 1.25rem;
+  line-height: 47px;
+}
+
+.btn-floating {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0;
+  margin: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  width: 47px;
+  height: 47px;
+}
+
+.btn-floating:hover {
+  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btn-fb {
+  color: #fff;
+  background-color: #3b5998 !important;
+}
+
+.btn-fb:not([disabled]):not(.disabled):active,
+.btn-fb:not([disabled]):not(.disabled).active,
+.show > .btn-fb.dropdown-toggle {
+  background-color: #1e2e4f !important;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-fb:not([disabled]):not(.disabled):active:focus,
+.btn-fb:not([disabled]):not(.disabled).active:focus,
+.show > .btn-fb.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-tw {
+  color: #fff;
+  background-color: #55acee !important;
+}
+
+.btn-tw:not([disabled]):not(.disabled):active,
+.btn-tw:not([disabled]):not(.disabled).active,
+.show > .btn-tw.dropdown-toggle {
+  background-color: #147bc9 !important;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-tw:not([disabled]):not(.disabled):active:focus,
+.btn-tw:not([disabled]):not(.disabled).active:focus,
+.show > .btn-tw.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-insta {
+  color: #fff;
+  background: linear-gradient(40deg, #f99b4a 15%, #dd3071 50%, #c72e8d 85%);
+}
+
+.btn-insta:not([disabled]):not(.disabled):active,
+.btn-insta:not([disabled]):not(.disabled).active,
+.show > .btn-insta.dropdown-toggle {
+  background: linear-gradient(40deg, #e68e42 15%, #ad265a 50%, #a72675 85%);
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-insta:not([disabled]):not(.disabled):active:focus,
+.btn-insta:not([disabled]):not(.disabled).active:focus,
+.show > .btn-insta.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-yt {
+  color: #fff;
+  background-color: #ed302f !important;
+}
+
+.btn-yt:not([disabled]):not(.disabled):active,
+.btn-yt:not([disabled]):not(.disabled).active,
+.show > .btn-yt.dropdown-toggle {
+  background-color: #a80f0e !important;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-yt:not([disabled]):not(.disabled):active:focus,
+.btn-yt:not([disabled]):not(.disabled).active:focus,
+.show > .btn-yt.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-dis {
+  color: #fff;
+  background-color: #7289da !important;
+}
+
+.btn-dis:not([disabled]):not(.disabled):active,
+.btn-dis:not([disabled]):not(.disabled).active,
+.show > .btn-dis.dropdown-toggle {
+  background-color: #495996 !important;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-dis:not([disabled]):not(.disabled):active:focus,
+.btn-dis:not([disabled]):not(.disabled).active:focus,
+.show > .btn-dis.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-wht {
+  color: #fff;
+  background-color: #25d366 !important;
+}
+
+.btn-wht:not([disabled]):not(.disabled):active,
+.btn-wht:not([disabled]):not(.disabled).active,
+.show > .btn-wht.dropdown-toggle {
+  background-color: #167c3c !important;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-wht:not([disabled]):not(.disabled):active:focus,
+.btn-wht:not([disabled]):not(.disabled).active:focus,
+.show > .btn-wht.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+    0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}

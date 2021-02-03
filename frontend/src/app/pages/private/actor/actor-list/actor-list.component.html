@@ -1,0 +1,62 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-privado></app-titulo-privado>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Usuarios registrados</h6>
+          <button type="button" class="btn btn-inverse">Miembros</button>
+          <button type="button" class="btn btn-inverse">Visitantes</button>
+          <div class="table-responsive m-t-10">
+            <table id="myTable" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo electrónico</th>
+                  <th>Usuario</th>
+                  <th>Estado cuenta</th>
+                  <th class="no-sort">Ver más</th>
+                  <th class="no-sort">Editar</th>
+                  <th class="no-sort">Banear / desbanear</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Michael Bruce</td>
+                  <td>Javascript Developer</td>
+                  <td>Singapore</td>
+                  <td>Activada</td>
+                  <td class="text-center"><a href="privado/actor/display"> <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a href="privado/actor/form" data-toggle="tooltip" data-original-title="Edit"> <i
+                        class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-ban text-danger"></i> </a></td>
+                </tr>
+                <tr>
+                  <td>Donna Snider</td>
+                  <td>Customer Support</td>
+                  <td>Customer Support</td>
+                  <td>Desactivada</td>
+                  <td class="text-center"><a href="privado/actor/display"> <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a href="privado/actor/form" data-toggle="tooltip" data-original-title="Edit"> <i
+                        class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a href="#"> <i class="fa fa-ban text-danger"></i>
+                    </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

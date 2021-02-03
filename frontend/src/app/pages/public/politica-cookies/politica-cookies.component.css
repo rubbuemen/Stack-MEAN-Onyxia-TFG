@@ -1,0 +1,13 @@
+p {
+  font-size: 15px;
+}
+
+li {
+  line-height: 1.4em;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+ul {
+  padding-inline-start: 20px;
+}

@@ -1,0 +1,22 @@
+<div class="row">
+  <div id="carousel-banner" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-banner" attr.data-slide-to="{{banner.orden - 1}}" [ngClass]="{'active': banner.orden === 1}" *ngFor="let banner of banners">
+      </li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item" [ngClass]="{'active': banner.orden === 1}" *ngFor="let banner of banners">
+        <img [src]="banner.imagen">
+        <div class="carousel-caption" *ngIf="banner.texto" [innerHTML]="banner.texto"></div>
+      </div>
+    </div>
+    <a href="#carousel-banner" class="carousel-control-prev" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a href="#carousel-banner" class="carousel-control-next" role="button" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="sr-only">Siguiente</span>
+    </a>
+  </div>
+</div>

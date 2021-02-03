@@ -1,0 +1,17 @@
+.posts p.card-text {
+  font-size: 15px;
+  line-height: 1.7em;
+}
+
+.fondo-imagen {
+  background-image: url('/assets/images/anime-wallpaper2.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.card img {
+  max-height: 300px;
+  min-height: 300px;
+  object-fit: cover;
+}

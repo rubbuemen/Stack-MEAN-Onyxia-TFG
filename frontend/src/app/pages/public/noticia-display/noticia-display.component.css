@@ -1,0 +1,17 @@
+.linea-inferior img {
+  border-bottom: solid #230058 8px;
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 0;
+}
+
+li {
+  font-weight: 500;
+  font-size: 14px;
+  float: left;
+  margin-right: 15px;
+}

@@ -1,0 +1,11 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-actor-form',
+  templateUrl: './actor-form.component.html',
+})
+export class ActorFormComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit(): void {}
+}

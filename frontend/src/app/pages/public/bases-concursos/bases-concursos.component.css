@@ -1,0 +1,36 @@
+.contenido p {
+  font-size: 15px;
+}
+
+.contenido li {
+  line-height: 1.5em;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  display: block;
+}
+
+.contenido li:before {
+  content: counters(item, ".") ". ";
+  counter-increment: item;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.contenido li>ol>li:before {
+  font-weight: bolder;
+  font-size: 15px;
+}
+
+.contenido ol {
+  padding-inline-start: 0px;
+  counter-reset: item;
+}
+
+.contenido li>ol>li>ol {
+  padding-inline-start: 20px;
+}
+
+.titulo {
+  padding-top: 25px !important;
+}

@@ -1,0 +1,26 @@
+.grdp {
+  position: fixed;
+  bottom: 0;
+  z-index: 100000;
+  border: 2px #333 solid;
+  text-align: justify;
+  background-color: #e6d5ff;
+  color: #000;
+}
+
+.grdp span,
+.grdp p {
+  font-size: 1rem;
+}
+
+.alert {
+  margin-bottom: 0;
+}
+
+a {
+  color: #230058;
+}
+
+a:hover {
+  text-decoration: none;
+}

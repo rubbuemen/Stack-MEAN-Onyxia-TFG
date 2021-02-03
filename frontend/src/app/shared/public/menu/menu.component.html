@@ -1,0 +1,18 @@
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="main_nav">
+  <ul class="navbar-nav flex-wrap menu-border">
+    <li class="nav-item dropdown py-2 py-md-0 px-2" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let item of menuItems">
+      <a class="nav-link" [routerLink]="item.url">{{item.titulo}}</a>
+      <div *ngIf="item.hasOwnProperty('submenu')">
+        <app-desplegable-menu data-toggle="dropdown"></app-desplegable-menu>
+        <ul class="dropdown-menu mt-2">
+          <li class="dropdown-item py-2" *ngFor="let subItem of item.submenu">
+            <a class="nav-link" [routerLink]="subItem.url">{{subItem.titulo}}</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,43 @@
+.dropdown-toggle::after {
+  content: none;
+}
+
+@media all and (max-width: 767px) {
+  .bottom-dropdown {
+    position: absolute;
+    z-index: 99;
+    right: 0;
+    top: 0;
+    display: block;
+    border-left: 1px solid #ccc;
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+  }
+
+  .bottom-plus :before {
+    position: absolute;
+    top: 1px;
+    right: 27px;
+    width: 4px;
+    font-size: 40px;
+    color:#000;
+    content: "+";
+  }
+
+  .bottom-minus {
+    background: #5b2b79;
+    margin-right: -1px;
+  }
+
+  .bottom-minus :before {
+    position: absolute;
+    bottom: 3.5px;
+    left: 16px;
+    width: 4px;
+    font-size: 40px;
+    color: #000;
+    content: "-";
+  }
+
+}

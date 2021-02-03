@@ -1,0 +1,167 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-privado></app-titulo-privado>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">Edición</h4>
+        </div>
+        <div class="card-body">
+          <form action="#">
+            <div class="form-body">
+              <h3 class="card-title">Información del perfil</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="nombre" class="control-label">Nombre</label>
+                    <div class="input-group">
+                      <input type="text" id="nombre" class="form-control" placeholder="John">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="apellidos" class="control-label">Apellidos</label>
+                    <div class="input-group">
+                      <input type="text" id="apellidos" class="form-control" placeholder="Doe">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email" class="control-label">Correo electrónico</label>
+                    <div class="input-group">
+                      <input type="text" id="email" class="form-control" placeholder="john@ejemplo.com">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="fechaNacimiento" class="control-label">Fecha de nacimiento</label>
+                    <div class="input-group">
+                      <input type="date" id="fechaNacimiento" class="form-control" placeholder="01/01/2000">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="alias" class="control-label">Alias</label>
+                    <div class="input-group">
+                      <input type="text" id="alias" class="form-control" placeholder="john alias">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="telefono" class="control-label">Número de teléfono</label>
+                    <div class="input-group">
+                      <input type="text" id="telefono" class="form-control" placeholder="612345678">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="direccion" class="control-label">Dirección</label>
+                    <div class="input-group">
+                      <input type="text" id="direccion" class="form-control" placeholder="C/Falsa Nº123">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="dni" class="control-label">DNI</label>
+                    <div class="input-group">
+                      <input type="text" id="dni" class="form-control" placeholder="77582150E">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="aficiones" class="control-label">Aficiones</label>
+                    <div class="input-group">
+                      <input type="text" id="aficiones" class="form-control" placeholder="Bailar, dibujar, etc">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="cochePropio" class="control-label">Coche propio</label>
+                    <div class="input-group">
+                      <select id="cochePropio" class="form-control selectpicker" title="Disposición de coche propio">
+                        <option>Sí</option>
+                        <option>No</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="fotografia" class="control-label">Fotografía</label>
+                    <div class="input-group">
+                      <div class="input-group">
+                        <input type="file" id="fotografia" class="dropify" data-height="300" data-allowed-file-extensions="png jpg jpeg"
+                          data-default-file="./assets/images/junta-presidente.jpg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="card-title p-t-30">Información de usuario</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="usuario" class="control-label">Usuario</label>
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="ti-user"></i></div>
+                      <input type="text" id="usuario" class="form-control" placeholder="john123">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="contraseñaActual" class="control-label">Contraseña actual</label>
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="ti-lock"></i></div>
+                      <input type="password" id="contraseñaActual" class="form-control" placeholder="∗∗∗∗∗∗">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="contraseñaNueva" class="control-label">Confirmar nueva</label>
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="ti-lock"></i></div>
+                      <input type="password" id="contraseñaNueva" class="form-control" placeholder="∗∗∗∗∗∗">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" class="btn btn-danger">Banear / desbanear</button>
+                <button type="button" class="btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

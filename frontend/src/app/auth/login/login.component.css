@@ -1,0 +1,53 @@
+input {
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 9px 0;
+  color: #666;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+input::placeholder {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.input-group {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.form-group {
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.form-control:focus {
+  box-shadow: 0 3px 2px -2px rgb(13 0 117 / 25%);
+}
+
+.card-form {
+  -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  display: table;
+}
+
+.card-form .card-heading {
+  background-image: url("/assets/images/kimetsu.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  padding-top: 250px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: 700;
+}

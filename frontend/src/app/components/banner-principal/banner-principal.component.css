@@ -1,0 +1,47 @@
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px 10px;
+  bottom: 150px;
+  z-index: 2;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.carousel-item {
+  height: 600px;
+  overflow: hidden;
+}
+
+.carousel-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+@-webkit-keyframes zoom {
+  from {
+    -webkit-transform: scale(1, 1);
+  }
+
+  to {
+    -webkit-transform: scale(1.2, 1.2);
+  }
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(1, 1);
+  }
+
+  to {
+    transform: scale(1.2, 1.2);
+  }
+}
+
+.carousel-inner .carousel-item>img {
+  -webkit-animation: zoom 20s;
+  animation: zoom 20s;
+}

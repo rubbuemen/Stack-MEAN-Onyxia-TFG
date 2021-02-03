@@ -1,1 +1,212 @@
-/* You can add global styles to this file, and also import other style files */
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700,900);
+@import url("https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700,700i);
+@import url(https://fonts.googleapis.com/css?family=Arvo:400,400i,700,700i);
+
+.public {
+  color: #3c3c3c;
+  font-size: 15px;
+  font-family: "Raleway", sans-serif !important;
+  line-height: normal;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+.public input {
+  color: #3c3c3c;
+  font-size: 15px;
+}
+
+.public p {
+  font-size: 18px;
+  line-height: 1.4em;
+}
+
+.public h1::after {
+  content: "";
+  display: block;
+  margin: 10px auto 0;
+  width: 80px;
+  height: 5px;
+  background: #230058;
+}
+
+.public h4::after {
+  content: "";
+  display: block;
+  margin: 10px auto 0;
+  width: 80px;
+  height: 2px;
+  background: #230058;
+}
+
+.public sup {
+  top: -0.2em;
+}
+
+.public .btn-outline-primary.focus,
+.public .btn-outline-primary:focus,
+.public .btn-primary.focus,
+.public .btn-primary:focus {
+  color: #FFF;
+  background-color: #230058;
+  border-color: #230058;
+  box-shadow: 0 0 0 0.2rem rgba(14, 0, 35, .5);
+}
+
+.public .bootstrap-select .dropdown-menu li a:hover,
+.public .bootstrap-select .dropdown-menu li a:focus {
+  color: #230058;
+  background: #e9edf2;
+}
+
+.public .menu-border .dropdown-menu {
+    margin-bottom: -9px;
+}
+
+.public a {
+  color: #5b2b79
+}
+
+.public a:hover {
+  color: #230058;
+  text-decoration: none;
+}
+
+.public .bg-purple {
+  background-color: #5b2b79;
+}
+
+.public .bg-grey {
+  background-color: #f8f4fc;
+}
+
+.public .text-purple {
+  color: #5b2b79;
+}
+
+.public .text-dark-purple {
+  color: #230058;
+}
+
+.public .btn-outline-primary {
+  color: #230058;
+  border-color: #230058;
+}
+
+.public .btn-outline-primary:hover,
+.public .btn-primary:hover {
+  background-color: #230058;
+  border-color: #230058;
+  color: #FFF;
+}
+
+.public .btn-primary {
+  background-color: #5b2b79;
+  border-color: #5b2b79;
+  color: #FFF;
+}
+
+
+.public .btn-outline-primary:not(:disabled):not(.disabled).active,
+.public .btn-outline-primary:not(:disabled):not(.disabled):active,
+.public .show>.btn-outline-primary.dropdown-toggle,
+.public .btn-primary:not(:disabled):not(.disabled).active,
+.public .btn-primary:not(:disabled):not(.disabled):active,
+.public .show>.btn-primary.dropdown-toggle {
+  background-color: #5b2b79;
+  border-color: #5b2b79;
+}
+
+.public .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
+.public .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
+.public .show>.btn-outline-primary.dropdown-toggle:focus,
+.public .btn-primary:not(:disabled):not(.disabled).active:focus,
+.public .btn-primary:not(:disabled):not(.disabled):active:focus,
+.public .show>.btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(36, 17, 47, .5);
+}
+
+
+.public .img-reduced {
+  height: 300px;
+  width: auto;
+}
+
+.public .img-very-reduced {
+  height: 80px;
+  width: auto;
+}
+
+
+/* Para los selects forms de un estilo concreto*/
+.public .select-style .btn-light {
+  background-color: #FFF;
+  border: none;
+}
+
+.public .select-style button {
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 9px 0;
+  color: #666;
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.public .select-style .bootstrap-select>select.mobile-device:focus+.dropdown-toggle,
+.public .select-style .bootstrap-select .dropdown-toggle:focus {
+  outline: none !important;
+}
+
+.public .select-style .btn {
+  line-height: 1.2;
+}
+
+.public .select-style button:focus {
+  box-shadow: 0 3px 2px -2px rgb(13 0 117 / 25%);
+}
+
+.public .select-style :focus {
+  outline: #666 auto 1px;
+}
+
+.public .select-style .bootstrap-select>.dropdown-toggle.bs-placeholder {
+  color: #666;
+}
+
+.public .select-style .dropdown-item.active,
+.public .select-style .dropdown-item:active {
+  color: #666;
+  text-decoration: none;
+  background-color: #f0f0f0;
+}
+
+.public .container-fluid {
+  padding: inherit;
+}
+
+.public h5,
+.public .h5,
+.public h4,
+.public .h4,
+.public h3,
+.public .h3,
+.public h2,
+.public .h2,
+.public h1,
+.public .h1 {
+  color: inherit;
+  font-family: inherit;
+}
+
+.public .card {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: none;
+  margin-bottom: 0;
+}
