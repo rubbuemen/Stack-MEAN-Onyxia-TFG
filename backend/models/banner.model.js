@@ -12,7 +12,6 @@ const bannerSchema = new mongoose.Schema({
   orden: {
     type: Number,
     min: 1,
-    unique: [true, 'El número del orden ya exsite, inserte otro'],
     required: [true, 'Inserte un número del orden'],
   },
   texto: {

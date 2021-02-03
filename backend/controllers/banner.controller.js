@@ -30,8 +30,8 @@ exports.editarBanner = async (req, res) => {
     if (!orden) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     if (orden < 1) throw errorLanzado(400, 'El número del orden debe ser mayor que 0');
     const ultimoNumeroOrden = await bannerService.getUltimoNumeroOrden();
-    if (orden <= ultimoNumeroOrden)
-      throw errorLanzado(400, 'El número en el orden no puede ser menor que el número del último del orden: ' + ultimoNumeroOrden);
+    if (orden > ultimoNumeroOrden)
+      throw errorLanzado(400, 'El número en el orden no puede ser mayor que el número del último banner del orden: ' + ultimoNumeroOrden);
     const banners = await bannerService.editarBanner(req.body, bannerId);
     return res.status(200).send({ banners });
   } catch (error) {

@@ -37,6 +37,7 @@ exports.getUltimoNumeroOrden = async () => {
 exports.editarBanner = async (parametros, bannerId) => {
   const checkExistencia = await Banner.findById(bannerId);
   if (!checkExistencia) throw errorLanzado(404, 'La banner que intenta editar no existe');
+  const bannerPermutado = await Banner.findOne({ orden: parametros.orden });
   const banner = await Banner.findOneAndUpdate(
     { _id: bannerId },
     {
@@ -45,10 +46,17 @@ exports.editarBanner = async (parametros, bannerId) => {
     },
     { new: true }
   );
+  await Banner.findOneAndUpdate(
+    { _id: bannerPermutado.id },
+    {
+      orden: checkExistencia.orden,
+    },
+    { new: true }
+  );
   return banner;
 };
 
-exports.eliminarBanner = async (bannerId) => {
+exports.eliminarBanner = async bannerId => {
   const checkExistencia = await Banner.findById(bannerId);
   if (!checkExistencia) throw errorLanzado(404, 'La banner que intenta eliminar no existe');
   const banner = await Banner.findOneAndDelete(bannerId);
