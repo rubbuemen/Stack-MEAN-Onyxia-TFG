@@ -12,7 +12,7 @@ exports.comprobarFechaPenalizacion = async () => {
     async () => {
       console.log('Comprobando penalizaciones...');
       const miembros = await Miembro.find();
-      miembros.forEach(async (miembro) => {
+      miembros.forEach(async miembro => {
         if (miembro.fechaUltimaPenalizacion) {
           const dias = d3.timeDay.count(miembro.fechaUltimaPenalizacion, new Date());
           const pasadoMes = dias >= 30 && miembro.cantidadPenalizaciones !== 0;
@@ -35,7 +35,7 @@ exports.comprobarFechaPenalizacion = async () => {
   job.start();
 };
 
-exports.penalizarMiembro = async (miembroId) => {
+exports.penalizarMiembro = async miembroId => {
   const checkExistencia = await Miembro.findById(miembroId);
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta penalizar no existe');
   const miembro = await Miembro.findOneAndUpdate(
@@ -54,7 +54,17 @@ exports.getMiembrosVigentes = async () => {
   return miembros;
 };
 
-exports.darBajaMiembro = async (miembroId) => {
+exports.getMiembrosJuntaSuperior = async () => {
+  const miembros = await Miembro.find({ $or: [{ rol: 'PRESIDENTE' }, { rol: 'VICEPRESIDENTE' }, { rol: 'SECRETARIO' }] }).populate({ path: 'redSocials' });
+  return miembros;
+};
+
+exports.getMiembrosJuntaVocales = async () => {
+  const miembros = await Miembro.find({ rol: 'VOCAL' }).populate({ path: 'redSocials' });
+  return miembros;
+};
+
+exports.darBajaMiembro = async miembroId => {
   const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de baja no existe');
   if (!checkExistencia.estaDeAlta) throw errorLanzado(403, 'El miembro que intenta dar de baja ya lo está');
@@ -76,7 +86,7 @@ exports.darBajaMiembro = async (miembroId) => {
   return miembro;
 };
 
-exports.darAltaExMiembro = async (miembroId) => {
+exports.darAltaExMiembro = async miembroId => {
   const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' }).populate({ path: 'solicitudMiembro' });
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de alta no existe');
   if (checkExistencia.estaDeAlta) throw errorLanzado(403, 'El miembro que intenta dar de alta ya lo está');

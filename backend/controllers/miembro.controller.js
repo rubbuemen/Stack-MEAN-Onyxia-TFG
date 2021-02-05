@@ -20,6 +20,24 @@ exports.getMiembrosVigentes = async (req, res) => {
   }
 };
 
+exports.getMiembrosJuntaSuperior = async (req, res) => {
+  try {
+    const miembros = await miembroService.getMiembrosJuntaSuperior();
+    return res.status(200).send({ miembros });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getMiembrosJuntaVocales = async (req, res) => {
+  try {
+    const miembros = await miembroService.getMiembrosJuntaVocales();
+    return res.status(200).send({ miembros });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.darBajaMiembro = async (req, res) => {
   try {
     const miembroId = req.params.miembroId;
