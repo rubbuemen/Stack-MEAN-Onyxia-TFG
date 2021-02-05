@@ -118,68 +118,24 @@
         </div>
       </section>
       <section class="row justify-content-center">
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
+        <div class="col-md-6 col-lg-4 my-3 my-lg-0" *ngFor="let miembro of miembrosJuntaSuperior">
           <div class="card mx-auto ml-md-auto">
             <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/junta-presidente.jpg" alt="Card image cap">
+              <img class="card-img-top" [src]="miembro.fotografia" alt="{{miembro.nombre}}">
             </div>
             <div class="card-body text-center">
-              <h5 class="card-title">Presidente</h5>
-              <p class="card-text">Daniel Palacios Carrascosa</p>
+              <h5 class="card-title text-capitalize">{{miembro.rol}}</h5>
+              <p class="card-text">{{miembro.nombre}} {{miembro.apellidos}}</p>
               <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vicepresidente</h5>
-              <p class="card-text">Jairo Rayas Jiménez</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Secretario</h5>
-              <p class="card-text">José Miguel Molina Durán</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
+                <li class="list-inline-item" *ngFor="let redSocial of miembro.redSocials">
+                  <a href="{{redSocial.enlace}}" title="{{redSocial.nombre}}" target="_blank">
+                    <fa-icon [icon]="faInstagram" *ngIf="redSocial.nombre === 'Instagram'"></fa-icon>
+                    <fa-icon [icon]="faTwitter" *ngIf="redSocial.nombre === 'Twitter'"></fa-icon>
+                    <fa-icon [icon]="faFacebookF" *ngIf="redSocial.nombre === 'Facebook'"></fa-icon>
+                    <fa-icon [icon]="faTwitch" *ngIf="redSocial.nombre === 'Twitch'"></fa-icon>
+                    <fa-icon [icon]="faYoutube" *ngIf="redSocial.nombre === 'YouTube'"></fa-icon>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -188,139 +144,29 @@
       <section class="row">
         <div class="col mt-5">
           <h3 class="text-uppercase">Vocales</h3>
-          <p class="large">Actualmente contamos con 6 vocales en nuestra junta directiva.</p>
+          <p class="large">Actualmente contamos con {{miembrosJuntaVocales.length}} vocales en nuestra junta directiva.</p>
         </div>
       </section>
       <section class="row mt-3 justify-content-center cards-vocales">
         <!-- <div class="col-12 col-md-4 col-xl-2 my-3 my-xl-0"></div>  Este contenedor si se quiere distribución de 5 cards en pantalla grande y activar CSS -->
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
+        <div class="col-md-6 col-lg-4 my-3 my-lg-0" *ngFor="let miembro of miembrosJuntaVocales">
           <div class="card mx-auto ml-md-auto">
             <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
+              <img class="card-img-top" [src]="miembro.fotografia" alt="{{miembro.nombre}}">
             </div>
             <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Laura Gómez Pechamiel</p>
+              <h5 class="card-title text-capitalize">{{miembro.rol}}</h5>
+              <p class="card-text">{{miembro.nombre}} {{miembro.apellidos}}</p>
               <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Sara María Cumplido Díaz</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 my-lg-0">
-          <div class="card mx-auto ml-md-auto0">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Carlos Roberto Borreguero Martín</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 mt-lg-4">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Patricia Domínguez Piña</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 mt-lg-4">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Álvaro Ortega Vela</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 my-3 mt-lg-4">
-          <div class="card mx-auto ml-md-auto">
-            <div class="card-wrapper-image">
-              <img class="card-img-top" src="./assets/images/default-card.svg" alt="Card image cap">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title">Vocal</h5>
-              <p class="card-text">Alicia Cubero Prieto</p>
-              <ul class="list-inline mb-1">
-                <li class="list-inline-item"><a href="https://www.facebook.com/" title="Facebook" target="_blank">
-                    <fa-icon [icon]="faInstagram"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://plus.google.com/" title="Google+" target="_blank">
-                    <fa-icon [icon]="faTwitter"></fa-icon>
-                  </a></li>
-                <li class="list-inline-item"><a href="https://twitter.com" title="Twitter" target="_blank">
-                    <fa-icon [icon]="faFacebookF"></fa-icon>
-                  </a></li>
+                <li class="list-inline-item" *ngFor="let redSocial of miembro.redSocials">
+                  <a href="{{redSocial.enlace}}" title="{{redSocial.nombre}}" target="_blank">
+                    <fa-icon [icon]="faInstagram" *ngIf="redSocial.nombre === 'Instagram'"></fa-icon>
+                    <fa-icon [icon]="faTwitter" *ngIf="redSocial.nombre === 'Twitter'"></fa-icon>
+                    <fa-icon [icon]="faFacebookF" *ngIf="redSocial.nombre === 'Facebook'"></fa-icon>
+                    <fa-icon [icon]="faTwitch" *ngIf="redSocial.nombre === 'Twitch'"></fa-icon>
+                    <fa-icon [icon]="faYoutube" *ngIf="redSocial.nombre === 'YouTube'"></fa-icon>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

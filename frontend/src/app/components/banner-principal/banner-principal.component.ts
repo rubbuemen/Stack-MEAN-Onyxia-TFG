@@ -11,10 +11,7 @@ import { UtilsService } from '../../services/utils.service';
 export class BannerPrincipalComponent implements OnInit {
   public banners: Banner[] = [];
 
-  constructor(
-    private bannerService: BannerService,
-    private utils: UtilsService
-  ) {}
+  constructor(private bannerService: BannerService, private utils: UtilsService) { }
 
   ngOnInit(): void {
     this.getBanners();
@@ -23,8 +20,7 @@ export class BannerPrincipalComponent implements OnInit {
   private getBanners(): void {
     this.bannerService.getBanners().subscribe((banners) => {
       banners.forEach((banner) => {
-        let imagen =
-          'data:' + banner.imagen.mimetype + ';base64,' + banner.imagen.data;
+        let imagen = 'data:' + banner.imagen.mimetype + ';base64,' + banner.imagen.data;
         const imagenSRC = this.utils.usarImagenBase64(imagen);
         banner.imagen = imagenSRC;
       });
