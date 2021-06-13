@@ -1,12 +1,15 @@
-import { CuentaUsuario } from './cuentaUsuario.model';
-import { RedSocial } from './redSocial.model';
-import { SolicitudMiembro } from './solicitudMiembro.model';
+import * as mongoose from 'mongoose';
+
+import { CuentaUsuario } from './cuenta-usuario.model';
+import { RedSocial } from './red-social.model';
+import { SolicitudMiembro } from './solicitud-miembro.model';
 import { Buzon } from './buzon.model';
-import { InscripcionEvento } from './inscripcionEvento.model';
-import { ActividadMiembroTramo } from './actividadMiembroTramo.model';
+import { InscripcionEvento } from './inscripcion-evento.model';
+import { ActividadMiembroTramo } from './actividad-miembro-tramo.model';
 
 export class Miembro {
   constructor(
+    public _id: mongoose.Schema.Types.ObjectId,
     public nombre: string,
     public apellidos: string,
     public fechaNacimiento: Date,

@@ -26,61 +26,70 @@
          <section class="card-heading"></section>
          <section class="card-body p-5">
            <h2 class="title">Solicitud para ser socio</h2>
-           <form method="POST">
+           <form autocomplete="off" [formGroup]="solicitudMiembroForm" (ngSubmit)="enviarSolicitudMiembro()">
              <div class="form-row">
                <div class="form-group col-12 col-md-6">
                  <label for="comoHaConocidoAsociacion" class="sr-only">¿Cómo nos has conocido?</label>
                  <div class="input-group">
-                   <input id="comoHaConocidoAsociacion" type="text" class="form-control" placeholder="¿Cómo nos has conocido?" required>
+                   <input id="comoHaConocidoAsociacion" formControlName="comoHaConocidoAsociacion" type="text" class="form-control"
+                     placeholder="¿Cómo nos has conocido?" required>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('comoHaConocidoAsociacion')">Debes indicar cómo
+                   has conocido la asociación</small>
                </div>
                <div class="form-group col-12 col-md-6 select-style">
                  <label for="intereses" class="sr-only">Intereses</label>
                  <div class="input-group">
-                   <select id="intereses" class="form-control selectpicker" title="Intereses" multiple aria-describedby="intereses-help" required>
-                     <option>Baile / K-Pop</option>
-                     <option>Dibujo</option>
-                     <option>Softcombat</option>
-                     <option>Talleres y manualidades</option>
-                     <option>Videojuegos</option>
-                     <option>Cosplay</option>
+                   <select id="intereses" formControlName="intereses" class="form-control selectpicker" title="Intereses" multiple
+                     aria-describedby="intereses-help" required>
+                     <option value="BAILE">Baile / K-Pop</option>
+                     <option value="DIBUJO">Dibujo</option>
+                     <option value="SOFTCOMBAT">Softcombat</option>
+                     <option value="TALLERESMANUALIDADES">Talleres y manualidades</option>
+                     <option value="VIDEOJUEGOS">Videojuegos</option>
+                     <option value="COSPLAY">Cosplay</option>
                    </select>
                  </div>
                  <small id="intereses-help" class="form-text text-muted pl-1">Puedes seleccionar varios intereses</small>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('intereses')">Debes indicar al menos un
+                   interés</small>
                </div>
              </div>
              <div class="form-row">
                <div class="form-group col-12 col-md-6">
                  <label for="habilidades" class="sr-only">Habilidades</label>
                  <div class="input-group">
-                   <input id="habilidades" type="text" class="form-control" placeholder="Habilidades" required>
+                   <input id="habilidades" formControlName="habilidades" type="text" class="form-control" placeholder="Habilidades" required>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('habilidades')">Debes indicar tus habilidades</small>
                </div>
                <div class="form-group col-12 col-md-6">
                  <label for="ideas" class="sr-only">Ideas</label>
                  <div class="input-group">
-                   <input id="ideas" type="text" class="form-control" placeholder="Ideas" required>
+                   <input id="ideas" formControlName="ideas" type="text" class="form-control" placeholder="Ideas" required>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('ideas')">Debes indicar alguna idea</small>
                </div>
              </div>
              <div class="form-row">
                <div class="form-group col-12 col-md-6 select-style">
-                 <label for="cochePropio" class="sr-only">¿Dispones de coche propio?</label>
+                 <label for="tieneCochePropio" class="sr-only">¿Dispones de coche propio?</label>
                  <div class="input-group">
-                   <select id="cochePropio" class="form-control selectpicker" title="¿Dispones de coche propio?" required>
-                     <option>Sí</option>
-                     <option>No</option>
+                   <select id="tieneCochePropio" formControlName="tieneCochePropio" class="form-control selectpicker" title="¿Dispones de coche propio?"
+                     required>
+                     <option value=true>Sí</option>
+                     <option value=false>No</option>
                    </select>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('tieneCochePropio')">Debes indicar si dispones de
+                   coche propio</small>
                </div>
                <div class="form-group col-12 col-md-6 select-style">
                  <label for="miembrosConocidos" class="sr-only">Miembros conocidos</label>
                  <div class="input-group">
-                   <select id="miembrosConocidos" class="form-control selectpicker" title="Miembros conocidos" multiple
-                     aria-describedby="miembrosConocidos-help">
-                     <option>Rubén Bueno Menéndez</option>
-                     <option>Pepito Perez Espinosa</option>
-                     <option>Otro nombre random</option>
+                   <select id="miembrosConocidos" formControlName="miembrosConocidos" class="form-control selectpicker" title="Miembros conocidos"
+                     aria-describedby="miembrosConocidos-help" multiple>
+                     <option *ngFor="let miembro of miembros" [value]="miembro._id">{{miembro.nombre }} {{miembro.apellidos}} ({{miembro.alias}})</option>
                    </select>
                  </div>
                  <small id="miembrosConocidos-help" class="form-text text-muted pl-1">Puedes seleccionar varios miembros o incluso ninguno</small>
@@ -92,4 +101,7 @@
        </div>
      </div>
    </article>
+   <!-- <article class="w-100 bg-grey pb-5" *ngIf="rol == 'particular'">
+
+   </article> -->
  </main>

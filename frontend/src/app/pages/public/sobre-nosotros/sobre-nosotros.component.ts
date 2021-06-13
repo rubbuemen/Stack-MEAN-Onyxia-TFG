@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
-import { faFacebookF, faTwitter, faInstagram, IconDefinition, faTwitch, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import {
+  faFacebookF,
+  faTwitter,
+  faInstagram,
+  IconDefinition,
+  faTwitch,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons';
 
 import { UtilsService } from 'src/app/services/utils.service';
 
 import { Miembro } from '../../../models/miembro.model';
 import { MiembroService } from '../../../services/public/miembro.service';
-
 
 @Component({
   selector: 'app-sobre-nosotros',
@@ -22,8 +28,10 @@ export class SobreNosotrosComponent {
   public miembrosJuntaSuperior: Miembro[] = [];
   public miembrosJuntaVocales: Miembro[] = [];
 
-
-  constructor(private miembroService: MiembroService, private utils: UtilsService) { }
+  constructor(
+    private miembroService: MiembroService,
+    private utils: UtilsService
+  ) {}
 
   ngOnInit(): void {
     this.getJuntaSuperior();
@@ -33,7 +41,11 @@ export class SobreNosotrosComponent {
   private getJuntaSuperior(): void {
     this.miembroService.getJuntaSuperior().subscribe((miembros) => {
       miembros.forEach((miembro) => {
-        let fotografia = 'data:' + miembro.fotografia.mimetype + ';base64,' + miembro.fotografia.data;
+        let fotografia =
+          'data:' +
+          miembro.fotografia.mimetype +
+          ';base64,' +
+          miembro.fotografia.data;
         const imagenSRC = this.utils.usarImagenBase64(fotografia);
         miembro.fotografia = imagenSRC;
         miembro.rol = miembro.rol.toLowerCase();
@@ -45,7 +57,11 @@ export class SobreNosotrosComponent {
   private getJuntaVocales(): void {
     this.miembroService.getJuntaVocales().subscribe((miembros) => {
       miembros.forEach((miembro) => {
-        let fotografia = 'data:' + miembro.fotografia.mimetype + ';base64,' + miembro.fotografia.data;
+        let fotografia =
+          'data:' +
+          miembro.fotografia.mimetype +
+          ';base64,' +
+          miembro.fotografia.data;
         const imagenSRC = this.utils.usarImagenBase64(fotografia);
         miembro.fotografia = imagenSRC;
         miembro.rol = miembro.rol.toLowerCase();
@@ -53,5 +69,4 @@ export class SobreNosotrosComponent {
       this.miembrosJuntaVocales = miembros;
     });
   }
-
 }

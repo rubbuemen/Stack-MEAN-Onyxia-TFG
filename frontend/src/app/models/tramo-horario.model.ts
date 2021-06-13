@@ -1,4 +1,4 @@
-import { ActividadMiembroTramo } from './actividadMiembroTramo.model';
+import { ActividadMiembroTramo } from './actividad-miembro-tramo.model';
 
 export class TramoHorario {
   constructor(

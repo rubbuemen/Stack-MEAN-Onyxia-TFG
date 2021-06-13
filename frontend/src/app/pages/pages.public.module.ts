@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Parte pública
 import { InicioPublicComponent } from './public/inicio/inicio.component';
@@ -68,6 +69,8 @@ import { PagesPublicComponent } from './pages.public.component';
     RouterModule,
     ComponentsModule,
     FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class PagesPublicModule {}

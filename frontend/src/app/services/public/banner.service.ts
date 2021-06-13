@@ -13,15 +13,17 @@ const base_url = environment.base_url;
   providedIn: 'root',
 })
 export class BannerService {
-  constructor(private requestConstructorService: RequestsConstructorService) { }
+  constructor(private requestConstructorService: RequestsConstructorService) {}
 
   public getBanners(): Observable<Banner[]> {
-    return this.requestConstructorService.request('GET', `${base_url}/banner/list`, {}, {}, false, [Banner])
-      .pipe(map((res: { banners: Banner[] }) =>
-        res.banners.sort((a, b) => {
-          return a.orden < b.orden ? -1 : 1;
-        })
-      ));
+    return this.requestConstructorService
+      .request('GET', `${base_url}/banner/list`, {}, {}, false, [Banner])
+      .pipe(
+        map((res: { banners: Banner[] }) =>
+          res.banners.sort((a, b) => {
+            return a.orden < b.orden ? -1 : 1;
+          })
+        )
+      );
   }
-
 }

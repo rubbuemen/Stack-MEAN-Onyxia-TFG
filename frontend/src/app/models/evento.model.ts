@@ -1,7 +1,7 @@
 import { Miembro } from './miembro.model';
-import { DiaEvento } from './diaEvento.model';
+import { DiaEvento } from './dia-evento.model';
 import { Actividad } from './actividad.model';
-import { InscripcionEvento } from './inscripcionEvento.model';
+import { InscripcionEvento } from './inscripcion-evento.model';
 import { Inventario } from './inventario.model';
 
 export class Evento {

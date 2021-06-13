@@ -27,7 +27,7 @@ exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   }
 };
 
-exports.getEstadoSolicitudMiembro = async (usuarioLogeado) => {
+exports.getEstadoSolicitudMiembro = async usuarioLogeado => {
   const actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
     path: 'solicitudMiembro',
     select: 'estadoSolicitud estaPagado -_id',
@@ -509,7 +509,7 @@ exports.rechazarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) =>
   return solicitudMiembro;
 };
 
-exports.establecerPagadoSolicitudMiembro = async (solicitudMiembroId) => {
+exports.establecerPagadoSolicitudMiembro = async solicitudMiembroId => {
   const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
   if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro a la que intenta establecer como pagado manualmente no existe');
   if (checkExistencia.estadoSolicitud !== 'ACEPTADO')
@@ -548,7 +548,7 @@ exports.eliminarSolicitudesMiembroRechazadas = async () => {
           },
         },
       ]);
-      solicitudesMiembro.forEach(async (solicitudMiembro) => {
+      solicitudesMiembro.forEach(async solicitudMiembro => {
         await Visitante.findByIdAndUpdate(
           { _id: solicitudMiembro.visitante._id },
           {

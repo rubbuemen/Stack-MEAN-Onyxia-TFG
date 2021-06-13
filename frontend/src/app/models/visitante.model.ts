@@ -1,6 +1,6 @@
-import { CuentaUsuario } from './cuentaUsuario.model';
-import { RedSocial } from './redSocial.model';
-import { SolicitudMiembro } from './solicitudMiembro.model';
+import { CuentaUsuario } from './cuenta-usuario.model';
+import { RedSocial } from './red-social.model';
+import { SolicitudMiembro } from './solicitud-miembro.model';
 import { Buzon } from './buzon.model';
 
 export class Visitante {

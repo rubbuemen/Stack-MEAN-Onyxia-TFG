@@ -10,26 +10,28 @@
         <section class="card-heading"></section>
         <section class="card-body p-5 ">
           <h2 class="title text-center">Login</h2>
-          <form method="POST">
+          <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="form-row">
               <div class="form-group col-12">
                 <label for="usuario" class="sr-only">Usuario</label>
                 <div class="input-group">
                   <fa-icon [icon]="faUser" class="pt-2 pr-2" size="sm"></fa-icon>
-                  <input id="usuario" type="text" class="form-control" placeholder="Usuario" required>
+                  <input id="usuario" formControlName="usuario" type="text" class="form-control" placeholder="Usuario" required>
                 </div>
+                <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('usuario')">Debes indicar el usuario</small>
               </div>
               <div class="form-group col-12">
                 <label for="contraseña" class="sr-only">Contraseña</label>
                 <div class="input-group">
                   <fa-icon [icon]="faLock" class="pt-2 pr-2" size="sm"></fa-icon>
-                  <input id="contraseña" type="password" class="form-control" placeholder="Contraseña" required>
+                  <input id="contraseña" formControlName="contraseña" type="password" class="form-control" placeholder="Contraseña" autocomplete="on" required>
                 </div>
+                <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('contraseña')">Debes indicar la contraseña</small>
               </div>
             </div>
             <button class="btn btn-primary w-100" type="submit">Autenticarse</button>
           </form>
-          <div class="text-center pt-3"><small>¿No estás registrado? <a href="#">Regístrate</a></small></div>
+          <div class="text-center pt-3"><small>¿No estás registrado? <a [routerLink]="['/registro']">Regístrate</a></small></div>
         </section>
       </div>
     </div>

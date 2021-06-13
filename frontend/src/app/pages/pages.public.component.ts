@@ -14,6 +14,7 @@ export class PagesPublicComponent implements OnInit {
     this.router.events.subscribe((event) => {
       (function ($) {
         $('#main_nav').collapse('hide');
+        $('.selectpicker').selectpicker('refresh');
       })(jQuery);
     });
   }
@@ -28,23 +29,23 @@ export class PagesPublicComponent implements OnInit {
         return obj && obj.__esModule
           ? obj
           : {
-            default: obj,
-          };
+              default: obj,
+            };
       }
 
       var _typeof =
         typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
           ? function (obj) {
-            return typeof obj;
-          }
+              return typeof obj;
+            }
           : function (obj) {
-            return obj &&
-              typeof Symbol === 'function' &&
-              obj.constructor === Symbol &&
-              obj !== Symbol.prototype
-              ? 'symbol'
-              : typeof obj;
-          };
+              return obj &&
+                typeof Symbol === 'function' &&
+                obj.constructor === Symbol &&
+                obj !== Symbol.prototype
+                ? 'symbol'
+                : typeof obj;
+            };
 
       function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -275,8 +276,8 @@ export class PagesPublicComponent implements OnInit {
                 .removeClass(_this._config.collapsingClass)
                 .addClass(
                   _this._config.collapseClass +
-                  ' ' +
-                  _this._config.collapseInClass
+                    ' ' +
+                    _this._config.collapseInClass
                 )
                 .height('')
                 .attr('aria-expanded', true);
@@ -348,9 +349,9 @@ export class PagesPublicComponent implements OnInit {
             _el.height() == 0 || _el.css('display') == 'none'
               ? complete()
               : _el
-                .height(0)
-                .one(Util.TRANSITION_END, complete)
-                .emulateTransitionEnd(TRANSITION_DURATION);
+                  .height(0)
+                  .one(Util.TRANSITION_END, complete)
+                  .emulateTransitionEnd(TRANSITION_DURATION);
           };
 
           AdminMenu.prototype.setTransitioning = function setTransitioning(
@@ -488,13 +489,13 @@ export class PagesPublicComponent implements OnInit {
         $(function () {
           for (
             var url = window.location,
-            element = $('ul#sidebarnav a')
-              .filter(function () {
-                return this.href == url;
-              })
-              .addClass('active')
-              .parent()
-              .addClass('active');
+              element = $('ul#sidebarnav a')
+                .filter(function () {
+                  return this.href == url;
+                })
+                .addClass('active')
+                .parent()
+                .addClass('active');
             ;
 
           ) {

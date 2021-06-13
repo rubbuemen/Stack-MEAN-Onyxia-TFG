@@ -1,6 +1,6 @@
 import { Miembro } from './miembro.model';
 import { Material } from './material.model';
-import { ActividadMiembroTramo } from './actividadMiembroTramo.model';
+import { ActividadMiembroTramo } from './actividad-miembro-tramo.model';
 
 export class Actividad {
   constructor(

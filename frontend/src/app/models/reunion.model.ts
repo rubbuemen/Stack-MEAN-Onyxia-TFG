@@ -1,4 +1,4 @@
-import { AsistenciaMiembroReunion } from './asistenciaMiembroReunion';
+import { AsistenciaMiembroReunion } from './asistencia-miembro-reunion';
 export class Reunion {
   constructor(
     public fecha: Date,
