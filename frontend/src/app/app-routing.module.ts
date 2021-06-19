@@ -9,7 +9,7 @@ import { ErrorComponent } from './error/error.component';
 const routes: Routes = [{ path: '**', component: ErrorComponent }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), PagesRoutingModule],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), PagesRoutingModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
