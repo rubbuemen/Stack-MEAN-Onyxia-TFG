@@ -2,7 +2,6 @@ import { Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { EventEmitter } from '@angular/core';
 
 import { environment } from '../../environments/environment.prod';
@@ -25,7 +24,6 @@ export class AuthService {
   constructor(
     private requestConstructorService: RequestsConstructorService,
     private router: Router,
-    private location: Location,
     private menuService: MenuService
   ) {}
 
@@ -43,8 +41,9 @@ export class AuthService {
       .pipe(
         map((res: { jwtToken: string }) => {
           localStorage.setItem('jwtToken', res.jwtToken);
-          this.cambiarMenu('login');
-          this.location.back();
+          this.getUsuarioLogeado();
+          this.generarMenuSegunAuth(true);
+          this.router.navigate(['/']);
           return res;
         })
       );
@@ -52,8 +51,9 @@ export class AuthService {
 
   public logout(): void {
     localStorage.removeItem('jwtToken');
-    this.cambiarMenu('logout');
-    this.router.navigate([this.router.url]);
+    this.usuarioAutentificado = undefined;
+    this.generarMenuSegunAuth(false);
+    this.router.navigate(['/']);
   }
 
   public getUsuarioLogeado(): any {
@@ -68,7 +68,8 @@ export class AuthService {
   }
 
   public estaAutentificado(): boolean {
-    return this.usuarioAutentificado ? true : false;
+    const autentificado: boolean = this.usuarioAutentificado ? true : false;
+    return autentificado;
   }
 
   public tieneRol(autoridad: string): boolean {
@@ -78,31 +79,28 @@ export class AuthService {
     );
   }
 
-  private cambiarMenu(opcion: string): void {
-    const menu = this.menuService.generarMenu();
-    if (opcion === 'logout') {
-      const indexMenu: number = menu.findIndex((obj) => {
-        return obj.titulo === 'Cerrar sesión';
-      });
-      menu.splice(indexMenu, 1);
+  public generarMenuSegunAuth(autentificado: boolean): void {
+    const menu = this.menuService.generarMenu(); // Reset del menú
+    if (!autentificado) {
       menu.push({
         titulo: 'Zona privada',
-        url: '/privado',
+        url: '/login',
         submenu: [
           { titulo: 'Registrarse', url: '/registro' },
           { titulo: 'Autentificarse', url: '/login' },
         ],
       });
-    }
-    if (opcion === 'login') {
-      const indexMenu: number = menu.findIndex((obj) => {
-        return obj.titulo === 'Zona privada';
-      });
-      menu.splice(indexMenu, 1);
-      menu.push({
-        titulo: 'Cerrar sesión',
-        url: '/logout',
-      });
+    } else {
+      menu.push(
+        {
+          titulo: 'Zona privada',
+          url: '/privado',
+        },
+        {
+          titulo: 'Cerrar sesión',
+          url: '/logout',
+        }
+      );
     }
     this.menuEmit.emit(menu);
   }

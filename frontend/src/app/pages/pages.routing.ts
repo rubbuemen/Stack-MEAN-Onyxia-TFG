@@ -25,6 +25,11 @@ import { InicioPrivateComponent } from './private/inicio/inicio.component';
 import { RedSocialRoutingModule } from './private/red-social/red-social.routing';
 import { ActorRoutingModule } from './private/actor/actor.routing';
 
+import {
+  NoAuthGuardService,
+  AuthGuardService,
+} from '../auth/auth-guard.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -47,14 +52,23 @@ const routes: Routes = [
       { path: 'fotografias', component: FotografiasPublicComponent },
       { path: 'noticias', component: NoticiasPublicComponent },
       { path: 'noticia-display', component: NoticiaDisplayPublicComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'registro', component: RegistroComponent },
+      {
+        path: 'login',
+        canActivate: [NoAuthGuardService],
+        component: LoginComponent,
+      },
+      {
+        path: 'registro',
+        canActivate: [NoAuthGuardService],
+        component: RegistroComponent,
+      },
     ],
   },
   {
     path: 'privado',
     component: PagesPrivateComponent,
-    canActivate: [],
+    canActivate: [AuthGuardService],
+    canActivateChild: [AuthGuardService],
     children: [
       {
         path: '',

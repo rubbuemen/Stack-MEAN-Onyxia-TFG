@@ -29,15 +29,8 @@ export class MenuService {
       { titulo: 'Actividades', url: '/actividades' },
       { titulo: 'Fotografias', url: '/albumes-fotografias' },
       { titulo: 'Noticias', url: '/noticias' },
-      {
-        titulo: 'Zona privada',
-        url: '/privado',
-        submenu: [
-          { titulo: 'Registrarse', url: '/registro' },
-          { titulo: 'Autentificarse', url: '/login' },
-        ],
-      },
     ];
+
     return menu;
   }
 }

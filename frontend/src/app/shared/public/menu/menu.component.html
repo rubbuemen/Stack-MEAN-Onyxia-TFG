@@ -5,7 +5,7 @@
   <ul class="navbar-nav flex-wrap menu-border">
     <li class="nav-item dropdown py-2 py-md-0 px-2" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let item of menuItems">
       <a class="nav-link" *ngIf="item.url !== '/logout'" [routerLink]="item.url">{{item.titulo}}</a>
-      <a class="nav-link" *ngIf="item.url === '/logout'" routerLink="/" (click)="logout()">{{item.titulo}}</a>
+      <a class="nav-link" *ngIf="item.url === '/logout'" [routerLink]="item.url" (click)="logout()">{{item.titulo}}</a>
       <div *ngIf="item.hasOwnProperty('submenu')">
         <app-desplegable-menu data-toggle="dropdown"></app-desplegable-menu>
         <ul class="dropdown-menu mt-2">

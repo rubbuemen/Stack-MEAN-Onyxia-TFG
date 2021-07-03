@@ -1,6 +1,5 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { MenuService } from '../../../services/public/menu.service';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({
@@ -9,13 +8,11 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrls: ['./menu.component.css'],
 })
 export class MenuPublicComponent {
-  public menuItems: any[] = this.menuService.generarMenu();
+  public menuItems: any[];
 
-  constructor(
-    private menuService: MenuService,
-    private authService: AuthService
-  ) {
+  constructor(private authService: AuthService) {
     this.authService.menuEmit.subscribe((menu) => (this.menuItems = menu));
+    this.authService.generarMenuSegunAuth(this.authService.estaAutentificado());
   }
 
   public logout() {

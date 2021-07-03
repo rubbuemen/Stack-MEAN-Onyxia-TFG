@@ -5,10 +5,15 @@ import { PagesPrivateComponent } from '../../pages.private.component';
 
 import { RedSocialListComponent } from './red-social-list/red-social-list.component';
 import { RedSocialFormComponent } from './red-social-form/red-social-form.component';
+import {
+  NoAuthGuardService,
+  AuthGuardService,
+} from '../../../auth/auth-guard.service';
 
 const routes: Routes = [
   {
     path: 'privado/red-social',
+    canActivate: [AuthGuardService],
     component: PagesPrivateComponent,
     data: { titulo: 'Redes sociales' },
     children: [

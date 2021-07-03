@@ -5,7 +5,12 @@
   To learn more about this file see: https://angular.io/config/solution-tsconfig.
 */
 {
-  "files": [],
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
+  "compilerOptions": {
+    "experimentalDecorators": true
+  },
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -13,5 +18,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-]
+  ]
 }
