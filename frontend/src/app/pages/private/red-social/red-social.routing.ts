@@ -12,7 +12,7 @@ import {
 
 const routes: Routes = [
   {
-    path: 'privado/red-social',
+    path: 'private/red-social',
     canActivate: [AuthGuardService],
     component: PagesPrivateComponent,
     data: { titulo: 'Redes sociales' },

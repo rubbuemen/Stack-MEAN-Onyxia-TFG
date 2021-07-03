@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-titulo-privado',
+  selector: 'app-titulo-private',
   templateUrl: './titulo.component.html',
   styles: [],
 })

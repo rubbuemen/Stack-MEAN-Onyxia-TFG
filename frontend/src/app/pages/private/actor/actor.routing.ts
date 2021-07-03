@@ -11,7 +11,7 @@ import { VisitantesListComponent } from './visitantes-list/visitantes-list.compo
 
 const routes: Routes = [
   {
-    path: 'privado/actor',
+    path: 'private/actor',
     component: PagesPrivateComponent,
     children: [
       {

@@ -65,7 +65,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'privado',
+    path: 'private',
     component: PagesPrivateComponent,
     canActivate: [AuthGuardService],
     canActivateChild: [AuthGuardService],

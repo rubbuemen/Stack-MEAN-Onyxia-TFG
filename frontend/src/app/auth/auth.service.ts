@@ -94,7 +94,7 @@ export class AuthService {
       menu.push(
         {
           titulo: 'Zona privada',
-          url: '/privado',
+          url: '/private',
         },
         {
           titulo: 'Cerrar sesión',
