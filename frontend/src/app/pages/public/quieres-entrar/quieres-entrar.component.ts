@@ -5,6 +5,7 @@ import swal from 'sweetalert2';
 import { Miembro } from '../../../models/miembro.model';
 import { MiembroService } from '../../../services/public/miembro.service';
 import { SolicitudMiembroService } from '../../../services/public/solicitud-miembro.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 declare const jQuery: any;
 
@@ -15,7 +16,8 @@ declare const jQuery: any;
 })
 export class QuieresEntrarComponent {
   public miembros: Miembro[] = [];
-  public formEnviado = false;
+  public formEnviado: boolean = false;
+  public esVisitante: boolean = false;
 
   public solicitudMiembroForm = this.fb.group({
     comoHaConocidoAsociacion: ['', Validators.required],
@@ -29,7 +31,8 @@ export class QuieresEntrarComponent {
   constructor(
     private miembroService: MiembroService,
     private solicitudMiembroService: SolicitudMiembroService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +42,7 @@ export class QuieresEntrarComponent {
         $('#miembrosConocidos').selectpicker('refresh');
       })(jQuery);
     }, 500);
+    this.esVisitante = this.authService.tieneRol('visitante');
   }
 
   private getMiembrosVigentes(): void {

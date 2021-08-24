@@ -8,7 +8,7 @@ exports.rellenarSolicitudMiembro = async (req, res) => {
     if (tieneCochePropio === undefined || !comoHaConocidoAsociacion || !intereses || !habilidades || !ideas)
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const interesesValidos = ['BAILE', 'DIBUJO', 'SOFTCOMBAT', 'TALLERESMANUALIDADES', 'VIDEOJUEGOS', 'COSPLAY'];
-    if (!intereses.every((interes) => interesesValidos.includes(interes))) throw errorLanzado(400, 'Los intereses indicados no están definidos');
+    if (!intereses.every(interes => interesesValidos.includes(interes))) throw errorLanzado(400, 'Los intereses indicados no están definidos');
     const solicitudMiembro = await solicitudMiembroService.rellenarSolicitudMiembro(req.body, usuarioLogeado);
     return res.status(200).send({ solicitudMiembro });
   } catch (error) {

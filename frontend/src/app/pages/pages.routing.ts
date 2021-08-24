@@ -28,6 +28,7 @@ import { ActorRoutingModule } from './private/actor/actor.routing';
 import {
   NoAuthGuardService,
   AuthGuardService,
+  NoAuthOVisitanteGuardService,
 } from '../auth/auth-guard.service';
 
 const routes: Routes = [
@@ -39,7 +40,11 @@ const routes: Routes = [
       { path: 'politica-cookies', component: PoliticaCookiesComponent },
       { path: 'sobre-nosotros', component: SobreNosotrosComponent },
       { path: 'colaboraciones', component: ColaboracionesComponent },
-      { path: 'quieres-entrar', component: QuieresEntrarComponent },
+      {
+        path: 'quieres-entrar',
+        canActivate: [NoAuthOVisitanteGuardService],
+        component: QuieresEntrarComponent,
+      },
       { path: 'eventos', component: EventosPublicComponent },
       { path: 'bases-concurso', component: BasesConcursosComponent },
       { path: 'evento-display', component: EventoPublicDisplayComponent },

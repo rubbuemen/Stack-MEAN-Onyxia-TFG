@@ -102,6 +102,12 @@ export class AuthService {
         }
       );
     }
+    if (!autentificado || this.tieneRol('visitante')) {
+      menu.splice(2, 0, {
+        titulo: '¿Quieres entrar en Onyxia?',
+        url: '/quieres-entrar',
+      });
+    }
     this.menuEmit.emit(menu);
   }
 }

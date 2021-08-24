@@ -20,7 +20,7 @@
      </div>
    </article>
 
-   <article class="w-100 bg-grey pb-5">
+   <article class="w-100 bg-grey pb-5" *ngIf="esVisitante">
      <div class="container">
        <div class="card card-form">
          <section class="card-heading"></section>
@@ -101,7 +101,17 @@
        </div>
      </div>
    </article>
-   <!-- <article class="w-100 bg-grey pb-5" *ngIf="rol == 'particular'">
-
-   </article> -->
+   <article class="w-100 bg-grey pb-5" *ngIf="!esVisitante">
+     <div class="container">
+       <div class="card card-form">
+         <section class="card-heading"></section>
+         <section class="card-body p-5">
+           <h2 class="title">¿Te quieres unir?</h2>
+           <p>Para poder enviar la solicitud necesitas estar autenticado.</p>
+           <p>Si no tienes cuenta puedes <a [routerLink]="['/registro']">registrarte</a>. En caso
+             de tenerla, tan sólo <a [routerLink]="['/login']">autentícate</a>.</p>
+         </section>
+       </div>
+     </div>
+   </article>
  </main>

@@ -15,7 +15,6 @@ export class MenuService {
         url: '/sobre-nosotros',
         submenu: [{ titulo: 'Colaboraciones', url: '/colaboraciones' }],
       },
-      { titulo: '¿Quieres entrar en Onyxia?', url: '/quieres-entrar' },
       {
         titulo: 'Eventos',
         url: '/eventos',
