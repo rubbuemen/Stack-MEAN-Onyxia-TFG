@@ -27,6 +27,7 @@ export class RequestsConstructorService {
       let httpResponse: any;
       switch (method) {
         case 'GET':
+          uri = this.establecerParametros(uri, data);
           httpResponse = this.httpClient.get<typeof modelClass>(uri, headers);
           break;
         case 'POST':
@@ -53,6 +54,18 @@ export class RequestsConstructorService {
       return httpResponse;
     } catch (error) {
       throw error;
+    }
+  }
+
+  private establecerParametros(uri: string, parametro: Object) {
+    let param: string;
+    if (Object.keys(parametro).length !== 0) {
+      param = parametro[Object.keys(parametro)[0]];
+    }
+    if (param !== undefined) {
+      return uri + '/' + param;
+    } else {
+      return uri;
     }
   }
 }

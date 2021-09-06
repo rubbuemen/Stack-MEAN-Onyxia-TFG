@@ -1,11 +1,33 @@
 const { errorLanzado, controlError } = require('../util/error.util');
 const actividadService = require('../services/actividad.service');
+const eventoService = require('../services/actividad.service');
+
 const { convertirImagenABase64 } = require('../util/funciones.util');
 
 exports.getActividadesPublicas = async (req, res) => {
   try {
     const actividades = await actividadService.getActividadesPublicas();
     return res.status(200).send({ actividades });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getActividadesPublicasPorEventoId = async (req, res) => {
+  try {
+    const eventoId = req.params.eventoId;
+    const actividades = await eventoService.getActividadesPublicasPorEventoId(eventoId);
+    return res.status(200).send({ actividades });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getActividad = async (req, res) => {
+  try {
+    const actividadId = req.params.id;
+    const actividad = await actividadService.getActividad(actividadId);
+    return res.status(200).send({ actividad });
   } catch (error) {
     return controlError(error, res);
   }

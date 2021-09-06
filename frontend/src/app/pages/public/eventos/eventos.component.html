@@ -20,98 +20,34 @@
   <article class="w-100 mb-4 posts">
     <div class="container">
       <div class="row">
-        <section class="col-lg-6 d-flex align-items-stretch">
+        <section class="col-lg-6 d-flex align-items-stretch" *ngFor="let evento of eventosPublicos">
           <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Imagen del evento">
+            <img class="card-img-top" [src]="evento.imagen" alt="{{evento.nombre}}" *ngIf="evento.imagen">
             <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del evento</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam leo quis pharetra tincidunt. Nam sem metus,
-                volutpat at massa nec, mollis semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam nec
-                massa maximus est accumsan pulvinar. Nullam volutpat felis nec nunc condimentum, sed erat curae.
+              <h2 class="card-title">{{evento.nombre}}</h2>
+              <p class="card-text">{{evento.descripcion}}
               </p>
               <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Lugar: </strong> Sevilla</div>
+                <div class="col"><strong class="font-weight-bold">Lugar: </strong> {{evento.lugar}}</div>
               </div>
               <div class="row">
                 <div class="col-6 font-weight-bold">Fecha:</div>
                 <div class="col-6 font-weight-bold">Horario:</div>
               </div>
-              <div class="row">
-                <div class="col-6">15/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
+              <div class="row" *ngFor="let dia of evento.diasEvento">
+                <div class="col-6">{{dia.fecha | date: 'dd/MM/yyyy'}}</div>
+                <div *ngIf="dia.horaInicio !== undefined || dia.horaFinal !== undefined; then pintarTramo else noPintarTramo"></div>
+                <ng-template #pintarTramo>
+                  <div class="col-6">{{dia.horaInicio}} - {{dia.horaFinal}} </div>
+                </ng-template>
+                <ng-template #noPintarTramo>
+                  <div class="col-6">Sin definir</div>
+                </ng-template>
               </div>
-              <div class="row">
-                <div class="col-6">16/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver detalles</a>
+              <a class="btn btn-primary mt-3" [routerLink]="['/evento-display', evento._id]">Ver detalles</a>
             </div>
             <div class="card-footer text-muted">
-              Publicado por "Miembro quien sea"
-            </div>
-          </div>
-        </section>
-        <section class="col-lg-6 d-flex align-items-stretch">
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Imagen del evento">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del evento</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam leo quis pharetra tincidunt. Nam sem metus,
-                volutpat at massa nec, mollis semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam
-                nec
-                massa maximus est accumsan pulvinar. Nullam volutpat felis nec nunc condimentum, sed erat curae.
-              </p>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Lugar: </strong> Sevilla</div>
-              </div>
-              <div class="row">
-                <div class="col-6 font-weight-bold">Fecha:</div>
-                <div class="col-6 font-weight-bold">Horario:</div>
-              </div>
-              <div class="row">
-                <div class="col-6">15/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
-              </div>
-              <div class="row">
-                <div class="col-6">16/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver detalles</a>
-            </div>
-            <div class="card-footer text-muted">
-              Publicado por "Miembro quien sea"
-            </div>
-          </div>
-        </section>
-        <section class="col-lg-6 d-flex align-items-stretch">
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Imagen del evento">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del evento</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam leo quis pharetra tincidunt. Nam sem metus,
-                volutpat at massa nec, mollis semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam
-                nec
-                massa maximus est accumsan pulvinar. Nullam volutpat felis nec nunc condimentum, sed erat curae.
-              </p>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Lugar: </strong> Sevilla</div>
-              </div>
-              <div class="row">
-                <div class="col-6 font-weight-bold">Fecha:</div>
-                <div class="col-6 font-weight-bold">Horario:</div>
-              </div>
-              <div class="row">
-                <div class="col-6">15/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
-              </div>
-              <div class="row">
-                <div class="col-6">16/02/2020</div>
-                <div class="col-6">10:00 - 20:00</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver detalles</a>
-            </div>
-            <div class="card-footer text-muted">
-              Publicado por "Miembro quien sea"
+              Publicado por {{evento.miembroCreador.alias}}
             </div>
           </div>
         </section>

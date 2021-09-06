@@ -11,6 +11,7 @@ router.put('/publicar/:id', auth.junta_directiva, (req, res) => eventoController
 router.put('/ocultar/:id', auth.junta_directiva, (req, res) => eventoController.ocultarEvento(req, res));
 router.put('/cancelar/:id', auth.junta_directiva, (req, res) => eventoController.cancelarEvento(req, res));
 router.get('/listPub', (req, res) => eventoController.getEventosPublicos(req, res));
+router.get('/:id', (req, res) => eventoController.getEvento(req, res));
 router.get('/list', auth.junta_directiva, (req, res) => eventoController.getEventos(req, res));
 
 module.exports = router;

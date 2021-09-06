@@ -13,6 +13,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.disable('etag');
 
 // Morgan para mostrar información de las peticiones
 app.use(
@@ -95,7 +96,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => console.log('Conectado a MongoDB'))
-  .catch((error) => console.log('Ha ocurrido un error al intentar conectarse a MongoDB'));
+  .catch(error => console.log('Ha ocurrido un error al intentar conectarse a MongoDB'));
 
 exports.dropdb = async () => mongoose.connection.db.dropDatabase();
 exports.seedersList = {};

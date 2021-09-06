@@ -9,6 +9,18 @@ exports.getActividadesPublicas = async () => {
   return actividades;
 };
 
+exports.getActividadesPublicasPorEventoId = async eventoId => {
+  const evento = await Evento.findById(eventoId).populate({ path: 'actividadesEvento', match: { estaPublicado: true } });
+  if (!evento) throw errorLanzado(404, 'La ID del evento indicado no existe');
+  return evento.actividadesEvento;
+};
+
+exports.getActividad = async actividadId => {
+  const actividad = await Actividad.findById(actividadId).populate({ path: 'miembroCreador' });
+  if (!actividad) throw errorLanzado(404, 'La actividad no existe');
+  return actividad;
+};
+
 exports.getActividades = async () => {
   const actividades = await Actividad.find().populate({ path: 'miembroCreador' });
   return actividades;
@@ -55,7 +67,7 @@ exports.editarActividad = async (parametros, imagen, actividadId) => {
   return actividad;
 };
 
-exports.eliminarActividad = async (actividadId) => {
+exports.eliminarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta eliminar no existe');
   const estaEnEvento = await Evento.findOne({ actividades: { $in: [checkExistencia._id] } });
@@ -66,7 +78,7 @@ exports.eliminarActividad = async (actividadId) => {
   return actividad;
 };
 
-exports.publicarActividad = async (actividadId) => {
+exports.publicarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta publicar no existe');
   if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La actividad que intenta publicar ya lo está');
@@ -80,7 +92,7 @@ exports.publicarActividad = async (actividadId) => {
   return actividad;
 };
 
-exports.ocultarActividad = async (actividadId) => {
+exports.ocultarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta ocultar no existe');
   if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La actividad que intenta ocultar ya lo está');
@@ -98,7 +110,7 @@ exports.ocultarActividad = async (actividadId) => {
   return actividad;
 };
 
-exports.descatalogarActividad = async (actividadId) => {
+exports.descatalogarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta descatalogar no existe');
   if (!checkExistencia.enVigor) throw errorLanzado(403, 'La actividad que intenta descatalogar ya lo está');
@@ -112,7 +124,7 @@ exports.descatalogarActividad = async (actividadId) => {
   return actividad;
 };
 
-exports.catalogarActividad = async (actividadId) => {
+exports.catalogarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta catalogar no existe');
   if (checkExistencia.enVigor) throw errorLanzado(403, 'La actividad que intenta catalogar ya lo está');

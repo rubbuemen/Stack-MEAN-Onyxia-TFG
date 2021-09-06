@@ -16,6 +16,12 @@ exports.getEventosPublicos = async () => {
   return eventos;
 };
 
+exports.getEvento = async eventoId => {
+  const evento = await Evento.findById(eventoId).populate({ path: 'miembroCreador' });
+  if (!evento) throw errorLanzado(404, 'El evento no existe');
+  return evento;
+};
+
 exports.getEventos = async () => {
   const eventos = await Evento.find().populate({ path: 'miembroCreador' });
   return eventos;
@@ -194,7 +200,7 @@ exports.cambiarEventosARealizados = async () => {
 
 exports.editarEvento = async (parametros, img, eventoId) => {
   const checkExistencia = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento', match: { estadoInscripcion: 'ACEPTADO' } });
-  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta editar no existe');
+  if (!checkExistencia) throw errorLanzado(404, 'El evento que intenta editar no existe');
   if (checkExistencia.estadoEvento !== 'PENDIENTE')
     throw errorLanzado(403, 'El evento que intenta editar no puede editarse porque está en un estado diferente a pendiente');
   const cantidadInscripciones = checkExistencia.inscripcionesEvento.length;
@@ -243,7 +249,7 @@ exports.editarEvento = async (parametros, img, eventoId) => {
 
 exports.eliminarEvento = async eventoId => {
   let evento = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento' });
-  if (!evento) throw errorLanzado(404, 'La evento que intenta eliminar no existe');
+  if (!evento) throw errorLanzado(404, 'El evento que intenta eliminar no existe');
   const cantidadInscripciones = evento.inscripcionesEvento.length;
   if (cantidadInscripciones !== 0) throw errorLanzado(403, 'El evento no se puede eliminar porque ya se han realizado inscripciones a este');
   await asyncForEach(evento.actividadesEvento, async actividad => {
@@ -281,8 +287,8 @@ exports.eliminarEvento = async eventoId => {
 
 exports.publicarEvento = async (eventoId, usuarioLogeado) => {
   const checkExistencia = await Evento.findById(eventoId).populate({ path: 'diasEvento' });
-  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta publicar no existe');
-  if (checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta publicar ya lo está');
+  if (!checkExistencia) throw errorLanzado(404, 'El evento que intenta publicar no existe');
+  if (checkExistencia.estaPublicado) throw errorLanzado(403, 'El evento que intenta publicar ya lo está');
   const evento = await Evento.findOneAndUpdate(
     { _id: eventoId },
     {
@@ -333,8 +339,8 @@ exports.publicarEvento = async (eventoId, usuarioLogeado) => {
 
 exports.ocultarEvento = async eventoId => {
   const checkExistencia = await Evento.findById(eventoId);
-  if (!checkExistencia) throw errorLanzado(404, 'La evento que intenta ocultar no existe');
-  if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'La evento que intenta ocultar ya lo está');
+  if (!checkExistencia) throw errorLanzado(404, 'El evento que intenta ocultar no existe');
+  if (!checkExistencia.estaPublicado) throw errorLanzado(403, 'El evento que intenta ocultar ya lo está');
   const cantidadInscripciones = checkExistencia.inscripcionesEvento.length;
   if (cantidadInscripciones !== 0) throw errorLanzado(403, 'El evento no se puede ocultar porque ya se han realizado inscripciones a este');
   const evento = await Evento.findOneAndUpdate(
@@ -349,7 +355,7 @@ exports.ocultarEvento = async eventoId => {
 
 exports.cancelarEvento = async eventoId => {
   let evento = await Evento.findById(eventoId);
-  if (!evento) throw errorLanzado(404, 'La evento que intenta cancelar no existe');
+  if (!evento) throw errorLanzado(404, 'El evento que intenta cancelar no existe');
   if (evento.estadoEvento !== 'PENDIENTE') throw errorLanzado(403, 'El evento que intenta cancelar debe estar en un estado de pendiente de realizarse');
   await asyncForEach(evento.inscripcionesEvento, async inscripcion => {
     await InscripcionEvento.findOneAndUpdate(

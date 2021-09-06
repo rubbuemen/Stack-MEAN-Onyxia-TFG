@@ -12,6 +12,8 @@ router.put('/ocultar/:id', auth.junta_directiva, (req, res) => actividadControll
 router.put('/descatalogar/:id', auth.junta_directiva, (req, res) => actividadController.descatalogarActividad(req, res));
 router.put('/catalogar/:id', auth.junta_directiva, (req, res) => actividadController.catalogarActividad(req, res));
 router.get('/listPub', (req, res) => actividadController.getActividadesPublicas(req, res));
+router.get('/listPub/:eventoId', (req, res) => actividadController.getActividadesPublicasPorEventoId(req, res));
+router.get('/:id', (req, res) => actividadController.getActividad(req, res));
 router.get('/list', auth.junta_directiva, (req, res) => actividadController.getActividades(req, res));
 
 module.exports = router;

@@ -11,6 +11,16 @@ exports.getEventosPublicos = async (req, res) => {
   }
 };
 
+exports.getEvento = async (req, res) => {
+  try {
+    const eventoId = req.params.id;
+    const evento = await eventoService.getEvento(eventoId);
+    return res.status(200).send({ evento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.getEventos = async (req, res) => {
   try {
     const eventos = await eventoService.getEventos();

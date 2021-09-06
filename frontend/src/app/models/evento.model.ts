@@ -3,9 +3,11 @@ import { DiaEvento } from './dia-evento.model';
 import { Actividad } from './actividad.model';
 import { InscripcionEvento } from './inscripcion-evento.model';
 import { Inventario } from './inventario.model';
+import * as mongoose from 'mongoose';
 
 export class Evento {
   constructor(
+    public _id: mongoose.Schema.Types.ObjectId,
     public nombre: string,
     public descripcion: string,
     public lugar: string,

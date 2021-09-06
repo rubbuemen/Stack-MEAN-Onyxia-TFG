@@ -47,9 +47,12 @@ const routes: Routes = [
       },
       { path: 'eventos', component: EventosPublicComponent },
       { path: 'bases-concurso', component: BasesConcursosComponent },
-      { path: 'evento-display', component: EventoPublicDisplayComponent },
+      { path: 'evento-display/:id', component: EventoPublicDisplayComponent },
       { path: 'actividades', component: ActividadesPublicComponent },
-      { path: 'actividad-display', component: ActividadPublicDisplayComponent },
+      {
+        path: 'actividad-display/:id',
+        component: ActividadPublicDisplayComponent,
+      },
       {
         path: 'albumes-fotografias',
         component: AlbumesFotografiasPublicComponent,

@@ -18,42 +18,20 @@
 
   <article class="w-100 mb-5 posts">
     <div class="container">
-      <div class="card mb-4">
+      <div class="card mb-4" *ngFor="let actividad of actividadesPublicas">
         <div class="row no-gutters justify-content-center">
           <div class="col-12 col-lg-auto fondo-imagen text-center d-lg-flex flex-lg-column">
-            <img src="//placehold.it/600" class="img-fluid my-lg-auto" alt="Imagen de la actividad">
+            <img class="img-fluid my-lg-auto" [src]="actividad.fotografia" alt="{{actividad.nombre}}" *ngIf="actividad.fotografia">
           </div>
           <div class="col d-flex flex-column">
             <div class="card-body text-justify">
-              <h2 class="card-title">Nombre de la actividad</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam leo quis pharetra tincidunt. Nam sem metus,
-                volutpat at massa nec, mollis semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam nec
-                massa maximus est accumsan pulvinar. Nullam volutpat felis nec nunc condimentum, sed erat curae.orem ipsum dolor sit amet, consectetur
-                adipiscing elit. Sed aliquam leo quis pharetra tincidunt.</p>
-              <p class="card-text"><strong class="font-weight-bold">En vigor:</strong> Sí</p>
-              <a href="#" class="btn btn-primary mt-3">Ver detalles y reglas</a>
+              <h2 class="card-title">{{actividad.nombre}}</h2>
+              <p class="card-text">{{actividad.descripcion}}</p>
+              <p class="card-text"><strong class="font-weight-bold">En vigor:</strong> {{actividad.enVigor ? 'Sí' : 'No'}}</p>
+              <a class="btn btn-primary mt-3" [routerLink]="['/actividad-display', actividad._id]">Ver detalles y reglas</a>
             </div>
-            <div class="card-footer text-muted mt-auto">
-              Publicado por "Miembro quien sea" el 10/02/2020
-            </div>
-
-          </div>
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="row no-gutters justify-content-center">
-          <div class="col-12 col-lg-auto fondo-imagen text-center d-lg-flex flex-lg-column">
-            <img src="//placehold.it/600" class="img-fluid my-lg-auto" alt="Imagen de la actividad">
-          </div>
-          <div class="col d-flex flex-column">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre de la actividad</h2>
-              <p class="card-text">Lore.</p>
-              <p class="card-text"><strong class="font-weight-bold">En vigor:</strong> Sí</p>
-              <a href="#" class="btn btn-primary mt-3">Ver detalles y reglas</a>
-            </div>
-            <div class="card-footer text-muted mt-auto">
-              Publicado por "Miembro quien sea" el 10/02/2020
+            <div class=" card-footer text-muted mt-auto">
+              Publicado por {{actividad.miembroCreador.alias}} el {{actividad.fechaPublicacion | date: 'dd/MM/yyyy'}}
             </div>
 
           </div>
