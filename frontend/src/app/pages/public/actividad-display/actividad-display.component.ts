@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Actividad } from '../../../models/actividad.model';
 
 import { ActividadService } from '../../../services/public/actividad.service';
 import { UtilsService } from '../../../services/utils.service';
-
-const mongoose = require('mongoose');
 
 @Component({
   selector: 'app-actividad-display-public',
@@ -19,7 +17,8 @@ export class ActividadPublicDisplayComponent implements OnInit {
   constructor(
     private actividadService: ActividadService,
     private utils: UtilsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,16 +28,23 @@ export class ActividadPublicDisplayComponent implements OnInit {
   }
 
   private getActividad(id: string): void {
-    const idObject = mongoose.Types.ObjectId(id);
-    this.actividadService.getActividad(idObject).subscribe((actividad) => {
-      let imagen =
-        'data:' +
-        actividad.fotografia.mimetype +
-        ';base64,' +
-        actividad.fotografia.data;
-      const imagenSRC = this.utils.usarImagenBase64(imagen);
-      actividad.fotografia = imagenSRC;
-      this.actividad = actividad;
-    });
+    const idObject = this.utils.convertirObjectId(id);
+    if (idObject !== undefined) {
+      this.actividadService.getActividad(idObject).subscribe(
+        (actividad) => {
+          let imagen =
+            'data:' +
+            actividad.fotografia.mimetype +
+            ';base64,' +
+            actividad.fotografia.data;
+          const imagenSRC = this.utils.usarImagenBase64(imagen);
+          actividad.fotografia = imagenSRC;
+          this.actividad = actividad;
+        },
+        (error) => {
+          this.router.navigate(['/']);
+        }
+      );
+    }
   }
 }

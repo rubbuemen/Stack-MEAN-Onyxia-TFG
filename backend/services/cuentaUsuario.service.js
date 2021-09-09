@@ -6,14 +6,14 @@ const { Miembro } = require('../models/miembro.model');
 const { Buzon } = require('../models/buzon.model');
 const bcrypt = require('bcryptjs');
 
-exports.getUsuarioLogeado = async (usuario) => {
+exports.getUsuarioLogeado = async usuario => {
   const cuentaUsuario = await CuentaUsuario.findOne({ usuario: usuario });
   if (!cuentaUsuario) throw errorLanzado(404, 'El usuario introducido no existe');
   if (!cuentaUsuario.estado) throw errorLanzado(403, 'El usuario introducido está baneado');
   return cuentaUsuario;
 };
 
-exports.registrarse = async (parametros) => {
+exports.registrarse = async parametros => {
   let cuentaUsuario;
   let redSocial;
   let visitante;
@@ -38,7 +38,7 @@ exports.registrarse = async (parametros) => {
       autoridad: 'VISITANTE',
     });
     cuentaUsuario = await cuentaUsuario.save();
-    if (parametros.nombreRedSocial) {
+    if (parametros.nombreRedSocial || parametros.enlaceRedSocial || parametros.usuarioRedSocial) {
       redSocial = new RedSocial({
         nombre: parametros.nombreRedSocial,
         enlace: parametros.enlaceRedSocial,
@@ -46,7 +46,6 @@ exports.registrarse = async (parametros) => {
       });
       redSocial = await redSocial.save();
     }
-    parametros.fechaNacimiento = new Date(parametros.fechaNacimiento);
     buzonEntrada = new Buzon({ nombre: 'Buzón de entrada', esPorDefecto: true });
     buzonEntrada = await buzonEntrada.save();
     buzonSalida = new Buzon({ nombre: 'Buzón de salida', esPorDefecto: true });
@@ -87,12 +86,12 @@ exports.registrarse = async (parametros) => {
   }
 };
 
-exports.checkEstadoUsuario = async (usuarioLogeado) => {
+exports.checkEstadoUsuario = async usuarioLogeado => {
   const cuentaUsuario = await CuentaUsuario.findOne({ usuario: usuarioLogeado.usuario });
   if (!cuentaUsuario.estado) throw errorLanzado(403, 'Usted ha sido baneado y por tanto no puede realizar ninguna acción');
 };
 
-exports.banearCuenta = async (userId) => {
+exports.banearCuenta = async userId => {
   const checkExistencia = await CuentaUsuario.findById(userId);
   if (!checkExistencia) throw errorLanzado(404, 'La cuenta de usuario que intenta banear no existe');
   if (!checkExistencia.estado) throw errorLanzado(403, 'No puede banear al usuario porque ya lo está');
@@ -106,7 +105,7 @@ exports.banearCuenta = async (userId) => {
   return cuentaUsuario;
 };
 
-exports.desbanearCuenta = async (userId) => {
+exports.desbanearCuenta = async userId => {
   const checkExistencia = await CuentaUsuario.findById(userId);
   if (!checkExistencia) throw errorLanzado(404, 'La cuenta de usuario que intenta desbanear no existe');
   if (checkExistencia.estado) throw errorLanzado(403, 'No puede desbanear al usuario porque ya lo está');

@@ -12,6 +12,25 @@ exports.getAlbumesFotografiasByEventoId = async (req, res) => {
   }
 };
 
+exports.getAlbumesFotografias = async (req, res) => {
+  try {
+    const albumesFotografias = await albumFotografiaService.getAlbumesFotografias();
+    return res.status(200).send({ albumesFotografias });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getAlbumFotografiasById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const albumFotografias = await albumFotografiaService.getAlbumFotografiasById(id);
+    return res.status(200).send({ albumFotografias });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.crearAlbumFotografias = async (req, res) => {
   try {
     const { nombre, evento } = req.body;

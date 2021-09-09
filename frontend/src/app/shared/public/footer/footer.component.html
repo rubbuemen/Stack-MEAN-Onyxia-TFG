@@ -6,44 +6,29 @@
         <div class="row">
           <div class="col-6 col-md-12 col-xl-6">
             <ul class="list-unstyled indice-footer">
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Inicio
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Sobre nosotros
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> ¿Quieres entrar en Onyxia?
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Eventos
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Actividades
+              <li *ngFor="let item of menuItems | slice:0:menuItems.length/2+1">
+                <a [routerLink]="item.url">
+                  <fa-icon [icon]="faAngleRight"></fa-icon> {{item.titulo}}
                 </a></li>
             </ul>
           </div>
           <div class="col-6 col-md-12 col-xl-6">
             <ul class="list-unstyled indice-footer">
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Fotografías de eventos
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Noticias
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Registrarse como visitante
-                </a></li>
-              <li><a href="#">
-                  <fa-icon [icon]="faAngleRight"></fa-icon> Autenticarse
-                </a></li>
+              <li *ngFor="let item of menuItems | slice:menuItems.length/2+1:menuItems.length+1">
+                <a *ngIf="item.url !== '/logout'" [routerLink]="item.url">
+                  <fa-icon [icon]="faAngleRight"></fa-icon> {{item.titulo}}
+                </a>
+                <a *ngIf="item.url === '/logout'" [routerLink]="item.url" (click)="logout()">
+                  <fa-icon [icon]="faAngleRight"></fa-icon> {{item.titulo}}
+                </a>
             </ul>
           </div>
+
         </div>
         <div class="row">
           <div class="col">
             <ul class="list-unstyled indice-footer">
-              <li><a href="#">
+              <li><a [routerLink]="['/politica-cookies']">
                   <fa-icon [icon]="faAngleRight"></fa-icon> Política de cookies
                 </a></li>
             </ul>
@@ -114,46 +99,46 @@
   </div>
 
   <hr>
-
-  <div class="container-fluid px-3">
-    <div class="d-flex flex-row justify-content-center align-items-center py-2">
-      <h5 class="text-uppercase mb-0 mr-2">Únete a nosotros</h5>
-      <button type="button" class="btn btn-light btn-sm">¡Hazte socio!</button>
-      <button type="button" class="btn btn-light btn-sm">¡Regístrate como visitante!</button>
+  <div *ngIf="!estaAutenticado || esVisitante">
+    <div class="container-fluid px-3">
+      <div class="d-flex flex-row justify-content-center align-items-center py-2">
+        <h5 class="text-uppercase mb-0 mr-2">Únete a nosotros</h5>
+        <button type="button" class="btn btn-light btn-sm" [routerLink]="['/quieres-entrar']">¡Hazte socio!</button>
+        <button *ngIf="!estaAutenticado" type="button" class="btn btn-light btn-sm" [routerLink]="['/registro']">¡Regístrate como visitante!</button>
+      </div>
     </div>
-
+    <hr>
   </div>
-  <hr>
 
   <div class="container-fluid text-center px-3">
     <ul class="list-unstyled list-inline">
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-fb mx-1">
+        <a href="https://es-es.facebook.com/asoonyxia/" target="_blank" class="btn-floating btn-fb mx-1">
           <fa-icon [icon]="faFacebook"></fa-icon>
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-tw mx-1">
+        <a href="https://twitter.com/AsoOnyxia" target="_blank" class="btn-floating btn-tw mx-1">
           <fa-icon [icon]="faTwitter"></fa-icon>
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-insta mx-1">
+        <a href="https://www.instagram.com/asoonyxia/" target="_blank" class="btn-floating btn-insta mx-1">
           <fa-icon [icon]="faInstagram"></fa-icon>
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-yt mx-1">
+        <a href="https://www.youtube.com/channel/UCQZdDbN7FZX3ycyd9yD3DbA" target="_blank" class="btn-floating btn-yt mx-1">
           <fa-icon [icon]="faYoutube"></fa-icon>
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-dis mx-1">
+        <a href="#" target="_blank" class="btn-floating btn-dis mx-1">
           <fa-icon [icon]="faDiscord"></fa-icon>
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" class="btn-floating btn-wht mx-1">
+        <a href="#" target="_blank" class="btn-floating btn-wht mx-1">
           <fa-icon [icon]="faWhatsapp"></fa-icon>
         </a>
       </li>

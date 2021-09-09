@@ -7,6 +7,12 @@ exports.getNoticias = async () => {
   return noticias;
 };
 
+exports.getNoticiaById = async id => {
+  const noticia = await Noticia.findById(id).populate({ path: 'miembroCreador' });
+  if (!noticia) throw errorLanzado(404, 'La noticia que intenta visualizar no existe');
+  return noticia;
+};
+
 exports.crearNoticia = async (parametros, img, usuarioLogeado) => {
   const miembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
   let noticia = new Noticia(parametros);

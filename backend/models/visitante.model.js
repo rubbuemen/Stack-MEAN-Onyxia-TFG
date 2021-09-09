@@ -12,7 +12,7 @@ const visitanteSchema = new mongoose.Schema({
   fechaNacimiento: {
     type: Date,
     validate: {
-      validator: (fechaNacimiento) => {
+      validator: fechaNacimiento => {
         return fechaNacimiento < new Date();
       },
       message: 'Inserte una fecha de nacimiento en pasado',
@@ -31,8 +31,6 @@ const visitanteSchema = new mongoose.Schema({
   },
   numeroTelefono: {
     type: String,
-    unique: [true, 'El número de teléfono insertado ya existe, inserte otro'],
-    match: [/\d{9,10}/, 'El teléfono insertado debe tener 9 o 10 dígitos'],
   },
   cuentaUsuario: {
     type: mongoose.Schema.Types.ObjectId,

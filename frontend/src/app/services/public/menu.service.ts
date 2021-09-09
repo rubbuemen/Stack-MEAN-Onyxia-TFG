@@ -32,4 +32,23 @@ export class MenuService {
 
     return menu;
   }
+
+  public generarMenuFooter(): any[] {
+    const menu: any[] = [
+      { titulo: 'Inicio', url: '/' },
+      {
+        titulo: 'Sobre nosotros',
+        url: '/sobre-nosotros',
+      },
+      {
+        titulo: 'Eventos',
+        url: '/eventos',
+      },
+      { titulo: 'Actividades', url: '/actividades' },
+      { titulo: 'Fotografias de eventos', url: '/albumes-fotografias' },
+      { titulo: 'Noticias', url: '/noticias' },
+    ];
+
+    return menu;
+  }
 }

@@ -9,10 +9,10 @@ export class Visitante {
     public apellidos: string,
     public fechaNacimiento: Date,
     public correoElectronico: string,
-    public numeroTelefono: number,
     public cuentaUsuario: CuentaUsuario,
     public fechaCreacion: Date,
     public buzones: Buzon[],
+    public numeroTelefono?: number,
     public alias?: string,
     public redSocials?: RedSocial[],
     public solicitudMiembro?: SolicitudMiembro

@@ -26,24 +26,30 @@
              <span class="h2 text-info">*</span>
              <span class="form-text text-muted mb-4 font-weight-bolder">Campos obligatorios</span>
            </div>
-           <form method="POST">
+           <form autocomplete="off" [formGroup]="registroForm" (ngSubmit)="registrarse()">
              <div class="form-row">
                <div class="form-group col-12 col-md-3">
                  <label for="nombre" class="sr-only">Nombre</label>
                  <div class="input-group">
-                   <input id="nombre" type="text" class="form-control" placeholder="Nombre" required><sub class="h2 text-info mb-0">*</sub>
+                   <input id="nombre" formControlName="nombre" type="text" class="form-control" placeholder="Nombre" required><sub
+                     class="h2 text-info mb-0">*</sub>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('nombre')">Debes indicar tu nombre</small>
+
                </div>
                <div class="form-group col-12 col-md-5">
                  <label for="apellidos" class="sr-only">Apellidos</label>
                  <div class="input-group">
-                   <input id="apellidos" type="text" class="form-control" placeholder="Apellidos" required><sub class="h2 text-info mb-0">*</sub>
+                   <input id="apellidos" formControlName="apellidos" type="text" class="form-control" placeholder="Apellidos" required><sub
+                     class="h2 text-info mb-0">*</sub>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('apellidos')">Debes indicar tus
+                   apellidos</small>
                </div>
                <div class="form-group col-12 col-md-4">
                  <label for="alias" class="sr-only">Alias</label>
                  <div class="input-group">
-                   <input id="alias" type="text" class="form-control" placeholder="Alias">
+                   <input id="alias" formControlName="alias" type="text" class="form-control" placeholder="Alias">
                  </div>
                </div>
              </div>
@@ -51,38 +57,50 @@
                <div class="form-group col-12 col-md-4">
                  <label for="email" class="sr-only">Correo electrónico</label>
                  <div class="input-group">
-                   <input id="email" type="email" class="form-control" placeholder="Correo electrónico" required><sub class="h2 text-info mb-0">*</sub>
+                   <input id="correoElectronico" formControlName="correoElectronico" type="email" class="form-control" placeholder="Correo electrónico"
+                     required><sub class="h2 text-info mb-0">*</sub>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('correoElectronico')">Debes indicar tu correo
+                   electrónico en el formato correcto</small>
                </div>
                <div class="form-group col-12 col-md-4">
                  <label for="telefono" class="sr-only">Número de teléfono</label>
                  <div class="input-group">
-                   <input id="telefono" type="text" class="form-control" placeholder="Número de teléfono">
+                   <input id="telefono" formControlName="numeroTelefono" type="text" class="form-control" placeholder="Número de teléfono">
                  </div>
                </div>
                <div class="form-group col-12 col-md-4">
                  <label for="fechaNacimiento" class="sr-only">Fecha de nacimiento</label>
                  <div class="input-group">
-                   <input id="fechaNacimiento" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Fecha de nacimiento" required
-                     aria-describedby="fechaNacimiento-help">
+                   <input id="fechaNacimiento" formControlName="fechaNacimiento" type="text" onfocus="(this.type='date')" class="form-control"
+                     placeholder="Fecha de nacimiento" required aria-describedby="fechaNacimiento-help">
                    <sub class="h2 text-info mb-0">*</sub>
                  </div>
                  <small id="fechaNacimiento-help" class="form-text text-muted">Formato correcto: dd/mm/aaaa</small>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('fechaNacimiento')">Debes indicar tu fecha de
+                   nacimiento</small>
                </div>
              </div>
              <div class="form-row">
                <div class="form-group col-12 col-md-6">
                  <label for="usuario" class="sr-only">Usuario</label>
                  <div class="input-group">
-                   <input id="usuario" type="text" class="form-control" placeholder="Usuario" required> <sub class="h2 text-info mb-0">*</sub>
+                   <input id="usuario" formControlName="usuario" type="text" class="form-control" placeholder="Usuario" required> <sub
+                     class="h2 text-info mb-0">*</sub>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('usuario')">Debes indicar un nombre de usuario entre 5
+                   y 32 caracteres</small>
                </div>
                <div class="form-group col-12 col-md-6">
                  <label for="contraseña" class="sr-only">Contraseña</label>
                  <div class="input-group">
-                   <input id="contraseña" type="password" class="form-control" placeholder="Contraseña" required> <sub class="h2 text-info mb-0">*</sub>
+                   <input id="contraseña" formControlName="contraseña" type="password" class="form-control" placeholder="Contraseña" required> <sub
+                     class="h2 text-info mb-0">*</sub>
                  </div>
+                 <small class="form-text alert alert-danger py-1 pl-1" *ngIf="formEnviado && validarCampo('contraseña')">Debes indicar una contraseña entre 5 y
+                   32 caracteres</small>
                </div>
+
              </div>
              <fieldset class="form-group">
                <div class="form-row">
@@ -90,19 +108,19 @@
                  <div class="py-3 py-md-0 col-12 col-md-4">
                    <label for="nombreRedSocial" class="sr-only">Nombre de la red social</label>
                    <div class="input-group">
-                     <input id="nombreRedSocial" type="text" class="form-control" placeholder="Nombre de la red social">
+                     <input id="nombreRedSocial" formControlName="nombreRedSocial" type="text" class="form-control" placeholder="Nombre de la red social">
                    </div>
                  </div>
                  <div class="py-3 py-md-0 col-12 col-md-4">
                    <label for="enlaceRedSocial" class="sr-only">Enlace de la red social</label>
                    <div class="input-group">
-                     <input id="enlaceRedSocial" type="text" class="form-control" placeholder="Enlace de la red social">
+                     <input id="enlaceRedSocial" formControlName="enlaceRedSocial" type="text" class="form-control" placeholder="Enlace de la red social">
                    </div>
                  </div>
                  <div class="py-3 py-md-0 col-12 col-md-4">
                    <label for="usuarioRedSocial" class="sr-only">Usuario de la red social</label>
                    <div class="input-group">
-                     <input id="usuarioRedSocial" type="text" class="form-control" placeholder="Usuario de la red social">
+                     <input id="usuarioRedSocial" formControlName="usuarioRedSocial" type="text" class="form-control" placeholder="Usuario de la red social">
                    </div>
                  </div>
                </div>

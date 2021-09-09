@@ -48,7 +48,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
 export class VisitanteGuardService implements CanActivate {
   constructor(private authService: AuthService, public router: Router) {}
   canActivate(): boolean {
-    const tieneRol = this.authService.tieneRol('visitante');
+    const tieneRol = this.authService.tieneRol('VISITANTE');
     if (!this.authService.estaAutentificado() || !tieneRol) {
       this.router.navigate(['/']);
       return false;
@@ -63,7 +63,7 @@ export class VisitanteGuardService implements CanActivate {
 export class NoAuthOVisitanteGuardService implements CanActivate {
   constructor(private authService: AuthService, public router: Router) {}
   canActivate(): boolean {
-    const tieneRol = this.authService.tieneRol('visitante');
+    const tieneRol = this.authService.tieneRol('VISITANTE');
     if (this.authService.estaAutentificado() && !tieneRol) {
       this.router.navigate(['/']);
       return false;

@@ -11,6 +11,16 @@ exports.getNoticias = async (req, res) => {
   }
 };
 
+exports.getNoticiaById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const noticia = await noticiaService.getNoticiaById(id);
+    return res.status(200).send({ noticia });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.crearNoticia = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;

@@ -11,7 +11,9 @@ export class MenuPublicComponent {
   public menuItems: any[];
 
   constructor(private authService: AuthService) {
-    this.authService.menuEmit.subscribe((menu) => (this.menuItems = menu));
+    this.authService.menuEmit.subscribe(
+      (menu) => (this.menuItems = menu.menuHeader)
+    );
     this.authService.generarMenuSegunAuth(this.authService.estaAutentificado());
   }
 

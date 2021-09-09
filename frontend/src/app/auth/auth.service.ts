@@ -19,6 +19,9 @@ const base_url = environment.base_url;
 })
 export class AuthService {
   @Output() public menuEmit: EventEmitter<any> = new EventEmitter();
+  @Output() public autentificado: EventEmitter<Boolean> = new EventEmitter();
+  @Output() public esVisitante: EventEmitter<Boolean> = new EventEmitter();
+
   private usuarioAutentificado: any = this.getUsuarioLogeado();
 
   constructor(
@@ -53,6 +56,8 @@ export class AuthService {
     localStorage.removeItem('jwtToken');
     this.usuarioAutentificado = undefined;
     this.generarMenuSegunAuth(false);
+    this.autentificado.emit(false);
+    this.esVisitante.emit(false);
     this.router.navigate(['/']);
   }
 
@@ -69,20 +74,24 @@ export class AuthService {
 
   public estaAutentificado(): boolean {
     const autentificado: boolean = this.usuarioAutentificado ? true : false;
+    this.autentificado.emit(autentificado);
     return autentificado;
   }
 
   public tieneRol(autoridad: string): boolean {
-    return (
+    const tieneRolAutoridad =
       this.estaAutentificado() &&
-      this.usuarioAutentificado.autoridad === autoridad
-    );
+      this.usuarioAutentificado.autoridad === autoridad;
+    if (autoridad === 'VISITANTE' && tieneRolAutoridad)
+      this.esVisitante.emit(true);
+    return tieneRolAutoridad;
   }
 
   public generarMenuSegunAuth(autentificado: boolean): void {
-    const menu = this.menuService.generarMenu(); // Reset del menú
+    const menuHeader = this.menuService.generarMenu(); // Reset del menú
+    const menuFooter = this.menuService.generarMenuFooter();
     if (!autentificado) {
-      menu.push({
+      menuHeader.push({
         titulo: 'Zona privada',
         url: '/login',
         submenu: [
@@ -90,8 +99,28 @@ export class AuthService {
           { titulo: 'Autentificarse', url: '/login' },
         ],
       });
+      menuFooter.push(
+        {
+          titulo: 'Registrarse',
+          url: '/registro',
+        },
+        {
+          titulo: 'Autentificarse',
+          url: '/login',
+        }
+      );
     } else {
-      menu.push(
+      menuHeader.push(
+        {
+          titulo: 'Zona privada',
+          url: '/private',
+        },
+        {
+          titulo: 'Cerrar sesión',
+          url: '/logout',
+        }
+      );
+      menuFooter.push(
         {
           titulo: 'Zona privada',
           url: '/private',
@@ -102,12 +131,16 @@ export class AuthService {
         }
       );
     }
-    if (!autentificado || this.tieneRol('visitante')) {
-      menu.splice(2, 0, {
+    if (!autentificado || this.tieneRol('VISITANTE')) {
+      menuHeader.splice(2, 0, {
+        titulo: '¿Quieres entrar en Onyxia?',
+        url: '/quieres-entrar',
+      });
+      menuFooter.splice(2, 0, {
         titulo: '¿Quieres entrar en Onyxia?',
         url: '/quieres-entrar',
       });
     }
-    this.menuEmit.emit(menu);
+    this.menuEmit.emit({ menuHeader, menuFooter });
   }
 }

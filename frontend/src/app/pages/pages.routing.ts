@@ -57,9 +57,12 @@ const routes: Routes = [
         path: 'albumes-fotografias',
         component: AlbumesFotografiasPublicComponent,
       },
-      { path: 'fotografias', component: FotografiasPublicComponent },
+      {
+        path: 'fotografias/:albumFotografiasId',
+        component: FotografiasPublicComponent,
+      },
       { path: 'noticias', component: NoticiasPublicComponent },
-      { path: 'noticia-display', component: NoticiaDisplayPublicComponent },
+      { path: 'noticia-display/:id', component: NoticiaDisplayPublicComponent },
       {
         path: 'login',
         canActivate: [NoAuthGuardService],

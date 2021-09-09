@@ -42,7 +42,7 @@ export class QuieresEntrarComponent {
         $('#miembrosConocidos').selectpicker('refresh');
       })(jQuery);
     }, 500);
-    this.esVisitante = this.authService.tieneRol('visitante');
+    this.esVisitante = this.authService.tieneRol('VISITANTE');
   }
 
   private getMiembrosVigentes(): void {

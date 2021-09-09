@@ -20,63 +20,18 @@
   <article class="w-100 mb-4 posts">
     <div class="container">
       <div class="row">
-        <section class="col-md-4 d-flex align-items-stretch">
+        <section class="col-md-4 d-flex align-items-stretch" *ngFor="let album of albumesFotografias">
           <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x500" alt="Primera imagen del álbum">
+            <img class="card-img-top" [src]="album.fotografias[0].imagen" alt="{{album.nombre}}" *ngIf="album.fotografias.length !== 0">
             <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del álbum</h2>
+              <h2 class="card-title">{{album.nombre}}</h2>
               <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Evento: </strong> Nombre del evento</div>
+                <div class="col"><strong class="font-weight-bold">Evento: </strong> {{album.evento.nombre}}</div>
               </div>
               <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Número de fotografías: </strong> 10</div>
+                <div class="col"><strong class="font-weight-bold">Número de fotografías: </strong> {{album.fotografias.length}}</div>
               </div>
-              <a href="#" class="btn btn-primary mt-3">Ver fotografías</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-md-4 d-flex align-items-stretch">
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x500" alt="Primera imagen del álbum">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del álbum</h2>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Evento: </strong> Nombre del evento</div>
-              </div>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Número de fotografías: </strong> 10</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver fotografías</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-md-4 d-flex align-items-stretch">
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x500" alt="Primera imagen del álbum">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del álbum</h2>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Evento: </strong> Nombre del evento</div>
-              </div>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Número de fotografías: </strong> 10</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver fotografías</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-md-4 d-flex align-items-stretch">
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x500" alt="Primera imagen del álbum">
-            <div class="card-body text-justify">
-              <h2 class="card-title">Nombre del álbum</h2>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Evento: </strong> Nombre del evento</div>
-              </div>
-              <div class="row mb-3">
-                <div class="col"><strong class="font-weight-bold">Número de fotografías: </strong> 10</div>
-              </div>
-              <a href="#" class="btn btn-primary mt-3">Ver fotografías</a>
+              <a [routerLink]="['/fotografias', album._id]" class="btn btn-primary mt-3">Ver fotografías</a>
             </div>
           </div>
         </section>

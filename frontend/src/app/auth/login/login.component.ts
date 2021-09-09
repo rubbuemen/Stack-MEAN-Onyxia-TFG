@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Location } from '@angular/common';
 
 import swal from 'sweetalert2';
 
@@ -20,8 +19,6 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
   public faUser: IconDefinition = faUser;
   public faLock: IconDefinition = faLock;
-
-  public estaAutentificado: boolean = this.authService.estaAutentificado();
 
   public formEnviado = false;
 

@@ -3,36 +3,13 @@
     <div class="container">
       <section class="row py-4">
         <div class="col text-center">
-          <h1 class="text-dark-purple font-weight-bold">Nombre del album</h1>
+          <h1 class="text-dark-purple font-weight-bold">{{nombreAlbum}}</h1>
         </div>
       </section>
       <section class="row">
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-          <a href="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-            data-fancybox="gallery" rel="ligthbox">
-            <img src="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-              class="zoom img-fluid img-thumbnail" alt="">
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-          <a href="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-            data-fancybox="gallery" rel="ligthbox">
-            <img src="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-              class="zoom img-fluid img-thumbnail" alt="">
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-          <a href="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-            data-fancybox="gallery" rel="ligthbox">
-            <img src="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-              class="zoom img-fluid img-thumbnail" alt="">
-          </a>
-        </div>
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-          <a href="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-            data-fancybox="gallery" rel="ligthbox">
-            <img src="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
-              class="zoom img-fluid img-thumbnail" alt="">
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb" *ngFor="let fotografia of fotografias">
+          <a [href]="fotografia.imagen" data-fancybox="gallery" rel="ligthbox">
+            <img [src]="fotografia.imagen" class="zoom img-fluid img-thumbnail">
           </a>
         </div>
       </section>
