@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.prod';
 
 import { RequestsConstructorService } from '../requests-constructor.service';
-import { RegistroForm } from 'src/app/interfaces/registro-form';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -21,40 +20,9 @@ export class RegistroService {
     private router: Router
   ) {}
 
-  public registrarse(registroForm: RegistroForm): Observable<any> {
-    const {
-      nombre,
-      apellidos,
-      correoElectronico,
-      fechaNacimiento,
-      usuario,
-      contraseña,
-      numeroTelefono,
-      alias,
-      nombreRedSocial,
-      enlaceRedSocial,
-      usuarioRedSocial,
-    } = registroForm;
+  public registrarse(data: FormData): Observable<any> {
     return this.requestConstructorService
-      .request(
-        'POST',
-        `${base_url}/registrarse`,
-        {
-          nombre,
-          apellidos,
-          correoElectronico,
-          fechaNacimiento,
-          usuario,
-          contraseña,
-          numeroTelefono,
-          alias,
-          nombreRedSocial,
-          enlaceRedSocial,
-          usuarioRedSocial,
-        },
-        {},
-        false
-      )
+      .request('POST', `${base_url}/registrarse`, data, {}, false)
       .pipe(
         map((res: { jwtToken: string }) => {
           localStorage.setItem('jwtToken', res.jwtToken);

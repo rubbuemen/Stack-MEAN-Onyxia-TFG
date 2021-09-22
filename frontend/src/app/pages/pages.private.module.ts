@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Parte privada
 import { InicioPrivateComponent } from './private/inicio/inicio.component';
@@ -23,6 +24,8 @@ import { PagesPrivateComponent } from './pages.private.component';
     SharedModule,
     AuthModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     ComponentsModule,
     FontAwesomeModule,
     RedSocialModule,

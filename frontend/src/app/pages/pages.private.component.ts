@@ -139,9 +139,8 @@ export class PagesPrivateComponent implements OnInit {
           $.fn.emulateTransitionEnd = transitionEndEmulator;
 
           if (Util.supportsTransitionEnd()) {
-            $.event.special[
-              Util.TRANSITION_END
-            ] = getSpecialTransitionEndEvent();
+            $.event.special[Util.TRANSITION_END] =
+              getSpecialTransitionEndEvent();
           }
         }
 

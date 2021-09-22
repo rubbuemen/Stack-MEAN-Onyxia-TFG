@@ -23,10 +23,11 @@ export class FotografiaService {
       .request(
         'GET',
         `${base_url}/fotografia/list`,
-        { albumFotografiasId },
+        {},
         {},
         false,
-        [Fotografia]
+        [Fotografia],
+        albumFotografiasId
       )
       .pipe(map((res: { fotografias: Fotografia[] }) => res.fotografias));
   }

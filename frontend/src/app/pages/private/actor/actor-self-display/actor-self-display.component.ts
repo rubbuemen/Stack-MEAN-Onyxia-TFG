@@ -6,11 +6,11 @@ import { UtilsService } from '../../../../services/utils.service';
 import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
-  selector: 'app-actor-display',
-  templateUrl: './actor-display.component.html',
+  selector: 'app-actor-self-display',
+  templateUrl: './actor-self-display.component.html',
   styles: [],
 })
-export class ActorDisplayComponent implements OnInit {
+export class ActorSelfDisplayComponent implements OnInit {
   public actorLogeado: any;
   public esVisitante: boolean = false;
 

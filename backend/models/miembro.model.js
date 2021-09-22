@@ -12,7 +12,7 @@ const miembroSchema = new mongoose.Schema({
   fechaNacimiento: {
     type: Date,
     validate: {
-      validator: (fechaNacimiento) => {
+      validator: fechaNacimiento => {
         return fechaNacimiento < new Date();
       },
       message: 'Inserte una fecha de nacimiento en pasado',
@@ -58,7 +58,7 @@ const miembroSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Inserte un DNI'],
     validate: {
-      validator: (dni) => {
+      validator: dni => {
         const validChars = 'TRWAGMYFPDXBNJZSQVHLCKET';
         const nifRexp = /^\d{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
         const nieRexp = /^[XYZ]\d{7}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
@@ -96,7 +96,7 @@ const miembroSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'No se ha asignado ninguna fecha de alta del miembro'],
     validate: {
-      validator: (fechaAlta) => {
+      validator: fechaAlta => {
         return fechaAlta < new Date();
       },
       message: 'Inserte una fecha de alta en pasado',
@@ -112,7 +112,7 @@ const miembroSchema = new mongoose.Schema({
   fechaUltimaPenalizacion: {
     type: Date,
     validate: {
-      validator: (fechaUltimaPenalizacion) => {
+      validator: fechaUltimaPenalizacion => {
         return fechaUltimaPenalizacion < new Date();
       },
       message: 'Inserte una fecha de penalización en pasado',

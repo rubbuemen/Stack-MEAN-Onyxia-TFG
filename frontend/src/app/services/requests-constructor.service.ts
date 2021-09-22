@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { ObjectId } from 'mongoose';
 
 @Injectable({
   providedIn: 'root',
@@ -12,22 +12,24 @@ export class RequestsConstructorService {
     method: string,
     uri: string,
     data: Object,
-    headers: Object,
+    headers: any,
     auth: boolean = false,
-    modelClass?: any
+    modelClass?: any,
+    idObject?: ObjectId
   ): any {
     const httpMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     if (auth) {
       const jwtToken = localStorage.getItem('jwtToken');
-      headers['Authorization'] = jwtToken;
+      headers['Authorization'] = 'Bearer ' + jwtToken;
     }
     try {
+      headers = { headers };
       if (!httpMethods.includes(method))
         throw new Error('El método HTTP indicado no es válido');
       let httpResponse: any;
+      uri = this.establecerParametros(uri, idObject);
       switch (method) {
         case 'GET':
-          uri = this.establecerParametros(uri, data);
           httpResponse = this.httpClient.get<typeof modelClass>(uri, headers);
           break;
         case 'POST':
@@ -57,13 +59,9 @@ export class RequestsConstructorService {
     }
   }
 
-  private establecerParametros(uri: string, parametro: Object) {
-    let param: string;
-    if (Object.keys(parametro).length !== 0) {
-      param = parametro[Object.keys(parametro)[0]];
-    }
-    if (param !== undefined) {
-      return uri + '/' + param;
+  private establecerParametros(uri: string, idObject: Object) {
+    if (idObject) {
+      return uri + '/' + idObject;
     } else {
       return uri;
     }

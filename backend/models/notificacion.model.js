@@ -13,12 +13,17 @@ const notificacionSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'No se ha asignado ninguna fecha de la notificación'],
     validate: {
-      validator: (fecha) => {
+      validator: fecha => {
         return fecha < new Date();
       },
       message: 'Inserte una fecha en pasado',
     },
     default: Date.now,
+  },
+  leido: {
+    type: Boolean,
+    required: [true, 'Especifique si está leída o no la notificación'],
+    default: false,
   },
   receptoresVisitantes: [
     {

@@ -39,7 +39,7 @@ export class NoticiaDisplayPublicComponent {
     if (idObject !== undefined) {
       this.noticiaService.getNoticia(idObject).subscribe(
         (noticia) => {
-          if (noticia.imagen !== undefined) {
+          if (this.utils.existe(noticia.imagen)) {
             let imagen =
               'data:' +
               noticia.imagen.mimetype +

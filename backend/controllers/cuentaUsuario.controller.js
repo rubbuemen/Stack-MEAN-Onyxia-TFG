@@ -33,18 +33,9 @@ exports.renovarToken = async (req, res) => {
 
 exports.registrarse = async (req, res) => {
   try {
-    const {
-      nombre,
-      apellidos,
-      usuario,
-      contraseña,
-      fechaNacimiento,
-      correoElectronico,
-      numeroTelefono,
-      nombreRedSocial,
-      enlaceRedSocial,
-      usuarioRedSocial,
-    } = req.body;
+    const { nombre, apellidos, usuario, contraseña, fechaNacimiento, correoElectronico, numeroTelefono, nombreRedSocial, enlaceRedSocial, usuarioRedSocial } =
+      req.body;
+
     if (!nombre || !apellidos || !usuario || !contraseña || !fechaNacimiento || !correoElectronico)
       throw errorLanzado(400, 'Hay campos obligatorios del formulario que no se han enviado');
     if (

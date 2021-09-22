@@ -25,8 +25,8 @@
               "node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/sweetalert2/dist/sweetalert2.css",
-              "node_modules/dropify/dist/css/dropify.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/dropify/dist/css/dropify.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

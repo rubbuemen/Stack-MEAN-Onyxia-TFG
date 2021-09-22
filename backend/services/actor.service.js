@@ -6,7 +6,7 @@ const { Notificacion } = require('../models/notificacion.model');
 const { asyncForEach } = require('../util/funciones.util');
 const bcrypt = require('bcryptjs');
 
-exports.getMisDatos = async (usuarioLogeado) => {
+exports.getMisDatos = async usuarioLogeado => {
   const misDatos =
     (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })
       .populate({ path: 'redSocials' })
@@ -68,6 +68,9 @@ exports.editarMisDatos = async (parametros, imagen, usuarioLogeado) => {
         { new: true }
       );
     } else {
+      if (!imagen) {
+        imagen = actorConectado.fotografia; // Para el caso que se ha editado pero no se ha cambiado la imagen
+      }
       actor = await Miembro.findOneAndUpdate(
         { _id: actor._id },
         {
@@ -114,7 +117,7 @@ exports.getMiembros = async () => {
   return miembros;
 };
 
-exports.getDatosByActorId = async (actorId) => {
+exports.getDatosByActorId = async actorId => {
   const datosActor =
     (await Visitante.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' })) ||
     (await Miembro.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' }));
@@ -286,7 +289,7 @@ exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
       size: imagen.size,
     };
     let notificaciones = await Notificacion.find({ receptoresVisitantes: { $in: [actor._id] } });
-    await asyncForEach(notificaciones, async (notificacion) => {
+    await asyncForEach(notificaciones, async notificacion => {
       await Notificacion.findOneAndUpdate(
         { _id: notificacion._id },
         {
@@ -297,7 +300,7 @@ exports.hacerMiembroActorId = async (parametros, imagen, actorId) => {
       );
     });
     notificaciones = await Notificacion.find({ emisorVisitante: actor._id });
-    await asyncForEach(notificaciones, async (notificacion) => {
+    await asyncForEach(notificaciones, async notificacion => {
       await Notificacion.findOneAndUpdate(
         { _id: notificacion._id },
         {

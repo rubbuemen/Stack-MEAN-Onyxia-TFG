@@ -61,7 +61,7 @@
                   <div class="u-img"><img src="./assets/images/junta-presidente.jpg" alt="user"></div>
                   <div class="u-text">
                     <h4>Steave Jobs</h4>
-                    <p class="text-muted">varun@gmail.com</p><a href="pages-profile.html" class="btn btn-rounded btn-primary btn-sm">Ver perfil</a>
+                    <p class="text-muted">varun@gmail.com</p><a [routerLink]="['/private/actor']" class="btn btn-rounded btn-primary btn-sm">Ver perfil</a>
                   </div>
                 </div>
               </li>
@@ -69,7 +69,8 @@
               <li><a href="#"><i class="fa fa-share-alt"></i> Tus redes sociales</a></li>
               <li><a href="#"><i class="ti-settings"></i> Configuración de la cuenta</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><i class="fa fa-power-off"></i> Desconectar</a></li>
+              <li><a [routerLink]="['/']"><i class="ti-settings"></i>Salir del panel de administración</a></li>
+              <li><a [routerLink]="['/logout']" (click)="logout()"><i class="fa fa-power-off"></i> Desconectar</a></li>
             </ul>
           </div>
         </li>

@@ -29,7 +29,7 @@ export class EventosPublicComponent implements OnInit {
   private getEventosPublicos(): void {
     this.eventoService.getEventosPublicos().subscribe((eventos) => {
       eventos.forEach((evento) => {
-        if (evento.imagen !== undefined) {
+        if (this.utils.existe(evento.imagen)) {
           let imagen =
             'data:' + evento.imagen.mimetype + ';base64,' + evento.imagen.data;
           const imagenSRC = this.utils.usarImagenBase64(imagen);

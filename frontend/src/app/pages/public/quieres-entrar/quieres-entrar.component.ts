@@ -6,6 +6,7 @@ import { Miembro } from '../../../models/miembro.model';
 import { MiembroService } from '../../../services/public/miembro.service';
 import { SolicitudMiembroService } from '../../../services/public/solicitud-miembro.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { UtilsService } from '../../../services/utils.service';
 
 declare const jQuery: any;
 
@@ -32,16 +33,13 @@ export class QuieresEntrarComponent {
     private miembroService: MiembroService,
     private solicitudMiembroService: SolicitudMiembroService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private utils: UtilsService
   ) {}
 
   ngOnInit(): void {
     this.getMiembrosVigentes();
-    setTimeout(() => {
-      (function ($) {
-        $('#miembrosConocidos').selectpicker('refresh');
-      })(jQuery);
-    }, 500);
+    this.utils.refrescarSelectPicker('miembrosConocidos');
     this.esVisitante = this.authService.tieneRol('VISITANTE');
   }
 
@@ -54,20 +52,22 @@ export class QuieresEntrarComponent {
   public enviarSolicitudMiembro(): void {
     this.formEnviado = true;
     if (this.solicitudMiembroForm.valid) {
-      this.solicitudMiembroService
-        .crearSolicitudMiembro(this.solicitudMiembroForm.value)
-        .subscribe(
-          (res) => {
-            swal.fire(
-              'Solicitud enviada',
-              'Espera a que se revise la solicitud',
-              'success'
-            );
-          },
-          (error) => {
-            swal.fire('Error', error.error.error, 'error');
-          }
-        );
+      const data = this.utils.generarFormData(
+        this.solicitudMiembroForm,
+        this.utils.obtenerPropiedadesFormGroup(this.solicitudMiembroForm)
+      );
+      this.solicitudMiembroService.crearSolicitudMiembro(data).subscribe(
+        (res) => {
+          swal.fire(
+            'Solicitud enviada',
+            'Espera a que se revise la solicitud',
+            'success'
+          );
+        },
+        (error) => {
+          swal.fire('Error', error.error.error, 'error');
+        }
+      );
     }
   }
 

@@ -24,7 +24,7 @@ export class EventoService {
 
   public getEvento(id: ObjectId): Observable<Evento> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/evento`, { id }, {}, false, [Evento])
+      .request('GET', `${base_url}/evento`, {}, {}, false, [Evento], id)
       .pipe(map((res: { evento: Evento }) => res.evento));
   }
 }

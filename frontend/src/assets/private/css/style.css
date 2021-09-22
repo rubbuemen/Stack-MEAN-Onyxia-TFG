@@ -1497,7 +1497,7 @@ Notify
 *******************/
 .notify {
   position: relative;
-  top: -28px;
+  top: -8px;
   right: -7px;
 }
 
@@ -2049,6 +2049,7 @@ Megamenu
 Wave Effects
 *******************/
 .waves-effect {
+  padding-top: 40px;
   position: relative;
   cursor: pointer;
   display: inline-block;
@@ -7357,7 +7358,7 @@ File: scss
 }
 
 .has-danger .form-control-danger {
-  background-image: url(../images/icon/danger.svg);
+  background-image: url(../css/icons/danger.svg);
 }
 
 .has-danger .form-control {

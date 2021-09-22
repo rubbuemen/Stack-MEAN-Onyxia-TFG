@@ -26,7 +26,7 @@
              <span class="h2 text-info">*</span>
              <span class="form-text text-muted mb-4 font-weight-bolder">Campos obligatorios</span>
            </div>
-           <form autocomplete="off" [formGroup]="registroForm" (ngSubmit)="registrarse()">
+           <form autocomplete="off" [formGroup]="registroForm" (ngSubmit)="registrarse()" enctype="multipart/form-data">
              <div class="form-row">
                <div class="form-group col-12 col-md-3">
                  <label for="nombre" class="sr-only">Nombre</label>

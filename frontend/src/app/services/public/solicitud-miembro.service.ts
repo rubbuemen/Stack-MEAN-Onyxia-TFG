@@ -6,7 +6,6 @@ import { environment } from '../../../environments/environment.prod';
 
 import { RequestsConstructorService } from '../requests-constructor.service';
 
-import { SolicitudMiembroForm } from '../../interfaces/solicitud-miembro-form.interface';
 import { SolicitudMiembro } from '../../models/solicitud-miembro.model';
 
 const base_url = environment.base_url;
@@ -17,14 +16,12 @@ const base_url = environment.base_url;
 export class SolicitudMiembroService {
   constructor(private requestConstructorService: RequestsConstructorService) {}
 
-  public crearSolicitudMiembro(
-    solicitudMiembroData: SolicitudMiembroForm
-  ): Observable<SolicitudMiembro> {
+  public crearSolicitudMiembro(data: FormData): Observable<SolicitudMiembro> {
     return this.requestConstructorService
       .request(
         'POST',
         `${base_url}/solicitudMiembro`,
-        { solicitudMiembroData },
+        data,
         {},
         true,
         SolicitudMiembro

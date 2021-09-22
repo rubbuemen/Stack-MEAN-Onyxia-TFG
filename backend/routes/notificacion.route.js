@@ -8,4 +8,6 @@ router.put('/mover/:id', auth.actor_registrado, (req, res) => notificacionContro
 router.put('/delete/:id', auth.actor_registrado, (req, res) => notificacionController.eliminarNotificacion(req, res));
 router.get('/list/:buzonId', auth.actor_registrado, (req, res) => notificacionController.getNotificacionesByBuzonId(req, res));
 
+//Crear para ver una notificación y que al hacer la llamada se ponga lo de leido a true
+
 module.exports = router;

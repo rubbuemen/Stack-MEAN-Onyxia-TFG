@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import swal from 'sweetalert2';
 import { RegistroService } from '../../services/public/registro.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-registro',
@@ -12,7 +13,7 @@ import { RegistroService } from '../../services/public/registro.service';
 export class RegistroComponent {
   public formEnviado = false;
 
-  public registroForm = this.fb.group({
+  public registroForm: FormGroup = this.fb.group({
     nombre: ['', Validators.required],
     apellidos: ['', Validators.required],
     correoElectronico: ['', [Validators.required, Validators.email]],
@@ -34,13 +35,18 @@ export class RegistroComponent {
 
   constructor(
     private registroService: RegistroService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utils: UtilsService
   ) {}
 
   public registrarse(): void {
     this.formEnviado = true;
     if (this.registroForm.valid) {
-      this.registroService.registrarse(this.registroForm.value).subscribe(
+      const data = this.utils.generarFormData(
+        this.registroForm,
+        this.utils.obtenerPropiedadesFormGroup(this.registroForm)
+      );
+      this.registroService.registrarse(data).subscribe(
         (res: any) => {
           swal.fire('Registro', 'Registro completado con éxito', 'success');
         },

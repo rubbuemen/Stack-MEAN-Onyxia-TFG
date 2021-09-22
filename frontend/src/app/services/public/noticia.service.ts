@@ -24,7 +24,7 @@ export class NoticiaService {
 
   public getNoticia(id: ObjectId): Observable<Noticia> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/noticia`, { id }, {}, false, [Noticia])
+      .request('GET', `${base_url}/noticia`, {}, {}, false, [Noticia], id)
       .pipe(map((res: { noticia: Noticia }) => res.noticia));
   }
 }

@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment.prod';
 import { RequestsConstructorService } from '../services/requests-constructor.service';
 
 import { CuentaUsuario } from '../models/cuenta-usuario.model';
-import { LoginForm } from '../interfaces/login-form.interface';
 import { MenuService } from '../services/public/menu.service';
 
 const base_url = environment.base_url;
@@ -30,17 +29,9 @@ export class AuthService {
     private menuService: MenuService
   ) {}
 
-  public login(loginForm: LoginForm): Observable<any> {
-    const { usuario, contraseña } = loginForm;
+  public login(data: FormData): Observable<any> {
     return this.requestConstructorService
-      .request(
-        'POST',
-        `${base_url}/login`,
-        { usuario, contraseña },
-        {},
-        false,
-        [CuentaUsuario]
-      )
+      .request('POST', `${base_url}/login`, data, {}, false, [CuentaUsuario])
       .pipe(
         map((res: { jwtToken: string }) => {
           localStorage.setItem('jwtToken', res.jwtToken);
@@ -73,8 +64,17 @@ export class AuthService {
   }
 
   public estaAutentificado(): boolean {
-    const autentificado: boolean = this.usuarioAutentificado ? true : false;
-    this.autentificado.emit(autentificado);
+    const autentificado: boolean =
+      this.usuarioAutentificado && !this.tokenExpirado() ? true : false;
+    if (!autentificado) {
+      localStorage.removeItem('jwtToken');
+      this.usuarioAutentificado = undefined;
+      this.generarMenuSegunAuth(false);
+      this.autentificado.emit(false);
+      this.esVisitante.emit(false);
+    } else {
+      this.autentificado.emit(true);
+    }
     return autentificado;
   }
 
@@ -85,6 +85,12 @@ export class AuthService {
     if (autoridad === 'VISITANTE' && tieneRolAutoridad)
       this.esVisitante.emit(true);
     return tieneRolAutoridad;
+  }
+
+  private tokenExpirado(): boolean {
+    const token = localStorage.getItem('jwtToken');
+    const tiempoExp = JSON.parse(atob(token.split('.')[1])).exp;
+    return Math.floor(new Date().getTime() / 1000) >= tiempoExp;
   }
 
   public generarMenuSegunAuth(autentificado: boolean): void {

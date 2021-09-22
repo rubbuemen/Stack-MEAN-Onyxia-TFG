@@ -31,9 +31,15 @@ export class AlbumFotografiaService {
 
   public getAlbumFotografias(id: ObjectId): Observable<AlbumFotografia> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/albumFotografia`, { id }, {}, false, [
-        AlbumFotografia,
-      ])
+      .request(
+        'GET',
+        `${base_url}/albumFotografia`,
+        {},
+        {},
+        false,
+        [AlbumFotografia],
+        id
+      )
       .pipe(
         map(
           (res: { albumFotografias: AlbumFotografia }) => res.albumFotografias

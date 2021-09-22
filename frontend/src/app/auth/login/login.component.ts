@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../auth.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -27,12 +28,20 @@ export class LoginComponent {
     contraseña: ['', Validators.required],
   });
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private utils: UtilsService
+  ) {}
 
   public login(): void {
     this.formEnviado = true;
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe(
+      const data = this.utils.generarFormData(
+        this.loginForm,
+        this.utils.obtenerPropiedadesFormGroup(this.loginForm)
+      );
+      this.authService.login(data).subscribe(
         (res: any) => {},
         (error) => {
           swal.fire('Error', error.error.error, 'error');

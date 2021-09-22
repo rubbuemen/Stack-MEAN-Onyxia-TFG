@@ -22,10 +22,11 @@ export class TramoHorarioService {
       .request(
         'GET',
         `${base_url}/tramoHorario/list`,
-        { idDiaEvento },
+        {},
         {},
         false,
-        [DiaEvento]
+        [DiaEvento],
+        idDiaEvento
       )
       .pipe(
         map((res: { tramosHorarios: TramoHorario[] }) => res.tramosHorarios)

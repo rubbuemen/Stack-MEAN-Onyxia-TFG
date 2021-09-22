@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const colores = require('colors');
+
 const { comprobarFechaPenalizacion, reiniciarCuotaMiembros } = require('./services/miembro.service');
 const { eliminarSolicitudesMiembroRechazadas } = require('./services/solicitudMiembro.service');
 const { cambiarEventosAEnProgreso, cambiarEventosARealizados } = require('./services/evento.service');
@@ -12,7 +13,9 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.disable('etag');
 
 // Morgan para mostrar información de las peticiones

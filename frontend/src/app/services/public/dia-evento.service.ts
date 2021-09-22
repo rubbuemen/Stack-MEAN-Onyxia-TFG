@@ -19,9 +19,15 @@ export class DiaEventoService {
 
   public getDiasEvento(idEvento: ObjectId): Observable<DiaEvento[]> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/diaEvento/list`, { idEvento }, {}, false, [
-        DiaEvento,
-      ])
+      .request(
+        'GET',
+        `${base_url}/diaEvento/list`,
+        {},
+        {},
+        false,
+        [DiaEvento],
+        idEvento
+      )
       .pipe(map((res: { diasEvento: DiaEvento[] }) => res.diasEvento));
   }
 }

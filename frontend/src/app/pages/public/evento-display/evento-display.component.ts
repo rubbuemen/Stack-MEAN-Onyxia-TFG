@@ -38,7 +38,7 @@ export class EventoPublicDisplayComponent implements OnInit {
     if (idObject !== undefined) {
       this.eventoService.getEvento(idObject).subscribe(
         (evento) => {
-          if (evento.imagen !== undefined) {
+          if (this.utils.existe(evento.imagen)) {
             let imagen =
               'data:' +
               evento.imagen.mimetype +

@@ -22,7 +22,7 @@ exports.editarMisDatos = async (req, res) => {
       nombre,
       apellidos,
       usuario,
-      contraseñaAnterior,
+      contraseñaActual,
       contraseñaNueva,
       fechaNacimiento,
       correoElectronico,
@@ -33,6 +33,7 @@ exports.editarMisDatos = async (req, res) => {
       aficiones,
       tieneCochePropio,
     } = req.body;
+    console.log(req.body);
     const fotografia = req.file;
     if (usuarioLogeado.autoridad === 'VISITANTE') {
       if (!nombre || !apellidos || !usuario || !fechaNacimiento || !correoElectronico)
@@ -44,23 +45,22 @@ exports.editarMisDatos = async (req, res) => {
         !usuario ||
         !fechaNacimiento ||
         !correoElectronico ||
-        !fotografia ||
         !alias ||
         !numeroTelefono ||
         !direccion ||
         !dni ||
         !aficiones ||
-        !tieneCochePropio
+        tieneCochePropio === undefined
       )
         throw errorLanzado(400, 'Hay campos obligatorios del formulario que no se han enviado');
     }
-    if (contraseñaAnterior) {
+    if (contraseñaActual) {
       const cuentaUsuario = await cuentaUsuarioService.getUsuarioLogeado(usuarioLogeado.usuario);
-      const contraseñaCorrecta = bcrypt.compareSync(contraseñaAnterior, cuentaUsuario.contraseña);
-      if (!contraseñaCorrecta) throw errorLanzado(401, 'La contraseña anterior introducida no coincide');
+      const contraseñaCorrecta = bcrypt.compareSync(contraseñaActual, cuentaUsuario.contraseña);
+      if (!contraseñaCorrecta) throw errorLanzado(401, 'La contraseña actual introducida no coincide');
     }
-    if (contraseñaAnterior && !contraseñaNueva) throw errorLanzado(400, 'Indique una nueva contraseña');
-    if (!contraseñaAnterior && contraseñaNueva) throw errorLanzado(400, 'Indique su anterior contraseña');
+    if (contraseñaActual && !contraseñaNueva) throw errorLanzado(400, 'Indique una nueva contraseña');
+    if (!contraseñaActual && contraseñaNueva) throw errorLanzado(400, 'Indique su actual contraseña');
     req.body.fechaNacimiento = new Date(fechaNacimiento);
     if (req.body.fechaNacimiento >= new Date()) throw errorLanzado(400, 'La fecha de nacimiento insertada no está en pasado');
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(correoElectronico))
@@ -85,7 +85,12 @@ exports.editarMisDatos = async (req, res) => {
       if (!checkDni)
         throw errorLanzado(400, 'El DNI insertado no mantiene el formato nacional NNNNNNNNL, el formato extrangero LNNNNNNNL o simplemente no es válido');
     }
-    req.file.data = convertirImagenABase64(fotografia);
+    if (fotografia) {
+      req.file.data = convertirImagenABase64(fotografia);
+    } else {
+      req.file = undefined; // Para el caso que se ha editado pero no se ha cambiado la imagen
+    }
+
     const { actor, cuentaUsuario } = await actorService.editarMisDatos(req.body, req.file, usuarioLogeado);
     const jwtToken = jwt.sign({ _id: cuentaUsuario._id, usuario: cuentaUsuario.usuario, autoridad: cuentaUsuario.autoridad }, process.env.SECRET_KEY, {
       expiresIn: '1d',

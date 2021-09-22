@@ -23,10 +23,11 @@ export class ActividadService {
       .request(
         'GET',
         `${base_url}/actividad/listPub`,
-        { eventoId },
+        {},
         {},
         false,
-        [Actividad]
+        [Actividad],
+        eventoId
       )
       .pipe(map((res: { actividades: Actividad[] }) => res.actividades));
   }
@@ -41,7 +42,7 @@ export class ActividadService {
 
   public getActividad(id: ObjectId): Observable<Actividad> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/actividad`, { id }, {}, false, [Actividad])
+      .request('GET', `${base_url}/actividad`, {}, {}, false, [Actividad], id)
       .pipe(map((res: { actividad: Actividad }) => res.actividad));
   }
 }
