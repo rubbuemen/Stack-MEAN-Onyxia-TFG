@@ -19,12 +19,32 @@ exports.getNotificacionesByBuzonId = async (usuarioLogeado, buzonId) => {
       match: { _id: buzonId },
       populate: { path: 'notificaciones' },
     }));
+  if (actorConectado.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
+  return actorConectado.buzones[0].notificaciones;
+};
+
+exports.getNotificacionesNoLeidasByBuzonId = async (usuarioLogeado, buzonId) => {
+  const buzon = await Buzon.findById(buzonId);
+  if (!buzon) throw errorLanzado(404, 'El buzón del que intenta listar las notificaciones no existe');
+  const actorConectado =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+      path: 'buzones',
+      match: { _id: buzonId },
+      populate: { path: 'notificaciones', match: { leido: false } },
+    })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+      path: 'buzones',
+      match: { _id: buzonId },
+      populate: { path: 'notificaciones', match: { leido: false } },
+    }));
+  if (actorConectado.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
   return actorConectado.buzones[0].notificaciones;
 };
 
 exports.enviarNotificacion = async (parametros, usuarioLogeado) => {
   let notificacion;
   let buzonSalida;
+  const notificacionesEntrantes = [];
   try {
     let actorBuzonSalida;
     if (usuarioLogeado.autoridad === 'VISITANTE') {
@@ -65,7 +85,11 @@ exports.enviarNotificacion = async (parametros, usuarioLogeado) => {
       },
       { new: true }
     );
-    await asyncForEach(notificacion.receptoresVisitantes, async (receptor) => {
+
+    await asyncForEach(parametros.receptoresVisitantes, async receptor => {
+      notificacion = new Notificacion(parametros);
+      notificacion = await notificacion.save();
+      notificacionesEntrantes.push(notificacion);
       const actorBuzonEntrada = await Visitante.findOne({ _id: receptor }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
@@ -79,7 +103,10 @@ exports.enviarNotificacion = async (parametros, usuarioLogeado) => {
         { new: true }
       );
     });
-    await asyncForEach(notificacion.receptoresMiembros, async (receptor) => {
+    await asyncForEach(parametros.receptoresMiembros, async receptor => {
+      notificacion = new Notificacion(parametros);
+      notificacion = await notificacion.save();
+      notificacionesEntrantes.push(notificacion);
       const actorBuzonEntrada = await Miembro.findOne({ _id: receptor }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
@@ -103,38 +130,72 @@ exports.enviarNotificacion = async (parametros, usuarioLogeado) => {
         },
         { new: true }
       );
-      await asyncForEach(notificacion.receptoresVisitantes, async (receptor) => {
+      await asyncForEach(parametros.receptoresVisitantes, async receptor => {
         const actorBuzonEntrada = await Visitante.findOne({ _id: receptor }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },
         });
         const buzonEntrada = actorBuzonEntrada.buzones[0];
-        await Buzon.findOneAndUpdate(
-          { _id: buzonEntrada._id },
-          {
-            $pull: { notificaciones: notificacion._id },
-          },
-          { new: true }
-        );
+        for (const not of notificacionesEntrantes) {
+          await Buzon.findOneAndUpdate(
+            { _id: buzonEntrada._id },
+            {
+              $pull: { notificaciones: not._id },
+            },
+            { new: true }
+          );
+        }
       });
-      await asyncForEach(notificacion.receptoresMiembros, async (receptor) => {
+      await asyncForEach(parametros.receptoresMiembros, async receptor => {
         const actorBuzonEntrada = await Miembro.findOne({ _id: receptor }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },
         });
         const buzonEntrada = actorBuzonEntrada.buzones[0];
-        await Buzon.findOneAndUpdate(
-          { _id: buzonEntrada._id },
-          {
-            $pull: { notificaciones: notificacion._id },
-          },
-          { new: true }
-        );
+        for (const not of notificacionesEntrantes) {
+          await Buzon.findOneAndUpdate(
+            { _id: buzonEntrada._id },
+            {
+              $pull: { notificaciones: not._id },
+            },
+            { new: true }
+          );
+        }
       });
       await Notificacion.findByIdAndDelete(notificacion._id);
+      for (const not of notificacionesEntrantes) {
+        await Notificacion.findByIdAndDelete(not._id);
+      }
     }
     throw error;
   }
+};
+
+exports.verNotificacion = async (usuarioLogeado, notificacionId) => {
+  let notificacion = await Notificacion.findById(notificacionId);
+  if (!notificacion) throw errorLanzado(404, 'La notificacion no existe');
+  if (usuarioLogeado.autoridad === 'VISITANTE') {
+    actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+      path: 'buzones',
+      match: { notificaciones: { $in: [notificacionId] } },
+    });
+  } else {
+    actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+      path: 'buzones',
+      match: { notificaciones: { $in: [notificacionId] } },
+    });
+  }
+  if (actorConectado.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
+
+  notificacion = await Notificacion.findOneAndUpdate(
+    { _id: notificacion._id },
+    {
+      leido: true,
+    },
+    { new: true }
+  );
+
+  return notificacion;
 };
 
 exports.moverNotificacion = async (parametros, usuarioLogeado, notificacionId) => {
@@ -216,7 +277,7 @@ exports.eliminarNotificacion = async (usuarioLogeado, notificacionId) => {
     const buzonesContieneNotificacion = await Buzon.find({ notificaciones: { $in: [notificacionId] } });
     if (buzonesContieneNotificacion.length === 0) await Notificacion.findOneAndDelete(notificacionId);
   } else {
-    await asyncForEach(actorConectado.buzones, async (buzon) => {
+    await asyncForEach(actorConectado.buzones, async buzon => {
       await Buzon.findOneAndUpdate(
         { _id: buzon._id },
         {
@@ -256,7 +317,7 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
       },
       { new: true }
     );
-    await asyncForEach(notificacion.receptoresVisitantes, async (receptor) => {
+    await asyncForEach(notificacion.receptoresVisitantes, async receptor => {
       const actorBuzonEntrada = await Visitante.findOne({ _id: receptor._id }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
@@ -270,7 +331,7 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
         { new: true }
       );
     });
-    await asyncForEach(notificacion.receptoresMiembros, async (receptor) => {
+    await asyncForEach(notificacion.receptoresMiembros, async receptor => {
       const actorBuzonEntrada = await Miembro.findOne({ _id: receptor._id }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
@@ -294,7 +355,7 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
         },
         { new: true }
       );
-      await asyncForEach(notificacion.receptoresVisitantes, async (receptor) => {
+      await asyncForEach(notificacion.receptoresVisitantes, async receptor => {
         const actorBuzonEntrada = await Visitante.findOne({ _id: receptor._id }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },
@@ -308,7 +369,7 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
           { new: true }
         );
       });
-      await asyncForEach(notificacion.receptoresMiembros, async (receptor) => {
+      await asyncForEach(notificacion.receptoresMiembros, async receptor => {
         const actorBuzonEntrada = await Miembro.findOne({ _id: receptor._id }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },

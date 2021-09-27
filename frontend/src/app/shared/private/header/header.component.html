@@ -1,4 +1,4 @@
-<header class="topbar">
+<header class="topbar" *ngIf="actor">
   <nav class="navbar top-navbar navbar-expand-md navbar-light">
     <div class="navbar-header">
       <div class="navbar-brand">
@@ -18,58 +18,34 @@
       </ul>
       <ul class="navbar-nav my-lg-0">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link waves-effect waves-dark" [routerLink]="['/private/notificaciones']">
             <i class="mdi mdi-email"></i>
-            <div class="notify">
+            <div class="notify" *ngIf="hayNotificacionesNuevas">
               <span class="heartbit"></span>
               <span class="point"></span>
             </div>
           </a>
-          <div class="dropdown-menu mailbox dropdown-menu-right animated fadeIn" aria-labelledby="2">
-            <ul>
-              <li>
-                <div class="drop-title">You have 4 new messages</div>
-              </li>
-              <li>
-                <div class="message-center">
-                  <!-- Message plantilla fila -->
-                  <a href="#">
-                    <div class="user-img">
-                      <img src="./assets/images/junta-presidente.jpg" alt="user" class="img-circle">
-                      <span class="profile-status online pull-right"></span>
-                    </div>
-                    <div class="mail-contnet">
-                      <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
-                    </div>
-                  </a>
-                  <!-- Hasta aquí -->
-                </div>
-              </li>
-              <li>
-                <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
-              </li>
-            </ul>
-          </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-              src="./assets/images/junta-presidente.jpg" alt="user" class="profile-pic" /></a>
+          <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img [src]="actor.fotografia" class="profile-pic" /></a>
           <div class="dropdown-menu dropdown-menu-right animated fadeIn">
             <ul class="dropdown-user">
               <li>
-                <div class="dw-user-box">
-                  <div class="u-img"><img src="./assets/images/junta-presidente.jpg" alt="user"></div>
-                  <div class="u-text">
-                    <h4>Steave Jobs</h4>
-                    <p class="text-muted">varun@gmail.com</p><a [routerLink]="['/private/actor']" class="btn btn-rounded btn-primary btn-sm">Ver perfil</a>
+                <div class="dw-user-box row no-gutters">
+                  <div class="u-img col-3"><img [src]="actor.fotografia"></div>
+                  <div class="u-text col-9">
+                    <h4>{{actor.nombre}} {{actor.apellidos}}</h4>
+                    <p class="text-muted">{{actor.correoElectronico}}</p>
+                    <a [routerLink]="['/private/actor']" class="btn btn-rounded btn-primary btn-sm">Ver perfil</a>
                   </div>
                 </div>
               </li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><i class="fa fa-share-alt"></i> Tus redes sociales</a></li>
-              <li><a href="#"><i class="ti-settings"></i> Configuración de la cuenta</a></li>
+              <li><a [routerLink]="['/private/red-social']"><i class="fa fa-share-alt"></i> Tus redes sociales</a></li>
+              <li><a [routerLink]="['/private/actor/self-form']"><i class="ti-settings"></i> Configuración de la cuenta</a></li>
               <li role="separator" class="divider"></li>
-              <li><a [routerLink]="['/']"><i class="ti-settings"></i>Salir del panel de administración</a></li>
+              <li><a [routerLink]="['/']"><i class="mdi mdi-exit-to-app"></i> Salir del panel de administración</a></li>
               <li><a [routerLink]="['/logout']" (click)="logout()"><i class="fa fa-power-off"></i> Desconectar</a></li>
             </ul>
           </div>

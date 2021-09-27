@@ -72,7 +72,7 @@ export class ActorSelfFormComponent implements OnInit {
   private getMisDatos(): void {
     this.actorService.getMisDatos().subscribe((actor) => {
       if (!this.utils.existe(actor.alias)) actor.alias = '';
-      if (!this.utils.existe(actor.telefono)) actor.telefono = '';
+      if (!this.utils.existe(actor.numeroTelefono)) actor.numeroTelefono = '';
       this.actor = actor;
       this.perfilActorForm.get('nombre').setValue(this.actor.nombre);
       this.perfilActorForm.get('apellidos').setValue(this.actor.apellidos);

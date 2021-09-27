@@ -1,32 +1,39 @@
    <aside class="left-sidebar">
      <div class="scroll-sidebar">
-       <nav class="sidebar-nav">
+       <nav class="sidebar-nav" *ngIf="actor">
          <ul id="sidebarnav">
            <li class="user-profile">
              <a class="has-arrow waves-effect waves-dark" href="#menu0" aria-expanded="false" data-toggle="collapse">
-               <img src="./assets/images/junta-presidente.jpg" alt="user" />
-               <span class="hide-menu">Steave Jobs </span>
+               <div class="row row-no-padding">
+                 <div class="col-3">
+                   <img [src]="actor.fotografia" />
+                 </div>
+                 <div class="col-9">
+                   <span class="hide-menu">{{actor.nombre}} {{actor.apellidos}}</span>
+                 </div>
+               </div>
              </a>
              <ul aria-expanded="false" class="collapse" id="menu0">
-               <li><a href="private/actor/display">Mi perfil </a></li>
-               <li><a href="javascript:void()">Notificaciones</a></li>
-               <li><a href="javascript:void()">Mis redes sociales</a></li>
-               <li><a href="javascript:void()">Configuración de la cuenta</a></li>
-               <li><a href="javascript:void()">Desconectar</a></li>
+               <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let item of menuPerfil">
+                 <a class="nav-link" *ngIf="item.url !== '/logout'" [routerLink]="item.url">{{item.titulo}}</a>
+                 <a class="nav-link" *ngIf="item.url === '/logout'" [routerLink]="item.url" (click)="logout()">{{item.titulo}}</a>
+               </li>
              </ul>
            </li>
            <li class="nav-devider"></li>
-           <li class="nav-small-cap">VISITANTE</li>
-           <li> <a class="has-arrow waves-effect waves-dark" href="#menu1" aria-expanded="false" data-toggle="collapse">
-               <i class="mdi mdi-email"></i>
-               <span class="hide-menu">Notificaciones</span></a>
-             <ul aria-expanded="false" class="collapse" id="menu1">
-               <li><a href="#">Buzón de entrada</a></li>
-               <li><a href="#">Nueva notificación</a></li>
-               <li><a href="#">Ver todos los buzones</a></li>
+           <li class="nav-small-cap">{{actor.cuentaUsuario.autoridad}} </li>
+           <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let item of menuLateral">
+             <a class="has-arrow waves-effect waves-dark" href="{{'#' + item.identificador}}" aria-expanded="false" data-toggle="collapse">
+               <i class="{{item.claseIcono}}"></i>
+               <span class="hide-menu">{{item.titulo}}</span></a>
+             <ul aria-expanded="false" class="collapse" id="{{item.identificador}}">
+               <li *ngFor="let subItem of item.submenu">
+                 <a [routerLink]="subItem.url">{{subItem.titulo}}</a>
+               </li>
              </ul>
            </li>
-           <li> <a class="has-arrow waves-effect waves-dark" href="#menu2" aria-expanded="false" data-toggle="collapse">
+
+           <!-- <li> <a class="has-arrow waves-effect waves-dark" href="#menu2" aria-expanded="false" data-toggle="collapse">
                <i class="mdi mdi-chart-bubble"></i>
                <span class="hide-menu" data-toggle="collapse">Ejemplo
                  <span class="label label-rouded label-danger pull-right">25</span>
@@ -58,7 +65,7 @@
              <ul aria-expanded="false" class="collapse" id="menu1">
                <li><a href="private/actor/list/miembros">Penalizar miembros</a></li>
              </ul>
-           </li>
+           </li>-->
          </ul>
        </nav>
      </div>

@@ -6,8 +6,8 @@ const auth = require('../middleware/auth');
 router.post('/', auth.actor_registrado, (req, res) => notificacionController.enviarNotificacion(req, res));
 router.put('/mover/:id', auth.actor_registrado, (req, res) => notificacionController.moverNotificacion(req, res));
 router.put('/delete/:id', auth.actor_registrado, (req, res) => notificacionController.eliminarNotificacion(req, res));
+router.get('/:id', auth.actor_registrado, (req, res) => notificacionController.verNotificacion(req, res));
 router.get('/list/:buzonId', auth.actor_registrado, (req, res) => notificacionController.getNotificacionesByBuzonId(req, res));
-
-//Crear para ver una notificación y que al hacer la llamada se ponga lo de leido a true
+router.get('/list/leidos/:buzonId', auth.actor_registrado, (req, res) => notificacionController.getNotificacionesNoLeidasByBuzonId(req, res));
 
 module.exports = router;

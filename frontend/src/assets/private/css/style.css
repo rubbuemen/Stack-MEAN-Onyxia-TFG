@@ -923,6 +923,8 @@ use profile section
 ******************/
 .sidebar-nav .user-profile>a img {
   width: 30px;
+  height: 30px;
+  object-fit: cover;
   border-radius: 100%;
   margin-right: 10px;
 }
@@ -1347,6 +1349,8 @@ File: scss
 
 .topbar .profile-pic {
   width: 30px;
+  height: 30px;
+  object-fit: cover;
   border-radius: 100%;
 }
 
@@ -1363,7 +1367,7 @@ File: scss
 
 .topbar ul.dropdown-user {
   padding: 0px;
-  min-width: 270px;
+  min-width: 330px;
 }
 
 .topbar ul.dropdown-user li {
@@ -1498,7 +1502,7 @@ Notify
 .notify {
   position: relative;
   top: -8px;
-  right: -7px;
+  right: -12px;
 }
 
 .notify .heartbit {

@@ -51,7 +51,9 @@ export class UtilsService {
   }
 
   public existe(campo: string) {
-    return campo !== undefined && campo !== null && campo !== '';
+    return (
+      campo !== undefined && campo !== null && campo !== '' && campo !== ' '
+    );
   }
 
   public setearImagenFileHtml(imagen: string) {

@@ -4,11 +4,18 @@ const { Miembro } = require('../models/miembro.model');
 const { Visitante } = require('../models/visitante.model');
 const { asyncForEach } = require('../util/funciones.util');
 
-exports.getBuzones = async (usuarioLogeado) => {
+exports.getBuzones = async usuarioLogeado => {
   const actorConectado =
     (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones' })) ||
     (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones' }));
   return actorConectado.buzones;
+};
+
+exports.getBuzonEntrada = async usuarioLogeado => {
+  const actorConectado =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de entrada' } })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de entrada' } }));
+  return actorConectado.buzones[0];
 };
 
 exports.crearBuzon = async (parametros, usuarioLogeado) => {
@@ -97,7 +104,7 @@ exports.eliminarBuzon = async (usuarioLogeado, buzonId) => {
       await Miembro.updateOne({ _id: actorConectado._id }, { $pull: { buzones: buzon._id } });
     }
     const buzonEntrada = actorConectado.buzones[0];
-    await asyncForEach(buzon.notificaciones, async (notificacion) => {
+    await asyncForEach(buzon.notificaciones, async notificacion => {
       await Buzon.findOneAndUpdate(
         { _id: buzonEntrada._id },
         {

@@ -11,6 +11,16 @@ exports.getBuzones = async (req, res) => {
   }
 };
 
+exports.getBuzonEntrada = async (req, res) => {
+  try {
+    const usuarioLogeado = req.cuentaUsuario;
+    const buzon = await buzonService.getBuzonEntrada(usuarioLogeado);
+    return res.status(200).send({ buzon });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.crearBuzon = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
