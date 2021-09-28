@@ -26,7 +26,8 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "src/styles.css",
-              "node_modules/dropify/dist/css/dropify.css"
+              "node_modules/dropify/dist/css/dropify.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -37,9 +38,9 @@
               "node_modules/waves/dist/waves.js",
               "node_modules/sticky-kit/dist/sticky-kit.js",
               "node_modules/sparkline/lib/sparkline.js",
-              "node_modules/datatables/media/js/jquery.dataTables.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
-              "node_modules/dropify/dist/js/dropify.js"
+              "node_modules/dropify/dist/js/dropify.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

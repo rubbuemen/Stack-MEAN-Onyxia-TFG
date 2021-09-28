@@ -25,21 +25,6 @@ export class PagesPrivateComponent implements OnInit {
             'El formato de la imagen no está permitido (sólo {{ value }}).',
         },
       });
-      $('.table-data').dataTable(
-        {
-          language: {
-            url: './assets/documents/tables_spanish.json',
-          },
-        },
-        {
-          columnDefs: [
-            {
-              targets: 'no-sort',
-              orderable: false,
-            },
-          ],
-        }
-      );
     })(jQuery);
 
     (function ($) {

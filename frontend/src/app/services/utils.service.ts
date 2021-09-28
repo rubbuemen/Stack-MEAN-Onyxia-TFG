@@ -3,6 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { Subject } from 'rxjs';
+
 const mongoose = require('mongoose');
 
 declare const jQuery: any;
@@ -12,6 +14,25 @@ declare const jQuery: any;
 })
 export class UtilsService {
   constructor(private sanitizer: DomSanitizer, private router: Router) {}
+
+  public configurarOpcionesTabla(): DataTables.Settings {
+    let dtOptions: DataTables.Settings = {};
+    dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      processing: true,
+      columnDefs: [
+        {
+          targets: 'no-sort',
+          orderable: false,
+        },
+      ],
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json',
+      },
+    };
+    return dtOptions;
+  }
 
   public usarImagenBase64(imagen: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(imagen);

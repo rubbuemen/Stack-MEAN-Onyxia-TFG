@@ -7,6 +7,7 @@ import swal from 'sweetalert2';
 import { ActorService } from '../../../../services/private/actor.service';
 import { UtilsService } from '../../../../services/utils.service';
 import { AuthService } from '../../../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actor-self-form',
@@ -23,7 +24,8 @@ export class ActorSelfFormComponent implements OnInit {
     private actorService: ActorService,
     private utils: UtilsService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -117,11 +119,13 @@ export class ActorSelfFormComponent implements OnInit {
       );
       this.actorService.editarMisDatos(data).subscribe(
         (res) => {
-          swal.fire(
-            'Datos editados',
-            'Se han editado tus datos correctamente',
-            'success'
-          );
+          swal
+            .fire(
+              'Datos editados',
+              'Se han editado tus datos correctamente',
+              'success'
+            )
+            .then(() => this.router.navigate(['/private/actor']));
         },
         (error) => {
           swal.fire('Error', error.error.error, 'error');

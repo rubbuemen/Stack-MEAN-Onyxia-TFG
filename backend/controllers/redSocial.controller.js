@@ -60,3 +60,14 @@ exports.getRedesSocialesByActorId = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.getRedSocial = async (req, res) => {
+  try {
+    const usuarioLogeado = req.cuentaUsuario;
+    const redSocialId = req.params.id;
+    const redSocial = await redSocialService.getRedSocial(usuarioLogeado, redSocialId);
+    return res.status(200).send({ redSocial });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};

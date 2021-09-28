@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataTablesModule } from 'angular-datatables';
 
 //Parte privada
 import { InicioPrivateComponent } from './private/inicio/inicio.component';
@@ -28,6 +29,7 @@ import { PagesPrivateComponent } from './pages.private.component';
     ReactiveFormsModule,
     ComponentsModule,
     FontAwesomeModule,
+    DataTablesModule,
     RedSocialModule,
     ActorModule,
   ],

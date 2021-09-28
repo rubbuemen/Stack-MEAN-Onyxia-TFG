@@ -33,7 +33,6 @@ exports.editarMisDatos = async (req, res) => {
       aficiones,
       tieneCochePropio,
     } = req.body;
-    console.log(req.body);
     const fotografia = req.file;
     if (usuarioLogeado.autoridad === 'VISITANTE') {
       if (!nombre || !apellidos || !usuario || !fechaNacimiento || !correoElectronico)

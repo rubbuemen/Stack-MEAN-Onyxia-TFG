@@ -32,12 +32,16 @@ exports.crearRedSocial = async (parametros, usuarioLogeado) => {
 exports.editarRedSocial = async (parametros, usuarioLogeado, redSocialId) => {
   const checkExistencia = await RedSocial.findById(redSocialId);
   if (!checkExistencia) throw errorLanzado(404, 'La red social que intenta editar no existe');
-  const actorConectado =
-    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
-  const propietarioEntidad =
-    (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [redSocialId] } }));
-
-  if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
+  if (usuarioLogeado.autoridad !== 'PRESIDENTE') {
+    if (usuarioLogeado.autoridad === 'VISITANTE') {
+      actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+    } else {
+      actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+    }
+    const propietarioEntidad =
+      (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [redSocialId] } }));
+    if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
+  }
   const redSocial = await RedSocial.findOneAndUpdate(
     { _id: redSocialId },
     {
@@ -85,16 +89,32 @@ exports.eliminarRedSocial = async (usuarioLogeado, redSocialId) => {
   }
 };
 
-exports.getMisRedesSociales = async (usuarioLogeado) => {
+exports.getMisRedesSociales = async usuarioLogeado => {
   const actorConectado =
     (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'redSocials' })) ||
     (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'redSocials' }));
   return actorConectado.redSocials;
 };
 
-exports.getRedesSocialesByActorId = async (actorId) => {
+exports.getRedesSocialesByActorId = async actorId => {
   const actorConectado =
     (await Visitante.findOne({ _id: actorId }).populate({ path: 'redSocials' })) || (await Miembro.findOne({ _id: actorId }).populate({ path: 'redSocials' }));
   if (!actorConectado) throw errorLanzado(404, 'La ID del actor indicado no existe');
   return actorConectado.redSocials;
+};
+
+exports.getRedSocial = async (usuarioLogeado, redSocialId) => {
+  if (usuarioLogeado.autoridad !== 'PRESIDENTE') {
+    if (usuarioLogeado.autoridad === 'VISITANTE') {
+      actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+    } else {
+      actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+    }
+    const propietarioEntidad =
+      (await Visitante.findOne({ redSocials: { $in: [redSocialId] } })) || (await Miembro.findOne({ redSocials: { $in: [redSocialId] } }));
+    if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de esta red social');
+  }
+  const redSocial = await RedSocial.findById(redSocialId);
+  if (!redSocial) throw errorLanzado(404, 'La red social no existe');
+  return redSocial;
 };

@@ -300,6 +300,7 @@ exports.eliminarNotificacion = async (usuarioLogeado, notificacionId) => {
 exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomatica(parametros, usuarioLogeado) {
   let notificacion;
   let buzonSalida;
+  const notificacionesEntrantes = [];
   try {
     let actorBuzonSalida;
     parametros.emisorMiembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
@@ -317,8 +318,11 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
       },
       { new: true }
     );
-    await asyncForEach(notificacion.receptoresVisitantes, async receptor => {
-      const actorBuzonEntrada = await Visitante.findOne({ _id: receptor._id }).populate({
+    await asyncForEach(parametros.receptoresVisitantes, async receptor => {
+      notificacion = new Notificacion(parametros);
+      notificacion = await notificacion.save();
+      notificacionesEntrantes.push(notificacion);
+      const actorBuzonEntrada = await Visitante.findOne({ _id: receptor }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
       });
@@ -331,8 +335,11 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
         { new: true }
       );
     });
-    await asyncForEach(notificacion.receptoresMiembros, async receptor => {
-      const actorBuzonEntrada = await Miembro.findOne({ _id: receptor._id }).populate({
+    await asyncForEach(parametros.receptoresMiembros, async receptor => {
+      notificacion = new Notificacion(parametros);
+      notificacion = await notificacion.save();
+      notificacionesEntrantes.push(notificacion);
+      const actorBuzonEntrada = await Miembro.findOne({ _id: receptor }).populate({
         path: 'buzones',
         match: { nombre: 'Buzón de entrada' },
       });
@@ -355,35 +362,42 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
         },
         { new: true }
       );
-      await asyncForEach(notificacion.receptoresVisitantes, async receptor => {
-        const actorBuzonEntrada = await Visitante.findOne({ _id: receptor._id }).populate({
+      await asyncForEach(parametros.receptoresVisitantes, async receptor => {
+        const actorBuzonEntrada = await Visitante.findOne({ _id: receptor }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },
         });
         const buzonEntrada = actorBuzonEntrada.buzones[0];
-        await Buzon.findOneAndUpdate(
-          { _id: buzonEntrada._id },
-          {
-            $pull: { notificaciones: notificacion._id },
-          },
-          { new: true }
-        );
+        for (const not of notificacionesEntrantes) {
+          await Buzon.findOneAndUpdate(
+            { _id: buzonEntrada._id },
+            {
+              $pull: { notificaciones: not._id },
+            },
+            { new: true }
+          );
+        }
       });
-      await asyncForEach(notificacion.receptoresMiembros, async receptor => {
-        const actorBuzonEntrada = await Miembro.findOne({ _id: receptor._id }).populate({
+      await asyncForEach(parametros.receptoresMiembros, async receptor => {
+        const actorBuzonEntrada = await Miembro.findOne({ _id: receptor }).populate({
           path: 'buzones',
           match: { nombre: 'Buzón de entrada' },
         });
         const buzonEntrada = actorBuzonEntrada.buzones[0];
-        await Buzon.findOneAndUpdate(
-          { _id: buzonEntrada._id },
-          {
-            $pull: { notificaciones: notificacion._id },
-          },
-          { new: true }
-        );
+        for (const not of notificacionesEntrantes) {
+          await Buzon.findOneAndUpdate(
+            { _id: buzonEntrada._id },
+            {
+              $pull: { notificaciones: not._id },
+            },
+            { new: true }
+          );
+        }
       });
       await Notificacion.findByIdAndDelete(notificacion._id);
+      for (const not of notificacionesEntrantes) {
+        await Notificacion.findByIdAndDelete(not._id);
+      }
     }
     throw error;
   }

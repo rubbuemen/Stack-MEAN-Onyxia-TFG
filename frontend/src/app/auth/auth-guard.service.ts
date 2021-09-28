@@ -60,6 +60,21 @@ export class VisitanteGuardService implements CanActivate {
 @Injectable({
   providedIn: 'root',
 })
+export class PresidenteGuardService implements CanActivate {
+  constructor(private authService: AuthService, public router: Router) {}
+  canActivate(): boolean {
+    const tieneRol = this.authService.tieneRol('PRESIDENTE');
+    if (!this.authService.estaAutentificado() || !tieneRol) {
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class NoAuthOVisitanteGuardService implements CanActivate {
   constructor(private authService: AuthService, public router: Router) {}
   canActivate(): boolean {
