@@ -38,6 +38,15 @@ exports.getMiembrosJuntaVocales = async (req, res) => {
   }
 };
 
+exports.getPresidente = async (req, res) => {
+  try {
+    const miembro = await miembroService.getPresidente();
+    return res.status(200).send({ miembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.darBajaMiembro = async (req, res) => {
   try {
     const miembroId = req.params.miembroId;

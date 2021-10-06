@@ -33,7 +33,7 @@ exports.crearReunion = async (parametros, usuarioLogeado) => {
 
     reunion = new Reunion(parametros);
     reunion = await reunion.save();
-    await asyncForEach(miembros, async (miembro) => {
+    await asyncForEach(miembros, async miembro => {
       let asistencia = new AsistenciaMiembroReunion();
       asistencia.miembro = miembro;
       asistencia.reunion = reunion;
@@ -69,13 +69,14 @@ exports.crearReunion = async (parametros, usuarioLogeado) => {
           reunion.lugar +
           '. Recuerda que es necesario que marques si vas a asistir o no, por defecto estará marcado que no vas a asistir.',
         receptoresMiembros: receptores,
+        receptoresVisitantes: [],
       },
       usuarioLogeado
     );
     return reunion;
   } catch (error) {
     if (reunion) {
-      await asyncForEach(reunion.asistenciasMiembroReunion, async (asistencia) => {
+      await asyncForEach(reunion.asistenciasMiembroReunion, async asistencia => {
         const checkAsistenciaInMiembro = await Miembro.findOne({ asistenciasMiembroReunion: { $in: [asistencia._id] } });
         if (checkAsistenciaInMiembro) await Miembro.updateOne({ _id: asistencia.miembro }, { $pull: { asistenciasMiembroReunion: asistencia._id } });
         await AsistenciaMiembroReunion.findByIdAndDelete(asistencia._id);
@@ -122,11 +123,11 @@ exports.añadirInformacionReunionRealizada = async (parametros, reunionId) => {
   return reunion;
 };
 
-exports.eliminarReunion = async (reunionId) => {
+exports.eliminarReunion = async reunionId => {
   let reunion = await Reunion.findById(reunionId).populate({ path: 'asistenciasMiembroReunion' });
   if (!reunion) throw errorLanzado(404, 'La reunion que intenta eliminar no existe');
   if (reunion.estadoReunion !== 'PENDIENTE') throw errorLanzado(403, 'El reunion no puede eliminarse porque ya no está pendiente de realizarse');
-  await asyncForEach(reunion.asistenciasMiembroReunion, async (asistencia) => {
+  await asyncForEach(reunion.asistenciasMiembroReunion, async asistencia => {
     const miembro = await Miembro.findById(asistencia.miembro);
     await Miembro.findOneAndUpdate(
       { _id: miembro._id },
@@ -141,7 +142,7 @@ exports.eliminarReunion = async (reunionId) => {
   return reunion;
 };
 
-exports.cancelarReunion = async (reunionId) => {
+exports.cancelarReunion = async reunionId => {
   let reunion = await Reunion.findById(reunionId);
   if (!reunion) throw errorLanzado(404, 'La reunión que intenta cancelar no existe');
   if (reunion.estadoReunion !== 'PENDIENTE') throw errorLanzado(403, 'El reunion que intenta cancelar debe estar en un estado de pendiente de realizarse');
@@ -162,7 +163,7 @@ exports.cambiarReunionesAEnProgreso = async () => {
     async () => {
       console.log('Verificando reuniones pendientes...');
       const reuniones = await Reunion.find({ estadoReunion: 'PENDIENTE' });
-      reuniones.forEach(async (reunion) => {
+      reuniones.forEach(async reunion => {
         if (esHoy(reunion.fecha)) {
           await Reunion.findByIdAndUpdate(
             { _id: reunion._id },
@@ -188,7 +189,7 @@ exports.cambiarReunionesARealizado = async () => {
     async () => {
       console.log('Verificando reuniones realizadas...');
       const reuniones = await Reunion.find({ estadoReunion: 'ENPROGRESO' });
-      reuniones.forEach(async (reunion) => {
+      reuniones.forEach(async reunion => {
         if (!esHoy(reunion.fecha)) {
           await Reunion.findByIdAndUpdate(
             { _id: reunion._id },

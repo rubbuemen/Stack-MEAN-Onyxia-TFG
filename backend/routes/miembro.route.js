@@ -7,6 +7,7 @@ router.put('/penalizar/:miembroId', auth.presidente, (req, res) => miembroContro
 router.get('/list', (req, res) => miembroController.getMiembrosVigentes(req, res));
 router.get('/juntaSuperior', (req, res) => miembroController.getMiembrosJuntaSuperior(req, res));
 router.get('/juntaVocales', (req, res) => miembroController.getMiembrosJuntaVocales(req, res));
+router.get('/presidente', (req, res) => miembroController.getPresidente(req, res));
 router.put('/darBaja/:miembroId', auth.secretario_presidente, (req, res) => miembroController.darBajaMiembro(req, res));
 router.put('/darAltaExMiembro/:miembroId', auth.secretario_presidente, (req, res) => miembroController.darAltaExMiembro(req, res));
 

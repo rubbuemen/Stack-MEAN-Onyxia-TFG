@@ -479,6 +479,7 @@ exports.aceptarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) => 
       cuerpo:
         '!Felicidades! Tu solicitud para ser miembro ha sido aceptada, a continuación procede a realizar el pago para formalizar la inscripción y pasar a ser miembro',
       receptoresVisitantes: receptores,
+      receptoresMiembros: [],
     },
     usuarioLogeado
   );
@@ -503,6 +504,7 @@ exports.rechazarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) =>
       asunto: 'Solicitud para ser miembro rechazada',
       cuerpo: 'Lo sentimos, tu solicitud para ser miembro ha sido rechazada. Si quieres, puedes volver a intentar solicitar ser miembro una vez pase un mes.',
       receptoresVisitantes: receptores,
+      receptoresMiembros: [],
     },
     usuarioLogeado
   );

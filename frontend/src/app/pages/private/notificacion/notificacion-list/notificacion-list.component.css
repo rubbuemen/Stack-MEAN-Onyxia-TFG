@@ -1,0 +1,19 @@
+.inbox-panel .list-group .list-group-item.active,
+.inbox-panel .list-group .list-group-item:hover {
+  background: #e9edf2;
+  border-left: 3px solid #230058;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.unread {
+  background: #d9d9d9;
+  border-left: 3px solid #230058;
+}

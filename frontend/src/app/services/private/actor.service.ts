@@ -35,13 +35,18 @@ export class ActorService {
       .pipe(map((res: { misDatos }) => res.misDatos));
   }
 
-  public getDatos(id: ObjectId): Observable<any> {
+  public getDatos(actorId: ObjectId): Observable<any> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/actor`, {}, {}, true, [
-        typeof this.tipoActor,
-        id,
-      ])
-      .pipe(map((res: { actor }) => res.actor));
+      .request(
+        'GET',
+        `${base_url}/actor`,
+        {},
+        {},
+        true,
+        [typeof this.tipoActor],
+        actorId
+      )
+      .pipe(map((res: { datosActor }) => res.datosActor));
   }
 
   public editarMisDatos(data: FormData): Observable<any> {

@@ -11,11 +11,45 @@ exports.getBuzones = async usuarioLogeado => {
   return actorConectado.buzones;
 };
 
+exports.getBuzonesCreados = async usuarioLogeado => {
+  const actorConectado =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { esPorDefecto: false } })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { esPorDefecto: false } }));
+  return actorConectado.buzones;
+};
+
 exports.getBuzonEntrada = async usuarioLogeado => {
   const actorConectado =
     (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de entrada' } })) ||
     (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de entrada' } }));
   return actorConectado.buzones[0];
+};
+
+exports.getBuzonSalida = async usuarioLogeado => {
+  const actorConectado =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de salida' } })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de salida' } }));
+  return actorConectado.buzones[0];
+};
+
+exports.getBuzonPapelera = async usuarioLogeado => {
+  const actorConectado =
+    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de eliminados' } })) ||
+    (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({ path: 'buzones', match: { nombre: 'Buzón de eliminados' } }));
+  return actorConectado.buzones[0];
+};
+
+exports.getBuzon = async (usuarioLogeado, buzonId) => {
+  if (usuarioLogeado.autoridad === 'VISITANTE') {
+    actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+  } else {
+    actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+  }
+  const propietarioEntidad = (await Visitante.findOne({ buzones: { $in: [buzonId] } })) || (await Miembro.findOne({ buzones: { $in: [buzonId] } }));
+  if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de este buzón');
+  const buzon = await Buzon.findById(buzonId);
+  if (!buzon) throw errorLanzado(404, 'El buzón no existe');
+  return buzon;
 };
 
 exports.crearBuzon = async (parametros, usuarioLogeado) => {

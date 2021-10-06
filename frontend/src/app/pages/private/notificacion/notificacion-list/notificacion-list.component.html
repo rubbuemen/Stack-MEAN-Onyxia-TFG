@@ -1,0 +1,112 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row">
+          <div class="col-xlg-2 col-lg-3 col-md-4">
+            <div class="card-body inbox-panel">
+              <button [routerLink]="['/private/notificacion/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nueva notificación</button>
+              <button [routerLink]="['/private/buzon/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nuevo buzón</button>
+              <h5 class="card-title m-t-40">Buzones del sistema</h5>
+              <ul class="list-group list-group-full">
+                <li class="list-group-item cursor-pointer">
+                  <button (click)="getMisNotificacionesEntrada()" class="btn text-left p-0"><i class=" mdi mdi-gmail"></i> Buzón de entrada </button>
+                </li>
+                <li class="list-group-item cursor-pointer">
+                  <button (click)="getMisNotificacionesSalida()" class="btn text-left p-0"><i class=" mdi mdi-send"></i> Buzón de salida </button>
+                </li>
+                <li class="list-group-item cursor-pointer">
+                  <button (click)="getMisNotificacionesPapelera()" class="btn text-left p-0"><i class=" mdi mdi-delete"></i> Papelera </button>
+                </li>
+              </ul>
+              <div *ngIf="buzonesCreados && buzonesCreados.length !== 0">
+                <h5 class="card-title m-t-40">Mis buzones</h5>
+                <ul class="list-group list-group-full">
+                  <li class="list-group-item cursor-pointer" *ngFor="let buzon of buzonesCreados">
+                    <button (click)="getMisNotificacionesBuzon(buzon._id)" class="btn text-left p-0"><i class="mdi mdi-contact-mail"></i> {{buzon.nombre}}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xlg-10 col-lg-9 col-md-8 bg-light-part b-l" *ngIf="notificaciones">
+            <form autocomplete="off" [formGroup]="notificacionForm" (ngSubmit)="onSubmit($event)">
+              <div class="card-body">
+                <h5 class="card-title m-b-30">{{buzonActual.nombre}}</h5>
+                <button *ngIf="!buzonSistema" [routerLink]="['/private/buzon/form', buzonActual._id]" type="submit" class="btn btn-info m-b-10 m-r-10">
+                  <i class="fa fa-pencil"></i> Editar buzón</button>
+                <button *ngIf="!buzonSistema" (click)="eliminarBuzon(buzonActual._id)" type="submit" class="btn btn-info m-b-10 m-r-10">
+                  <i class="mdi mdi-delete"></i> Eliminar buzón</button>
+                <div class="btn-group m-b-10 m-r-10" role="group">
+                  <button type="submit" name="mover" class="btn btn-info"><i class="mdi mdi-inbox-arrow-down"></i> Mover</button>
+                  <button type="submit" name="eliminar" class="btn btn-info"><i class="mdi mdi-delete"></i> Eliminar</button>
+                </div>
+              </div>
+              <div class="card-body" *ngIf="renderizarMoverABuzon">
+                <div class="form-group" [ngClass]="{'has-danger': renderizarMoverABuzon && formEnviado && validarCampo('buzon')}">
+                  <div class="input-group">
+                    <select id="buzon" formControlName="buzon" class="form-control selectpicker" title="Buzón de destino">
+                      <option *ngFor="let buzon of buzonesDestinos" [value]="buzon._id">{{buzon.nombre }}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="renderizarMoverABuzon && formEnviado && validarCampo('buzon')" class="form-control-feedback">Debes indicar el
+                    buzón de destino
+                  </div>
+                </div>
+                <button type="submit" name="moverFinal" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" (click)="cancelarMover()" class="btn btn-inverse">Cancelar</button>
+              </div>
+              <div class="card-body p-t-0">
+                <div class="card b-all shadow-none">
+                  <div class="inbox-center table-responsive">
+                    <table class="table table-hover no-wrap table-data">
+                      <tbody *ngIf="notificaciones.length !== 0">
+                        <tr [ngClass]=" {'unread': !notificaciones[i].leido}" formArrayName="notificaciones"
+                          *ngFor="let notificacion of notificacionesFormArray().controls; let i = index">
+                          <td style="width:40px">
+                            <div class="checkbox">
+                              <input type="checkbox" [formControlName]="i" id="{{notificaciones[i]._id}}">
+                              <label for="{{notificaciones[i]._id}}"></label>
+                            </div>
+                          </td>
+                          <div *ngIf="notificaciones[i].emisorMiembro !== undefined; then pintarMiembro else pintarVisitante"></div>
+                          <ng-template #pintarMiembro>
+                            <td class="hidden-xs-down cursor-pointer" [routerLink]="['/private/notificacion/display', notificaciones[i]._id]">
+                              {{notificaciones[i].emisorMiembro.nombre}} {{notificaciones[i].emisorMiembro.apellidos}}
+                            </td>
+                          </ng-template>
+                          <ng-template #pintarVisitante>
+                            <td class="hidden-xs-down cursor-pointer" [routerLink]="['/private/notificacion/display', notificaciones[i]._id]">
+                              {{notificaciones[i].emisorVisitante.nombre}} {{notificaciones[i].emisorVisitante.apellidos}}
+                            </td>
+                          </ng-template>
+                          <td class="max-texts cursor-pointer" [routerLink]="['/private/notificacion/display', notificaciones[i]._id]">
+                            {{notificaciones[i].asunto}}</td>
+                          <td class="text-right cursor-pointer" [routerLink]="['/private/notificacion/display', notificaciones[i]._id]">
+                            {{notificaciones[i].fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
+                        </tr>
+                      </tbody>
+                      <tbody *ngIf="notificaciones.length === 0">
+                        <tr>
+                          <td>Bandeja vacía</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

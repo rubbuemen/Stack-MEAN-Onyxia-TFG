@@ -64,6 +64,11 @@ exports.getMiembrosJuntaVocales = async () => {
   return miembros;
 };
 
+exports.getPresidente = async () => {
+  const miembro = await Miembro.findOne({ rol: 'PRESIDENTE' }).populate({ path: 'redSocials' });
+  return miembro;
+};
+
 exports.darBajaMiembro = async miembroId => {
   const checkExistencia = await Miembro.findById(miembroId).populate({ path: 'cuentaUsuario' });
   if (!checkExistencia) throw errorLanzado(404, 'El miembro que intenta dar de baja no existe');

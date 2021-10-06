@@ -1,0 +1,48 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row">
+          <div class="col-xlg-2 col-lg-3 col-md-4">
+            <div class="card-body inbox-panel">
+              <button [routerLink]="['/private/notificacion/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nueva notificación</button>
+              <button [routerLink]="['/private/buzon/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nuevo buzón</button>
+              <h5 class="card-title m-t-40">Buzón de entrada</h5>
+              <ul class="list-group list-group-full">
+                <li class="list-group-item cursor-pointer" [routerLink]="['/private/notificacion']">
+                  <button type="button" class="btn text-left p-0"><i class=" mdi mdi-gmail"></i> Notificaciones </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xlg-10 col-lg-9 col-md-8 bg-light-part b-l">
+            <div class="card-body">
+              <form autocomplete="off" [formGroup]="buzonForm" (ngSubmit)="guardarForm()">
+                <h3 class="card-title">{{edicion ? 'Editar buzón' : 'Crear buzón'}}</h3>
+                <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('nombre')}">
+                  <label for="nombre" class="control-label">Nombre</label>
+                  <div class="input-group">
+                    <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                      [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
+                  </div>
+                  <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar un nombre</div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                  <button type="button" [routerLink]="['/private/notificacion']" class="btn btn-inverse">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

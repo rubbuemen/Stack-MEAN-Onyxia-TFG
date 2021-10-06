@@ -1,0 +1,56 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row">
+          <div class="col-xlg-2 col-lg-3 col-md-4">
+            <div class="card-body inbox-panel">
+              <button [routerLink]="['/private/notificacion/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nueva notificación</button>
+              <button [routerLink]="['/private/buzon/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nuevo buzón</button>
+              <h5 class="card-title m-t-40">Buzón de entrada</h5>
+              <ul class="list-group list-group-full">
+                <li class="list-group-item cursor-pointer" [routerLink]="['/private/notificacion']">
+                  <button type="button" class="btn text-left p-0"><i class=" mdi mdi-gmail"></i> Notificaciones </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xlg-10 col-lg-9 col-md-8 bg-light-part b-l" *ngIf="notificacion">
+            <div class="card-body p-t-0">
+              <div class="card b-all shadow-none">
+                <div class="card-body">
+                  <h3 class="card-title m-b-0">{{notificacion.asunto}}</h3>
+                </div>
+                <div>
+                  <hr class="m-t-0">
+                </div>
+                <div class="card-body">
+                  <div class="d-flex m-b-40" *ngIf="actorEmisor">
+                    <div>
+                      <img [src]="actorEmisor.fotografia" class="img-circle" />
+                    </div>
+                    <div class="p-l-10">
+                      <h4 class="m-b-0">{{actorEmisor.nombre}} {{actorEmisor.apellidos}}</h4>
+                      <small class="text-muted">{{actorEmisor.correoElectronico}}</small>
+                    </div>
+                  </div>
+                  {{notificacion.cuerpo}}
+                </div>
+                <div class="card-body">
+                  <small class="text-muted">{{notificacion.fecha | date: 'dd/MM/yyyy HH:mm'}}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

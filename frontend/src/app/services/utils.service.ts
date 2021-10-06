@@ -19,7 +19,7 @@ export class UtilsService {
     let dtOptions: DataTables.Settings = {};
     dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 1,
       processing: true,
       columnDefs: [
         {
@@ -118,11 +118,22 @@ export class UtilsService {
     })(jQuery);
   }
 
-  public generarFormData(formGroup: FormGroup, propiedades: string[]) {
+  public generarFormData(
+    formGroup: FormGroup,
+    propiedades: string[],
+    propiedadesArray: string[] = []
+  ) {
     const formData = new FormData();
     propiedades.forEach((propiedad) => {
       if (formGroup.get(propiedad).value !== null) {
-        formData.append(propiedad, formGroup.get(propiedad).value);
+        if (propiedadesArray.includes(propiedad)) {
+          const valorArray = formGroup.get(propiedad).value;
+          for (let i = 0; i < valorArray.length; i++) {
+            formData.append(propiedad + '[]', valorArray[i]);
+          }
+        } else {
+          formData.append(propiedad, formGroup.get(propiedad).value);
+        }
       }
     });
     return formData;

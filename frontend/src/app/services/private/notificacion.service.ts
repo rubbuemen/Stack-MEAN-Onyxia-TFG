@@ -31,7 +31,11 @@ export class NotificacionService {
         buzonId
       )
       .pipe(
-        map((res: { notificaciones: Notificacion[] }) => res.notificaciones)
+        map((res: { notificaciones: Notificacion[] }) =>
+          res.notificaciones.sort((a, b) => {
+            return a.fecha > b.fecha ? -1 : 1;
+          })
+        )
       );
   }
 
@@ -49,7 +53,59 @@ export class NotificacionService {
         buzonId
       )
       .pipe(
-        map((res: { notificaciones: Notificacion[] }) => res.notificaciones)
+        map((res: { notificaciones: Notificacion[] }) =>
+          res.notificaciones.sort((a, b) => {
+            return a.fecha > b.fecha ? -1 : 1;
+          })
+        )
       );
+  }
+
+  public eliminarNotificaciones(data: FormData): Observable<Notificacion[]> {
+    return this.requestConstructorService
+      .request('PUT', `${base_url}/notificacion/eliminar`, data, {}, true, [
+        Notificacion,
+      ])
+      .pipe(
+        map(
+          (res: { notificacionesTratadas: Notificacion[] }) =>
+            res.notificacionesTratadas
+        )
+      );
+  }
+
+  public moverNotificaciones(data: FormData): Observable<Notificacion[]> {
+    return this.requestConstructorService
+      .request('PUT', `${base_url}/notificacion/mover`, data, {}, true, [
+        Notificacion,
+      ])
+      .pipe(
+        map(
+          (res: { notificacionesTratadas: Notificacion[] }) =>
+            res.notificacionesTratadas
+        )
+      );
+  }
+
+  public getNotificacion(id: ObjectId): Observable<Notificacion> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/notificacion`,
+        {},
+        {},
+        true,
+        [Notificacion],
+        id
+      )
+      .pipe(map((res: { notificacion: Notificacion }) => res.notificacion));
+  }
+
+  public enviarNotificacion(data: FormData): Observable<Notificacion> {
+    return this.requestConstructorService
+      .request('POST', `${base_url}/notificacion`, data, {}, true, [
+        Notificacion,
+      ])
+      .pipe(map((res: { notificacion: Notificacion }) => res.notificacion));
   }
 }

@@ -9,6 +9,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { InicioPrivateComponent } from './private/inicio/inicio.component';
 import { RedSocialModule } from './private/red-social/red-social.module';
 import { ActorModule } from './private/actor/actor.module';
+import { NotificacionModule } from './private/notificacion/notificacion.module';
+import { BuzonModule } from './private/buzon/buzon.module';
 
 //Módulos
 import { SharedModule } from '../shared/shared.module';
@@ -32,6 +34,8 @@ import { PagesPrivateComponent } from './pages.private.component';
     DataTablesModule,
     RedSocialModule,
     ActorModule,
+    NotificacionModule,
+    BuzonModule,
   ],
 })
 export class PagesPrivateModule {}

@@ -1,0 +1,72 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row">
+          <div class="col-xlg-2 col-lg-3 col-md-4">
+            <div class="card-body inbox-panel">
+              <button [routerLink]="['/private/notificacion/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nueva notificación</button>
+              <button [routerLink]="['/private/buzon/form']" type="submit" class="btn btn-info m-b-20 btn-block waves-effect waves-light">
+                <i class="mdi mdi-creation"></i> Nuevo buzón</button>
+              <h5 class="card-title m-t-40">Buzón de entrada</h5>
+              <ul class="list-group list-group-full">
+                <li class="list-group-item cursor-pointer" [routerLink]="['/private/notificacion']">
+                  <button type="button" class="btn text-left p-0"><i class=" mdi mdi-gmail"></i> Notificaciones </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xlg-10 col-lg-9 col-md-8 bg-light-part b-l">
+            <div class="card-body">
+              <form autocomplete="off" [formGroup]="notificacionForm" (ngSubmit)="enviarNotificacion()">
+                <h3 class="card-title">Nueva notificación</h3>
+                <div class="form-group" *ngIf="esVisitante && presidente">
+                  <label for="receptores" class="control-label">Receptor</label>
+                  <input type="text" readonly class="form-control-plaintext" id="receptores"
+                    value="Presidente de la asociación: {{presidente.nombre }} {{presidente.apellidos}} ({{presidente.alias}})">
+                </div>
+                <div class="form-group select-style" *ngIf="!esVisitante" [ngClass]="{'has-danger': formEnviado && validarCampo('receptores')}">
+                  <label for="receptores" class="control-label">Receptores</label>
+                  <div class="input-group">
+                    <select id="receptores" formControlName="receptores" class="form-control selectpicker" title="Receptores" multiple data-live-search="true">
+                      <option *ngFor="let receptor of receptores" [value]="receptor._id">{{receptor.nombre }} {{receptor.apellidos}} ({{receptor.alias}}) |
+                        {{receptor.cuentaUsuario.autoridad}}
+                      </option>
+                    </select>
+                  </div>
+                  <div *ngIf="formEnviado && validarCampo('receptores')" class="form-control-feedback">Debes indicar al menos un receptor</div>
+                </div>
+                <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('asunto')}">
+                  <label for="asunto" class="control-label">Asunto</label>
+                  <div class="input-group">
+                    <input type="text" id="asunto" formControlName="asunto" class="form-control"
+                      [ngClass]="{'form-control-danger': formEnviado && validarCampo('asunto')}">
+                  </div>
+                  <div *ngIf="formEnviado && validarCampo('asunto')" class="form-control-feedback">Debes indicar un asunto</div>
+                </div>
+                <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('cuerpo')}">
+                  <label for="cuerpo" class="control-label">Cuerpo</label>
+                  <div class="input-group">
+                    <textarea id="cuerpo" rows="15" formControlName="cuerpo" class="form-control"
+                      [ngClass]="{'form-control-danger': formEnviado && validarCampo('cuerpo')}"></textarea>
+                  </div>
+                  <div *ngIf="formEnviado && validarCampo('asunto')" class="form-control-feedback">Debes indicar el cuerpo de la notificación</div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Enviar</button>
+                  <button type="button" [routerLink]="['/private/notificacion']" class="btn btn-inverse">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

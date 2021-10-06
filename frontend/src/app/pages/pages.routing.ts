@@ -1,6 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
+// Guards
+import {
+  NoAuthGuardService,
+  AuthGuardService,
+  NoAuthOVisitanteGuardService,
+} from '../auth/auth-guard.service';
+
 import { PagesPublicComponent } from './pages.public.component';
 import { PagesPrivateComponent } from './pages.private.component';
 
@@ -22,14 +29,12 @@ import { LoginComponent } from '../auth/login/login.component';
 import { RegistroComponent } from '../auth/registro/registro.component';
 
 import { InicioPrivateComponent } from './private/inicio/inicio.component';
+
+// Routings parte privada
 import { RedSocialRoutingModule } from './private/red-social/red-social.routing';
 import { ActorRoutingModule } from './private/actor/actor.routing';
-
-import {
-  NoAuthGuardService,
-  AuthGuardService,
-  NoAuthOVisitanteGuardService,
-} from '../auth/auth-guard.service';
+import { NotificacionRoutingModule } from './private/notificacion/notificacion.routing';
+import { BuzonRoutingModule } from './private/buzon/buzon.routing';
 
 const routes: Routes = [
   {
@@ -95,6 +100,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     RedSocialRoutingModule,
     ActorRoutingModule,
+    NotificacionRoutingModule,
+    BuzonRoutingModule,
   ],
   exports: [RouterModule],
 })

@@ -65,7 +65,7 @@ export class MenuPrivateComponent implements OnInit {
         claseIcono: 'mdi mdi-email',
         submenu: [
           { titulo: 'Bandeja de entrada', url: '/private/notificacion' },
-          { titulo: 'Ver todos los buzones', url: '/private/buzon' },
+          { titulo: 'Nueva notificación', url: '/private/notificacion/form' },
         ],
       },
     ];

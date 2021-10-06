@@ -43,7 +43,7 @@ export class ActorFormComponent implements OnInit {
           actor.fotografia = imagenSRC;
         }
         if (!this.utils.existe(actor.alias)) actor.alias = '';
-        if (!this.utils.existe(actor.telefono)) actor.telefono = '';
+        if (!this.utils.existe(actor.numeroTelefono)) actor.numeroTelefono = '';
 
         this.actor = actor;
       });

@@ -88,7 +88,7 @@
                  <label for="miembrosConocidos" class="sr-only">Miembros conocidos</label>
                  <div class="input-group">
                    <select id="miembrosConocidos" formControlName="miembrosConocidos" class="form-control selectpicker" title="Miembros conocidos"
-                     aria-describedby="miembrosConocidos-help" multiple>
+                     aria-describedby="miembrosConocidos-help" multiple data-live-search="true">
                      <option *ngFor="let miembro of miembros" [value]="miembro._id">{{miembro.nombre }} {{miembro.apellidos}} ({{miembro.alias}})</option>
                    </select>
                  </div>

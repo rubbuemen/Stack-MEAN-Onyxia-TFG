@@ -171,7 +171,7 @@ exports.enviarNotificacion = async (parametros, usuarioLogeado) => {
   }
 };
 
-exports.verNotificacion = async (usuarioLogeado, notificacionId) => {
+exports.getNotificacion = async (usuarioLogeado, notificacionId) => {
   let notificacion = await Notificacion.findById(notificacionId);
   if (!notificacion) throw errorLanzado(404, 'La notificacion no existe');
   if (usuarioLogeado.autoridad === 'VISITANTE') {
@@ -198,103 +198,107 @@ exports.verNotificacion = async (usuarioLogeado, notificacionId) => {
   return notificacion;
 };
 
-exports.moverNotificacion = async (parametros, usuarioLogeado, notificacionId) => {
+exports.moverNotificaciones = async (parametros, usuarioLogeado) => {
   let actorBuzon;
-  const notificacion = await Notificacion.findById(notificacionId);
-  const actorConectado =
-    (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
-  const propietarioEntidad =
-    (await Visitante.findOne({ buzones: { $in: [parametros.buzon] } })) || (await Miembro.findOne({ buzones: { $in: [parametros.buzon] } }));
-  if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de este buzón');
-  if (usuarioLogeado.autoridad === 'VISITANTE') {
-    actorBuzon = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { notificaciones: { $in: [notificacionId] } },
-    });
-  } else {
-    actorBuzon = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { notificaciones: { $in: [notificacionId] } },
-    });
-  }
-  if (actorBuzon.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
-  const buzon = actorBuzon.buzones[0];
-  await Buzon.findOneAndUpdate(
-    { _id: buzon._id },
-    {
-      $pull: { notificaciones: notificacion._id },
-    },
-    { new: true }
-  );
-  await Buzon.findOneAndUpdate(
-    { _id: parametros.buzon },
-    {
-      $push: { notificaciones: notificacion._id },
-    },
-    { new: true }
-  );
-  return notificacion;
-};
-
-exports.eliminarNotificacion = async (usuarioLogeado, notificacionId) => {
-  let actorConectado;
-  let propietarioEntidad;
-  let actorBuzonEliminados;
-  const notificacion = await Notificacion.findById(notificacionId);
-  if (!notificacion) throw errorLanzado(404, 'La notificación que intenta eliminar no existe');
-
-  if (usuarioLogeado.autoridad === 'VISITANTE') {
-    actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { notificaciones: { $in: [notificacionId] } },
-    });
-    actorBuzonEliminados = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { nombre: 'Buzón de eliminados' },
-    });
-  } else {
-    actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { notificaciones: { $in: [notificacionId] } },
-    });
-    actorBuzonEliminados = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { nombre: 'Buzón de eliminados' },
-    });
-  }
-  if (actorConectado.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
-  const buzonEliminados = actorBuzonEliminados.buzones[0];
-
-  const notificacionEnEliminados = await Buzon.findOne({ _id: buzonEliminados._id, notificaciones: { $in: [notificacionId] } });
-  if (notificacionEnEliminados) {
+  await asyncForEach(parametros.notificaciones, async notificacionId => {
+    const notificacion = await Notificacion.findById(notificacionId);
+    const actorConectado =
+      (await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } })) || (await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }));
+    const propietarioEntidad =
+      (await Visitante.findOne({ buzones: { $in: [parametros.buzon] } })) || (await Miembro.findOne({ buzones: { $in: [parametros.buzon] } }));
+    if (actorConectado._id.toString() !== propietarioEntidad._id.toString()) throw errorLanzado(403, 'Acceso prohibido. No eres el autor de este buzón');
+    if (usuarioLogeado.autoridad === 'VISITANTE') {
+      actorBuzon = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { notificaciones: { $in: [notificacionId] } },
+      });
+    } else {
+      actorBuzon = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { notificaciones: { $in: [notificacionId] } },
+      });
+    }
+    if (actorBuzon.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
+    const buzon = actorBuzon.buzones[0]; // Buzón origen
     await Buzon.findOneAndUpdate(
-      { _id: buzonEliminados._id },
+      { _id: buzon._id },
       {
         $pull: { notificaciones: notificacion._id },
       },
       { new: true }
     );
-    const buzonesContieneNotificacion = await Buzon.find({ notificaciones: { $in: [notificacionId] } });
-    if (buzonesContieneNotificacion.length === 0) await Notificacion.findOneAndDelete(notificacionId);
-  } else {
-    await asyncForEach(actorConectado.buzones, async buzon => {
-      await Buzon.findOneAndUpdate(
-        { _id: buzon._id },
-        {
-          $pull: { notificaciones: notificacion._id },
-        },
-        { new: true }
-      );
-    });
     await Buzon.findOneAndUpdate(
-      { _id: buzonEliminados._id },
+      { _id: parametros.buzon },
       {
         $push: { notificaciones: notificacion._id },
       },
       { new: true }
     );
-  }
-  return notificacion;
+  });
+  return parametros.notificaciones;
+};
+
+exports.eliminarNotificaciones = async (parametros, usuarioLogeado) => {
+  let actorConectado;
+  let propietarioEntidad;
+  let actorBuzonEliminados;
+  await asyncForEach(parametros.notificaciones, async notificacionId => {
+    const notificacion = await Notificacion.findById(notificacionId);
+    if (!notificacion) throw errorLanzado(404, 'La notificación que intenta eliminar no existe');
+
+    if (usuarioLogeado.autoridad === 'VISITANTE') {
+      actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { notificaciones: { $in: [notificacionId] } },
+      });
+      actorBuzonEliminados = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { nombre: 'Buzón de eliminados' },
+      });
+    } else {
+      actorConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { notificaciones: { $in: [notificacionId] } },
+      });
+      actorBuzonEliminados = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
+        path: 'buzones',
+        match: { nombre: 'Buzón de eliminados' },
+      });
+    }
+    if (actorConectado.buzones.length === 0) throw errorLanzado(403, 'Acceso prohibido. Esta notificación no existe en ninguno de tus buzones');
+    const buzonEliminados = actorBuzonEliminados.buzones[0];
+
+    const notificacionEnEliminados = await Buzon.findOne({ _id: buzonEliminados._id, notificaciones: { $in: [notificacionId] } });
+    if (notificacionEnEliminados) {
+      await Buzon.findOneAndUpdate(
+        { _id: buzonEliminados._id },
+        {
+          $pull: { notificaciones: notificacion._id },
+        },
+        { new: true }
+      );
+      const buzonesContieneNotificacion = await Buzon.find({ notificaciones: { $in: [notificacionId] } });
+      if (buzonesContieneNotificacion.length === 0) await Notificacion.findOneAndDelete(notificacionId);
+    } else {
+      await asyncForEach(actorConectado.buzones, async buzon => {
+        await Buzon.findOneAndUpdate(
+          { _id: buzon._id },
+          {
+            $pull: { notificaciones: notificacion._id },
+          },
+          { new: true }
+        );
+      });
+      await Buzon.findOneAndUpdate(
+        { _id: buzonEliminados._id },
+        {
+          $push: { notificaciones: notificacion._id },
+        },
+        { new: true }
+      );
+    }
+  });
+  return parametros.notificaciones;
 };
 
 exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomatica(parametros, usuarioLogeado) {

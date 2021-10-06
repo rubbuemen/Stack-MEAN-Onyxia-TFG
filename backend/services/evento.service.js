@@ -331,6 +331,7 @@ exports.publicarEvento = async (eventoId, usuarioLogeado) => {
         evento.cupoInscripciones +
         ' miembros.',
       receptoresMiembros: receptores,
+      receptoresVisitantes: [],
     },
     usuarioLogeado
   );

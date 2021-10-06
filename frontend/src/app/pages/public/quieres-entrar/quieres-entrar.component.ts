@@ -8,8 +8,6 @@ import { SolicitudMiembroService } from '../../../services/public/solicitud-miem
 import { AuthService } from 'src/app/auth/auth.service';
 import { UtilsService } from '../../../services/utils.service';
 
-declare const jQuery: any;
-
 @Component({
   selector: 'app-quieres-entrar',
   templateUrl: './quieres-entrar.component.html',
@@ -52,9 +50,11 @@ export class QuieresEntrarComponent {
   public enviarSolicitudMiembro(): void {
     this.formEnviado = true;
     if (this.solicitudMiembroForm.valid) {
+      const propiedadesArrays = ['intereses', 'miembrosConocidos'];
       const data = this.utils.generarFormData(
         this.solicitudMiembroForm,
-        this.utils.obtenerPropiedadesFormGroup(this.solicitudMiembroForm)
+        this.utils.obtenerPropiedadesFormGroup(this.solicitudMiembroForm),
+        propiedadesArrays
       );
       this.solicitudMiembroService.crearSolicitudMiembro(data).subscribe(
         (res) => {
