@@ -6,6 +6,10 @@ const { RedSocial } = require('../models/redSocial.model');
 const cron = require('cron');
 const { enviarNotificacionAutomatica } = require('./notificacion.service');
 
+STRIPE_KEY = 'sk_test_51Jht9TEgnefEKnSHvDoHoJPqotLmW3FvAO5FedoH2PTfGOt4VLxD0ccGSu6Ylx9lRWKhzNO1GS3h2QIyxdU9oCRj00bMyozEqa';
+
+const stripe = require('stripe')(STRIPE_KEY);
+
 exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   let actorConectado;
   let solicitudMiembro;
@@ -30,7 +34,9 @@ exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
 exports.getEstadoSolicitudMiembro = async usuarioLogeado => {
   const actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
     path: 'solicitudMiembro',
-    select: 'estadoSolicitud estaPagado -_id',
+    populate: {
+      path: 'miembrosConocidos',
+    },
   });
   return actorConectado.solicitudMiembro;
 };
@@ -524,6 +530,32 @@ exports.establecerPagadoSolicitudMiembro = async solicitudMiembroId => {
     },
     { new: true }
   );
+  return solicitudMiembro;
+};
+
+exports.pagarAutomaticoSolicitudMiembro = async (parametros, solicitudMiembroId) => {
+  const checkExistencia = await SolicitudMiembro.findById(solicitudMiembroId);
+  if (!checkExistencia) throw errorLanzado(404, 'La solicitud de miembro a la que intenta establecer como pagado no existe');
+  if (checkExistencia.estadoSolicitud !== 'ACEPTADO')
+    throw errorLanzado(403, 'La solicitud de miembro no se puede establacer como pagado porque no está aceptada');
+  if (checkExistencia.estaPagado) throw errorLanzado(403, 'La solicitud de miembro a la que intenta establacer como pagado manualmente ya lo está');
+  const pago = await stripe.charges.create({
+    amount: parametros.cantidad * 100,
+    currency: 'EUR',
+    description: parametros.nombre,
+    source: parametros.token,
+  });
+  if (pago.status === 'succeeded') {
+    solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
+      { _id: solicitudMiembroId },
+      {
+        estaPagado: true,
+      },
+      { new: true }
+    );
+  } else {
+    throw errorLanzado(500, 'Ocurrió un error en el proceso y no se ha podido aceptar el pago');
+  }
   return solicitudMiembro;
 };
 

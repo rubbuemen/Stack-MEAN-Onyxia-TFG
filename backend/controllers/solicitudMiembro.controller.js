@@ -111,3 +111,16 @@ exports.establecerPagadoSolicitudMiembro = async (req, res) => {
     return controlError(error, res);
   }
 };
+
+exports.pagarAutomaticoSolicitudMiembro = async (req, res) => {
+  try {
+    const solicitudMiembroId = req.params.solicitudMiembroId;
+    console.log(req.body);
+    const { nombre, cantidad, token } = req.body;
+    if (!nombre || !cantidad || !token) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    const solicitudMiembro = await solicitudMiembroService.pagarAutomaticoSolicitudMiembro(req.body, solicitudMiembroId);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};

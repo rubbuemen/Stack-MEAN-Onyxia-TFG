@@ -19,7 +19,7 @@ export class UtilsService {
     let dtOptions: DataTables.Settings = {};
     dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 1,
+      pageLength: 5,
       processing: true,
       columnDefs: [
         {

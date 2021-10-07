@@ -11,13 +11,19 @@ import { RedSocialModule } from './private/red-social/red-social.module';
 import { ActorModule } from './private/actor/actor.module';
 import { NotificacionModule } from './private/notificacion/notificacion.module';
 import { BuzonModule } from './private/buzon/buzon.module';
+import { SolicitudMiembroModule } from './private/solicitud-miembro/solicitud-miembro.module';
 
 //Módulos
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
 import { AuthModule } from '../auth/auth.module';
+import { NgxStripeModule } from 'ngx-stripe';
 
 import { PagesPrivateComponent } from './pages.private.component';
+
+import { environment } from '../../environments/environment.prod';
+
+const token_stripe = environment.token_stripe;
 
 @NgModule({
   declarations: [InicioPrivateComponent, PagesPrivateComponent],
@@ -36,6 +42,8 @@ import { PagesPrivateComponent } from './pages.private.component';
     ActorModule,
     NotificacionModule,
     BuzonModule,
+    SolicitudMiembroModule,
+    NgxStripeModule.forChild(token_stripe),
   ],
 })
 export class PagesPrivateModule {}

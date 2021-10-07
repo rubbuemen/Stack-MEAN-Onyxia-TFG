@@ -70,7 +70,10 @@ export class MenuPrivateComponent implements OnInit {
       },
     ];
     // Según el rol logeado, variamos el menu:
-    if (this.actor.cuentaUsuario.autoridad === 'VISITANTE') {
+    if (
+      this.actor.cuentaUsuario.autoridad === 'VISITANTE' &&
+      this.actor.solicitudMiembro
+    ) {
       this.menuLateral.push({
         titulo: 'Solicitud para ser miembro',
         identificador: 'solicitud',
@@ -78,7 +81,7 @@ export class MenuPrivateComponent implements OnInit {
         submenu: [
           {
             titulo: 'Estado de solicitud',
-            url: '/private/solicitud-miembro/estado',
+            url: '/private/solicitud-miembro',
           },
         ],
       });

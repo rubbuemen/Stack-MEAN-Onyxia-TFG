@@ -1,0 +1,113 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="solicitudMiembro">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title">Solicitud para ser miembro</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Coche propio:</label>
+                    <div class="col-8">
+                      <p class="form-control-static"> {{solicitudMiembro.tieneCochePropio ? 'Sí' : 'No'}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">¿Cómo ha conocido la asociación?:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{solicitudMiembro.comoHaConocidoAsociacion}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Intereses:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{solicitudMiembro.intereses.join(', ')}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Habilidades:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{solicitudMiembro.habilidades}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Ideas:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{solicitudMiembro.ideas}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="solicitudMiembro.miembrosConocidos && solicitudMiembro.miembrosConocidos.length !== 0">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Miembros que conoce:</label>
+                    <div class="col-8">
+                      <ul class="form-control-static">
+                        <li *ngFor="let miembro of solicitudMiembro.miembrosConocidos">
+                          {{miembro.nombre }} {{miembro.apellidos}} ({{miembro.alias}})
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Estado de solicitud:</label>
+                    <div class="col-8">
+                      <p class="form-control-static alert" [ngClass]="getColorSegunEstado()">
+                        {{solicitudMiembro.estadoSolicitud}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="solicitudMiembro.estadoSolicitud === 'ACEPTADO'">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Estado de pago:</label>
+                    <div class="col-8">
+                      <p class="form-control-static"> {{solicitudMiembro.estaPagado ? 'Sí' : 'No'}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions" *ngIf="solicitudMiembro.estadoSolicitud === 'ACEPTADO' && !solicitudMiembro.estaPagado">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-9">
+                        <button [routerLink]="['/private/solicitud-miembro/pago', solicitudMiembro._id]" type="submit" class="btn btn-info"> <i
+                            class="fa fa-credit-card"></i>
+                          Realizar pago</button> </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6"> </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

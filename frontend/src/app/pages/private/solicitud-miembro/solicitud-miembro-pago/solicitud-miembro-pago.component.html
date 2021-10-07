@@ -1,0 +1,53 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">Pago de la solicitud</h4>
+        </div>
+        <div class="card-body" *ngIf="actorLogeado">
+          <form novalidate autocomplete="off" [formGroup]="stripeForm" (ngSubmit)="createToken()">
+            <div class="form-body">
+              <h3 class="card-title">Formulario de pago</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="cantidad" class="control-label">Nombre completo</label>
+                    <input type="text" readonly class="form-control-plaintext" id="nombre" formControlName="nombre">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cantidad" class="control-label">Cantidad</label>
+                    <input type="text" readonly class="form-control-plaintext" id="cantidad" formControlName="cantidad">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="tarjeta" class="control-label">Datos de la tarjeta</label>
+                    <div class="tarjeta">
+                      <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-credit-card"></i> Pagar</button>
+                <button type="button" [routerLink]="['/private/solicitud-miembro']" class="btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -35,6 +35,7 @@ import { RedSocialRoutingModule } from './private/red-social/red-social.routing'
 import { ActorRoutingModule } from './private/actor/actor.routing';
 import { NotificacionRoutingModule } from './private/notificacion/notificacion.routing';
 import { BuzonRoutingModule } from './private/buzon/buzon.routing';
+import { SolicitudMiembroRoutingModule } from './private/solicitud-miembro/solicitud-miembro.routing';
 
 const routes: Routes = [
   {
@@ -102,6 +103,7 @@ const routes: Routes = [
     ActorRoutingModule,
     NotificacionRoutingModule,
     BuzonRoutingModule,
+    SolicitudMiembroRoutingModule,
   ],
   exports: [RouterModule],
 })
