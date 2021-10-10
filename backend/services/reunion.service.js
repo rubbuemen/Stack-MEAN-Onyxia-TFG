@@ -55,24 +55,21 @@ exports.crearReunion = async (parametros, usuarioLogeado) => {
     });
     const receptores = miembros;
     const mensajeDia = 'día ' + reunion.fecha.getDate() + '/' + (reunion.fecha.getMonth() + 1) + '/' + reunion.fecha.getFullYear();
-    await enviarNotificacionAutomatica(
-      {
-        asunto: 'Una nueva reunión ha sido publicada para el ' + mensajeDia,
-        cuerpo:
-          'Se ha publicado una reunión que se celebrará el ' +
-          mensajeDia +
-          ' aproximadamente de ' +
-          reunion.horaInicio +
-          ' a ' +
-          reunion.horaFin +
-          ' en ' +
-          reunion.lugar +
-          '. Recuerda que es necesario que marques si vas a asistir o no, por defecto estará marcado que no vas a asistir.',
-        receptoresMiembros: receptores,
-        receptoresVisitantes: [],
-      },
-      usuarioLogeado
-    );
+    await enviarNotificacionAutomatica({
+      asunto: 'Una nueva reunión ha sido publicada para el ' + mensajeDia,
+      cuerpo:
+        'Se ha publicado una reunión que se celebrará el ' +
+        mensajeDia +
+        ' aproximadamente de ' +
+        reunion.horaInicio +
+        ' a ' +
+        reunion.horaFin +
+        ' en ' +
+        reunion.lugar +
+        '. Recuerda que es necesario que marques si vas a asistir o no, por defecto estará marcado que no vas a asistir.',
+      receptoresMiembros: receptores,
+      receptoresVisitantes: [],
+    });
     return reunion;
   } catch (error) {
     if (reunion) {

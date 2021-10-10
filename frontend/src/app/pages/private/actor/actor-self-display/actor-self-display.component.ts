@@ -42,7 +42,8 @@ export class ActorSelfDisplayComponent implements OnInit {
       if (this.esVisitante) {
         actor.rol = 'Visitante';
       } else {
-        actor.rol = actor.rol.toLowerCase();
+        actor.rol =
+          actor.rol[0].toUpperCase() + actor.rol.substr(1).toLowerCase();
       }
       this.actorLogeado = actor;
     });

@@ -20,9 +20,27 @@ export class SolicitudMiembroService {
 
   public getMiSolicitud(): Observable<SolicitudMiembro> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/solicitudMiembro/estado`, {}, {}, true, [
+      .request('GET', `${base_url}/solicitudMiembro`, {}, {}, true, [
         SolicitudMiembro,
       ])
+      .pipe(
+        map(
+          (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
+  public getSolicitudActor(actorId: ObjectId): Observable<SolicitudMiembro> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro],
+        actorId
+      )
       .pipe(
         map(
           (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro

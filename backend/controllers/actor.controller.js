@@ -162,7 +162,6 @@ exports.editarDatosActorId = async (req, res) => {
         !fechaNacimiento ||
         !correoElectronico ||
         !numeroSocio ||
-        !fotografia ||
         !alias ||
         !numeroTelefono ||
         !direccion ||
@@ -206,7 +205,11 @@ exports.editarDatosActorId = async (req, res) => {
     roles = ['ESTANDAR', 'VOCAL', 'SECRETARIO', 'VICEPRESIDENTE', 'PRESIDENTE'];
     if (rol && !roles.includes(rol)) throw errorLanzado(400, 'El rol del miembro no está definido');
     if (cantidadPenalizaciones && cantidadPenalizaciones < 0) throw errorLanzado(400, 'La cantidad de penalizaciones no puede ser menor a 0');
-    req.file.data = convertirImagenABase64(fotografia);
+    if (fotografia) {
+      req.file.data = convertirImagenABase64(fotografia);
+    } else {
+      req.file = undefined; // Para el caso que se ha editado pero no se ha cambiado la imagen
+    }
     actor = await actorService.editarDatosActorId(req.body, req.file, actorId);
     return res.status(200).send({ actor });
   } catch (error) {
@@ -220,7 +223,6 @@ exports.hacerMiembroActorId = async (req, res) => {
     const { nombre, apellidos, fechaNacimiento, correoElectronico, alias, numeroTelefono, direccion, dni, aficiones, tieneCochePropio } = req.body;
     const fotografia = req.file;
     let actor = await actorService.getDatosByActorId(actorId);
-    //TODO: En front, comprobar que si tiene alguno de los campos que ya viene de visistante, entonces ponerlo en el formulario
     if (
       !nombre ||
       !apellidos ||

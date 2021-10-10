@@ -301,27 +301,12 @@ exports.eliminarNotificaciones = async (parametros, usuarioLogeado) => {
   return parametros.notificaciones;
 };
 
-exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomatica(parametros, usuarioLogeado) {
+exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomatica(parametros) {
   let notificacion;
   let buzonSalida;
   const notificacionesEntrantes = [];
   try {
-    let actorBuzonSalida;
-    parametros.emisorMiembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
-    actorBuzonSalida = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
-      path: 'buzones',
-      match: { nombre: 'Buzón de salida' },
-    });
-    buzonSalida = actorBuzonSalida.buzones[0];
-    notificacion = new Notificacion(parametros);
-    notificacion = await notificacion.save();
-    await Buzon.findOneAndUpdate(
-      { _id: buzonSalida._id },
-      {
-        $push: { notificaciones: notificacion._id },
-      },
-      { new: true }
-    );
+    parametros.emisorMiembro = await Miembro.findOne({ rol: 'PRESIDENTE' });
     await asyncForEach(parametros.receptoresVisitantes, async receptor => {
       notificacion = new Notificacion(parametros);
       notificacion = await notificacion.save();
@@ -359,13 +344,6 @@ exports.enviarNotificacionAutomatica = async function enviarNotificacionAutomati
     return notificacion;
   } catch (error) {
     if (notificacion) {
-      await Buzon.findOneAndUpdate(
-        { _id: buzonSalida._id },
-        {
-          $pull: { notificaciones: notificacion._id },
-        },
-        { new: true }
-      );
       await asyncForEach(parametros.receptoresVisitantes, async receptor => {
         const actorBuzonEntrada = await Visitante.findOne({ _id: receptor }).populate({
           path: 'buzones',

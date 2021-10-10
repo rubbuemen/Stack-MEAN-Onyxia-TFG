@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment.prod';
 
 import { RequestsConstructorService } from '../requests-constructor.service';
 import { Miembro } from '../../models/miembro.model';
+import { ObjectId } from 'mongoose';
 
 const base_url = environment.base_url;
 
@@ -25,5 +26,37 @@ export class MiembroService {
     return this.requestConstructorService
       .request('GET', `${base_url}/miembro/list`, {}, {}, false, [Miembro])
       .pipe(map((res: { miembros: Miembro[] }) => res.miembros));
+  }
+
+  public getMiembros(): Observable<Miembro[]> {
+    return this.requestConstructorService
+      .request('GET', `${base_url}/actor/miembros`, {}, {}, true, [Miembro])
+      .pipe(
+        map((res: { miembros }) =>
+          res.miembros.sort((a, b) => {
+            return a.numeroSocio > b.numeroSocio ? -1 : 1;
+          })
+        )
+      );
+  }
+
+  public getMiembro(id: ObjectId): Observable<Miembro> {
+    return this.requestConstructorService
+      .request('GET', `${base_url}/actor`, {}, {}, true, [Miembro], id)
+      .pipe(map((res: { datosActor }) => res.datosActor));
+  }
+
+  public penalizarMiembro(id: ObjectId): Observable<Miembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/miembro/penalizar`,
+        {},
+        {},
+        true,
+        [Miembro],
+        id
+      )
+      .pipe(map((res: { miembro }) => res.miembro));
   }
 }

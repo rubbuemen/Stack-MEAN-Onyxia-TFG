@@ -86,6 +86,23 @@ export class MenuPrivateComponent implements OnInit {
         ],
       });
     }
+    if (this.actor.cuentaUsuario.autoridad === 'PRESIDENTE') {
+      this.menuLateral.push({
+        titulo: 'Listado de usuarios',
+        identificador: 'usuarios',
+        claseIcono: 'mdi mdi-account-multiple',
+        submenu: [
+          {
+            titulo: 'Listado de visitantes',
+            url: '/private/actor/list/visitante',
+          },
+          {
+            titulo: 'Listado de miembros',
+            url: '/private/actor/list/miembro',
+          },
+        ],
+      });
+    }
   }
 
   public logout() {

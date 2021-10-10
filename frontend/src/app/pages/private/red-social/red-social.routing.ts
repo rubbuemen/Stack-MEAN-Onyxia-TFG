@@ -25,12 +25,6 @@ const routes: Routes = [
         data: { titulo: 'Listado de redes sociales' },
       },
       {
-        path: 'list',
-        canActivate: [PresidenteGuardService],
-        component: RedSocialListComponent,
-        data: { titulo: 'Listado de redes sociales' },
-      },
-      {
         path: 'self-form',
         canActivate: [AuthGuardService],
         component: RedSocialSelfFormComponent,
@@ -41,6 +35,12 @@ const routes: Routes = [
         canActivate: [AuthGuardService],
         component: RedSocialSelfFormComponent,
         data: { titulo: 'Editar red social' },
+      },
+      {
+        path: 'list/:id',
+        canActivate: [PresidenteGuardService],
+        component: RedSocialListComponent,
+        data: { titulo: 'Listado de redes sociales' },
       },
       {
         path: 'form/:id',

@@ -29,6 +29,20 @@ export class RedSocialService {
       .pipe(map((res: { redSocial: RedSocial }) => res.redSocial));
   }
 
+  public getRedesSocialesByActor(id: ObjectId): Observable<RedSocial[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/redsocial/list`,
+        {},
+        {},
+        true,
+        [RedSocial],
+        id
+      )
+      .pipe(map((res: { redesSociales: RedSocial[] }) => res.redesSociales));
+  }
+
   public editarRedSocial(data: FormData, id: ObjectId): Observable<RedSocial> {
     return this.requestConstructorService
       .request(

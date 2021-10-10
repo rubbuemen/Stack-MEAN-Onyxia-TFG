@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="actorLogeado">
+  <div class="row" *ngIf="actor">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
@@ -18,7 +18,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Nombre:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.nombre}}</p>
+                      <p class="form-control-static">{{actor.nombre}}</p>
                     </div>
                   </div>
                 </div>
@@ -26,7 +26,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Apellidos:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.apellidos}}</p>
+                      <p class="form-control-static">{{actor.apellidos}}</p>
                     </div>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Correo electrónico:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.correoElectronico}}</p>
+                      <p class="form-control-static">{{actor.correoElectronico}}</p>
                     </div>
                   </div>
                 </div>
@@ -44,7 +44,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Fecha de nacimiento:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
+                      <p class="form-control-static">{{actor.fechaNacimiento | date: 'dd/MM/yyyy'}}</p>
                     </div>
                   </div>
                 </div>
@@ -54,7 +54,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Alias:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.alias}}</p>
+                      <p class="form-control-static">{{actor.alias}}</p>
                     </div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Número de teléfono:</label>
                     <div class="col-6">
-                      <p class="form-control-static">{{actorLogeado.numeroTelefono}}</p>
+                      <p class="form-control-static">{{actor.numeroTelefono}}</p>
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@
                     <div class="form-group row">
                       <label class="control-label col-4">Dirección:</label>
                       <div class="col-8">
-                        <p class="form-control-static">{{actorLogeado.direccion}}</p>
+                        <p class="form-control-static">{{actor.direccion}}</p>
                       </div>
                     </div>
                   </div>
@@ -81,7 +81,7 @@
                     <div class="form-group row">
                       <label class="control-label col-4">DNI</label>
                       <div class="col-6">
-                        <p class="form-control-static">{{actorLogeado.dni}}</p>
+                        <p class="form-control-static">{{actor.dni}}</p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +91,7 @@
                     <div class="form-group row">
                       <label class="control-label col-4">Aficiones:</label>
                       <div class="col-8">
-                        <p class="form-control-static">{{actorLogeado.aficiones}}</p>
+                        <p class="form-control-static">{{actor.aficiones}}</p>
                       </div>
                     </div>
                   </div>
@@ -99,7 +99,25 @@
                     <div class="form-group row">
                       <label class="control-label col-4">Coche propio:</label>
                       <div class="col-8">
-                        <p class="form-control-static">{{actorLogeado.tieneCochePropio ? 'Sí' : 'No'}}</p>
+                        <p class="form-control-static">{{actor.tieneCochePropio ? 'Sí' : 'No'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="control-label col-4">Está de alta:</label>
+                      <div class="col-8">
+                        <p class="form-control-static">{{actor.estaDeAlta ? 'Sí' : 'No'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="control-label col-4">Penalizaciones:</label>
+                      <div class="col-8">
+                        <p class="form-control-static">{{actor.cantidadPenalizaciones}}</p>
                       </div>
                     </div>
                   </div>
@@ -109,7 +127,17 @@
                     <div class="form-group row">
                       <label class="control-label col-4">Fotografía:</label>
                       <div class="col-8">
-                        <img [src]="actorLogeado.fotografia" class="form-control-static img-fluid img-thumbnail w-50" />
+                        <img [src]="actor.fotografia" class="form-control-static img-fluid img-thumbnail w-50" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="control-label col-4">Número de socio:</label>
+                      <div class="col-8">
+                        <p class="form-control-static">{{actor.numeroSocio}}</p>
                       </div>
                     </div>
                   </div>
@@ -122,7 +150,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Usuario:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.cuentaUsuario.usuario}}</p>
+                      <p class="form-control-static">{{actor.cuentaUsuario.usuario}}</p>
                     </div>
                   </div>
                 </div>
@@ -130,7 +158,7 @@
                   <div class="form-group row">
                     <label class="control-label col-4">Rol:</label>
                     <div class="col-8">
-                      <p class="form-control-static">{{actorLogeado.rol}}</p>
+                      <p class="form-control-static">{{actor.rol}}</p>
                     </div>
                   </div>
                 </div>
@@ -140,9 +168,15 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-md-offset-3 col-md-9">
-                      <button [routerLink]="['/private/actor/form', actorLogeado._id]" type="submit" class="btn btn-info"> <i class="fa fa-pencil"></i>
-                        Editar</button> </div>
+                    <div class="col-md-offset-3 col-md-12">
+                      <button [routerLink]="['/private/actor/form', actor._id]" type="submit" class="btn btn-info"> <i class="fa fa-pencil"></i>
+                        Editar</button>
+                      <button [routerLink]="['/private/red-social/list', actor._id]" type="submit" class="btn btn-info"> <i class="fa fa-eye"></i>
+                        Ver redes sociales</button>
+                      <button *ngIf="esVisitante" type="button" [routerLink]="['/private/actor/list/visitante']" class=" btn btn-inverse">Volver</button>
+                      <button *ngIf="!esVisitante" type="button" [routerLink]="['/private/actor/list/miembro']" class=" btn btn-inverse">Volver</button>
+
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6"> </div>

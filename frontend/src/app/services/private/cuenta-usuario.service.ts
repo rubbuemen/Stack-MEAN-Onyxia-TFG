@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.prod';
 
 import { RequestsConstructorService } from '../requests-constructor.service';
-import { Visitante } from '../../models/visitante.model';
+import { CuentaUsuario } from '../../models/cuenta-usuario.model';
 import { ObjectId } from 'mongoose';
 
 const base_url = environment.base_url;
@@ -13,18 +13,18 @@ const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
-export class VisitanteService {
+export class CuentaUsuarioService {
   constructor(private requestConstructorService: RequestsConstructorService) {}
 
-  public getVisitantes(): Observable<Visitante[]> {
+  public banearUsuario(id: ObjectId): Observable<CuentaUsuario> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/actor/visitantes`, {}, {}, true, [Visitante])
-      .pipe(map((res: { visitantes: Visitante[] }) => res.visitantes));
+      .request('PUT', `${base_url}/ban`, {}, {}, true, [CuentaUsuario], id)
+      .pipe(map((res: { cuentaUsuario: CuentaUsuario }) => res.cuentaUsuario));
   }
 
-  public getVisitante(id: ObjectId): Observable<Visitante> {
+  public desbanearUsuario(id: ObjectId): Observable<CuentaUsuario> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/actor`, {}, {}, true, [Visitante], id)
-      .pipe(map((res: { datosActor }) => res.datosActor));
+      .request('PUT', `${base_url}/unban`, {}, {}, true, [CuentaUsuario], id)
+      .pipe(map((res: { cuentaUsuario: CuentaUsuario }) => res.cuentaUsuario));
   }
 }

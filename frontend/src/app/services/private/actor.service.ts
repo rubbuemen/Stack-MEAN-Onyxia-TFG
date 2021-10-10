@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Output, EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -66,6 +66,34 @@ export class ActorService {
           return res.actor;
         })
       );
+  }
+
+  public editarDatos(data: FormData, id: ObjectId): Observable<any> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/actor/edit`,
+        data,
+        {},
+        true,
+        typeof this.tipoActor,
+        id
+      )
+      .pipe(map((res: { actor: any }) => res.actor));
+  }
+
+  public hacerMiembro(data: FormData, actorId: ObjectId): Observable<Miembro> {
+    return this.requestConstructorService
+      .request(
+        'POST',
+        `${base_url}/actor/hacerMiembro`,
+        data,
+        {},
+        true,
+        [Visitante],
+        actorId
+      )
+      .pipe(map((res: { actor: Miembro }) => res.actor));
   }
 
   public getTipoActorLogeado() {

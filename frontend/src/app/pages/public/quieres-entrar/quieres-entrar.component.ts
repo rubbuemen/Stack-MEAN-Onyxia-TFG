@@ -37,6 +37,8 @@ export class QuieresEntrarComponent {
 
   ngOnInit(): void {
     this.getMiembrosVigentes();
+    this.utils.refrescarSelectPicker('intereses');
+    this.utils.refrescarSelectPicker('tieneCochePropio');
     this.utils.refrescarSelectPicker('miembrosConocidos');
     this.esVisitante = this.authService.tieneRol('VISITANTE');
   }

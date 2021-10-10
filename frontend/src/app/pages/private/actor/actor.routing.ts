@@ -6,11 +6,17 @@ import { PagesPrivateComponent } from '../../pages.private.component';
 import { ActorSelfDisplayComponent } from './actor-self-display/actor-self-display.component';
 import { ActorDisplayComponent } from './actor-display/actor-display.component';
 import { ActorFormComponent } from './actor-form/actor-form.component';
-import { ActorListComponent } from './actor-list/actor-list.component';
-import { MiembrosListComponent } from './miembros-list/miembros-list.component';
-import { VisitantesListComponent } from './visitantes-list/visitantes-list.component';
-import { AuthGuardService } from '../../../auth/auth-guard.service';
+import { MiembroListComponent } from './miembro-list/miembro-list.component';
+import { VisitanteListComponent } from './visitante-list/visitante-list.component';
 import { ActorSelfFormComponent } from './actor-self-form/actor-self-form.component';
+
+import {
+  AuthGuardService,
+  MiembroGuardService,
+  PresidenteGuardService,
+  PresidenteSecretarioGuardService,
+} from '../../../auth/auth-guard.service';
+import { ConvertirMiembroComponent } from './convertir-miembro/convertir-miembro.component';
 
 const routes: Routes = [
   {
@@ -25,37 +31,40 @@ const routes: Routes = [
         data: { titulo: 'Perfil de usuario' },
       },
       {
-        path: 'display',
-        canActivate: [AuthGuardService],
-        component: ActorDisplayComponent,
-        data: { titulo: 'Perfil de usuario' },
-      },
-      {
         path: 'self-form',
         canActivate: [AuthGuardService],
         component: ActorSelfFormComponent,
         data: { titulo: 'Editar usuario' },
       },
       {
+        path: 'display/:id',
+        canActivate: [MiembroGuardService],
+        component: ActorDisplayComponent,
+        data: { titulo: 'Perfil de usuario' },
+      },
+      {
         path: 'form/:id',
-        canActivate: [AuthGuardService],
+        canActivate: [PresidenteGuardService],
         component: ActorFormComponent,
         data: { titulo: 'Editar usuario' },
       },
       {
-        path: 'list',
-        component: ActorListComponent,
-        data: { titulo: 'Usuarios' },
-      },
-      {
-        path: 'list/miembros',
-        component: MiembrosListComponent,
+        path: 'list/miembro',
+        canActivate: [MiembroGuardService],
+        component: MiembroListComponent,
         data: { titulo: 'Usuarios miembros' },
       },
       {
-        path: 'list/visitantes',
-        component: VisitantesListComponent,
+        path: 'list/visitante',
+        canActivate: [PresidenteSecretarioGuardService],
+        component: VisitanteListComponent,
         data: { titulo: 'Usuarios visitantes' },
+      },
+      {
+        path: 'convertirMiembro/:actorId',
+        canActivate: [PresidenteSecretarioGuardService],
+        component: ConvertirMiembroComponent,
+        data: { titulo: 'Editar usuario' },
       },
     ],
   },

@@ -31,7 +31,7 @@ exports.rellenarSolicitudMiembro = async (parametros, usuarioLogeado) => {
   }
 };
 
-exports.getEstadoSolicitudMiembro = async usuarioLogeado => {
+exports.getMiSolicitudMiembro = async usuarioLogeado => {
   const actorConectado = await Visitante.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } }).populate({
     path: 'solicitudMiembro',
     populate: {
@@ -39,6 +39,16 @@ exports.getEstadoSolicitudMiembro = async usuarioLogeado => {
     },
   });
   return actorConectado.solicitudMiembro;
+};
+
+exports.getSolicitudMiembroByActorId = async actorId => {
+  const actor = await Visitante.findById(actorId).populate({
+    path: 'solicitudMiembro',
+    populate: {
+      path: 'miembrosConocidos',
+    },
+  });
+  return actor.solicitudMiembro;
 };
 
 exports.getSolicitudesMiembros = async () => {
@@ -479,16 +489,13 @@ exports.aceptarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) => 
     { new: true }
   );
   const receptores = await Visitante.find({ solicitudMiembro: { _id: solicitudMiembro._id } });
-  await enviarNotificacionAutomatica(
-    {
-      asunto: 'Solicitud para ser miembro aceptada',
-      cuerpo:
-        '!Felicidades! Tu solicitud para ser miembro ha sido aceptada, a continuación procede a realizar el pago para formalizar la inscripción y pasar a ser miembro',
-      receptoresVisitantes: receptores,
-      receptoresMiembros: [],
-    },
-    usuarioLogeado
-  );
+  await enviarNotificacionAutomatica({
+    asunto: 'Solicitud para ser miembro aceptada',
+    cuerpo:
+      '!Felicidades! Tu solicitud para ser miembro ha sido aceptada, a continuación procede a realizar el pago para formalizar la inscripción y pasar a ser miembro',
+    receptoresVisitantes: receptores,
+    receptoresMiembros: [],
+  });
   return solicitudMiembro;
 };
 
@@ -505,15 +512,12 @@ exports.rechazarSolicitudMiembro = async (solicitudMiembroId, usuarioLogeado) =>
     { new: true }
   );
   const receptores = await Visitante.find({ solicitudMiembro: { _id: solicitudMiembro._id } });
-  await enviarNotificacionAutomatica(
-    {
-      asunto: 'Solicitud para ser miembro rechazada',
-      cuerpo: 'Lo sentimos, tu solicitud para ser miembro ha sido rechazada. Si quieres, puedes volver a intentar solicitar ser miembro una vez pase un mes.',
-      receptoresVisitantes: receptores,
-      receptoresMiembros: [],
-    },
-    usuarioLogeado
-  );
+  await enviarNotificacionAutomatica({
+    asunto: 'Solicitud para ser miembro rechazada',
+    cuerpo: 'Lo sentimos, tu solicitud para ser miembro ha sido rechazada. Si quieres, puedes volver a intentar solicitar ser miembro una vez pase un mes.',
+    receptoresVisitantes: receptores,
+    receptoresMiembros: [],
+  });
   return solicitudMiembro;
 };
 
@@ -539,22 +543,24 @@ exports.pagarAutomaticoSolicitudMiembro = async (parametros, solicitudMiembroId)
   if (checkExistencia.estadoSolicitud !== 'ACEPTADO')
     throw errorLanzado(403, 'La solicitud de miembro no se puede establacer como pagado porque no está aceptada');
   if (checkExistencia.estaPagado) throw errorLanzado(403, 'La solicitud de miembro a la que intenta establacer como pagado manualmente ya lo está');
-  const pago = await stripe.charges.create({
-    amount: parametros.cantidad * 100,
-    currency: 'EUR',
-    description: parametros.nombre,
-    source: parametros.token,
-  });
-  if (pago.status === 'succeeded') {
-    solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
-      { _id: solicitudMiembroId },
-      {
-        estaPagado: true,
-      },
-      { new: true }
-    );
-  } else {
-    throw errorLanzado(500, 'Ocurrió un error en el proceso y no se ha podido aceptar el pago');
+  try {
+    const pago = await stripe.charges.create({
+      amount: parametros.cantidad * 100,
+      currency: 'EUR',
+      description: parametros.nombre,
+      source: parametros.token,
+    });
+    if (pago.status === 'succeeded') {
+      solicitudMiembro = await SolicitudMiembro.findOneAndUpdate(
+        { _id: solicitudMiembroId },
+        {
+          estaPagado: true,
+        },
+        { new: true }
+      );
+    }
+  } catch (error) {
+    throw errorLanzado(500, error.raw.message);
   }
   return solicitudMiembro;
 };

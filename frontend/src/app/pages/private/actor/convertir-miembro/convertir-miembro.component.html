@@ -8,10 +8,10 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header bg-purple">
-          <h4 class="m-b-0 text-white">Edición</h4>
+          <h4 class="m-b-0 text-white">Convertir visitante a miembro</h4>
         </div>
         <div class="card-body">
-          <form autocomplete="off" [formGroup]="perfilActorForm" (ngSubmit)="editarPerfil()">
+          <form autocomplete="off" [formGroup]="perfilActorForm" (ngSubmit)="convertirAMiembro()">
             <div class="form-body">
               <h3 class="card-title">Información del perfil</h3>
               <hr>
@@ -23,7 +23,7 @@
                       <input type="text" id="nombre" formControlName="nombre" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
                     </div>
-                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar tu nombre</div>
+                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar un nombre</div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -33,7 +33,7 @@
                       <input type="text" id="apellidos" formControlName="apellidos" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('apellidos')}">
                     </div>
-                    <div *ngIf="formEnviado && validarCampo('apellidos')" class="form-control-feedback">Debes indicar tus apellidos</div>
+                    <div *ngIf="formEnviado && validarCampo('apellidos')" class="form-control-feedback">Debes indicar unos apellidos</div>
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
                       <input type="text" id="correoElectronico" formControlName="correoElectronico" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('correoElectronico')}">
                     </div>
-                    <div *ngIf="formEnviado && validarCampo('correoElectronico')" class="form-control-feedback">Debes indicar tu correo electrónico</div>
+                    <div *ngIf="formEnviado && validarCampo('correoElectronico')" class="form-control-feedback">Debes indicar un correo electrónico</div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -55,97 +55,78 @@
                       <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('fechaNacimiento')}">
                     </div>
-                    <div *ngIf="formEnviado && validarCampo('fechaNacimiento')" class="form-control-feedback">Debes indicar tu fecha de nacimiento</div>
+                    <div *ngIf="formEnviado && validarCampo('fechaNacimiento')" class="form-control-feedback">Debes indicar una fecha de nacimiento</div>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6" *ngIf="!esVisitante">
-                  <div class="form-group" [ngClass]="{'has-danger': !esVisitante && formEnviado && validarCampo('alias')}">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('alias')}">
                     <label for="alias" class="control-label">Alias</label>
                     <div class="input-group">
                       <input type="text" id="alias" formControlName="alias" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('alias')}">
                     </div>
-                    <div *ngIf="!esVisitante && formEnviado && validarCampo('alias')" class="form-control-feedback">Debes indicar tu alias
-                    </div>
-
-                  </div>
-                </div>
-                <div class="col-md-6" *ngIf="esVisitante">
-                  <div class="form-group">
-                    <label for="alias" class="control-label">Alias</label>
-                    <div class="input-group">
-                      <input type="text" id="alias" formControlName="alias" class="form-control">
+                    <div *ngIf="formEnviado && validarCampo('alias')" class="form-control-feedback">Debes indicar un alias
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6" *ngIf="esVisitante">
-                  <div class="form-group">
-                    <label for="numeroTelefono" class="control-label">Número de teléfono</label>
-                    <div class="input-group">
-                      <input type="text" id="numeroTelefono" formControlName="numeroTelefono" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6" *ngIf="!esVisitante">
-                  <div class="form-group" [ngClass]="{'has-danger': !esVisitante && formEnviado && validarCampo('numeroTelefono')}">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('numeroTelefono')}">
                     <label for="numeroTelefono" class="control-label">Número de teléfono</label>
                     <div class="input-group">
                       <input type="text" id="numeroTelefono" formControlName="numeroTelefono" class="form-control"
                         [ngClass]="{'form-control-danger': formEnviado && validarCampo('numeroTelefono')}">
                     </div>
-                    <div *ngIf="!esVisitante && formEnviado && validarCampo('numeroTelefono')" class="form-control-feedback">Debes indicar tu número de
+                    <div *ngIf="formEnviado && validarCampo('numeroTelefono')" class="form-control-feedback">Debes indicar un número de
                       teléfono</div>
                   </div>
                 </div>
               </div>
-              <div *ngIf="!esVisitante">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group" [ngClass]="{'has-danger': !esVisitante && formEnviado && validarCampo('direccion')}">
-                      <label for="direccion" class="control-label">Dirección</label>
-                      <div class="input-group">
-                        <input type="text" id="direccion" formControlName="direccion" class="form-control"
-                          [ngClass]="{'form-control-danger': formEnviado && validarCampo('direccion')}">
-                      </div>
-                      <div *ngIf="!esVisitante && formEnviado && validarCampo('direccion')" class="form-control-feedback">Debes indicar tu dirección</div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('direccion')}">
+                    <label for="direccion" class="control-label">Dirección</label>
+                    <div class="input-group">
+                      <input type="text" id="direccion" formControlName="direccion" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('direccion')}">
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group" [ngClass]="{'has-danger':!esVisitante &&  formEnviado && validarCampo('dni')}">
-                      <label for="dni" class="control-label">DNI</label>
-                      <div class="input-group">
-                        <input type="text" id="dni" formControlName="dni" class="form-control"
-                          [ngClass]="{'form-control-danger': formEnviado && validarCampo('dni')}">
-                      </div>
-                      <div *ngIf="!esVisitante && formEnviado && validarCampo('dni')" class="form-control-feedback">Debes indicar tu DNI</div>
-                    </div>
+                    <div *ngIf="formEnviado && validarCampo('direccion')" class="form-control-feedback">Debes indicar una dirección</div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group" [ngClass]="{'has-danger': !esVisitante && formEnviado && validarCampo('aficiones')}">
-                      <label for="aficiones" class="control-label">Aficiones</label>
-                      <div class="input-group">
-                        <input type="text" id="aficiones" formControlName="aficiones" class="form-control"
-                          [ngClass]="{'form-control-danger': formEnviado && validarCampo('aficiones')}">
-                      </div>
-                      <div *ngIf="!esVisitante && formEnviado && validarCampo('aficiones')" class="form-control-feedback">Debes indicar tus aficiones</div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('dni')}">
+                    <label for="dni" class="control-label">DNI</label>
+                    <div class="input-group">
+                      <input type="text" id="dni" formControlName="dni" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('dni')}">
                     </div>
+                    <div *ngIf=" formEnviado && validarCampo('dni')" class="form-control-feedback">Debes indicar un DNI</div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group" [ngClass]="{'has-danger': !esVisitante && formEnviado && validarCampo('tieneCochePropio')}">
-                      <label for="tieneCochePropio" class="control-label">Coche propio</label>
-                      <div class="input-group">
-                        <select id="tieneCochePropio" formControlName="tieneCochePropio" class="form-control selectpicker" title="Disposición de coche propio">
-                          <option value="true">Sí</option>
-                          <option value="false">No</option>
-                        </select>
-                      </div>
-                      <div *ngIf="!esVisitante && formEnviado && validarCampo('tieneCochePropio')" class="form-control-feedback">Debes indicar si tienes coche
-                        propio</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('aficiones')}">
+                    <label for="aficiones" class="control-label">Aficiones</label>
+                    <div class="input-group">
+                      <input type="text" id="aficiones" formControlName="aficiones" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('aficiones')}">
                     </div>
+                    <div *ngIf="formEnviado && validarCampo('aficiones')" class="form-control-feedback">Debes indicar unas aficiones</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger':formEnviado && validarCampo('tieneCochePropio')}">
+                    <label for="tieneCochePropio" class="control-label">Coche propio</label>
+                    <div class="input-group">
+                      <select id="tieneCochePropio" formControlName="tieneCochePropio" class="form-control selectpicker" title="Disposición de coche propio">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('tieneCochePropio')" class="form-control-feedback">Debes indicar si tiene coche
+                      propio</div>
                   </div>
                 </div>
               </div>
@@ -180,16 +161,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label for="contraseñaActual" class="control-label">Contraseña actual</label>
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="ti-lock"></i></div>
-                      <input type="password" id="contraseñaActual" formControlName="contraseñaActual" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="contraseñaNueva" class="control-label">Confirmar nueva</label>
+                    <label for="contraseñaNueva" class="control-label">Nueva contraseña</label>
                     <div class="input-group">
                       <div class="input-group-addon"><i class="ti-lock"></i></div>
                       <input type="password" id="contraseñaNueva" formControlName="contraseñaNueva" class="form-control">
@@ -200,7 +172,7 @@
               </div>
               <div class="form-actions">
                 <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                <button type="button" [routerLink]="['/private/actor']" class="btn btn-inverse">Cancelar</button>
+                <button type="button" [routerLink]="['/private/actor/list/visitante']" class=" btn btn-inverse">Cancelar</button>
               </div>
             </div>
           </form>

@@ -12,45 +12,50 @@
           <h4 class="m-b-0 text-white">Edición</h4>
         </div>
         <div class="card-body">
-          <form action="#">
+          <form autocomplete="off" [formGroup]="redSocialForm" (ngSubmit)="guardarForm()">
             <div class="form-body">
               <h3 class="card-title">Información de la red social</h3>
               <hr>
               <div class="row p-t-20">
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('nombre')}">
                     <label for="nombre" class="control-label">Nombre</label>
                     <div class="input-group">
                       <div class="input-group-addon"><i class="ti-sharethis"></i></div>
-                      <input type="text" id="nombre" class="form-control" placeholder="Twitter">
+                      <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
                     </div>
+                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar el nombre</div>
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="form-group has-danger">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('enlace')}">
                     <label for="enlace" class="control-label">Enlace a tu perfil</label>
                     <div class="input-group">
                       <div class="input-group-addon"><i class="ti-link"></i></div>
-                      <input type="text" id="enlace" class="form-control form-control-danger" placeholder="https://twitter.com/">
+                      <input type="text" id="enlace" formControlName="enlace" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('enlace')}">
                     </div>
-                    <small class="form-control-feedback"> This field has error. </small>
+                    <div *ngIf="formEnviado && validarCampo('enlace')" class="form-control-feedback">Debes indicar el enlace a tu perfil</div>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('usuario')}">
                     <label for="usuario" class="control-label">Usuario</label>
                     <div class="input-group">
                       <div class="input-group-addon"><i class="ti-user"></i></div>
-                      <input type="text" id="usuario" class="form-control" placeholder="john123">
+                      <input type="text" id="usuario" formControlName="usuario" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('usuario')}">
                     </div>
+                    <div *ngIf="formEnviado && validarCampo('usuario')" class="form-control-feedback">Debes indicar el usuario</div>
                   </div>
                 </div>
               </div>
               <div class="form-actions">
-                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                <button type="button" class="btn btn-inverse">Cancel</button>
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button *ngIf="actor" type="button" [routerLink]="['/private/red-social/list', actor._id]" class="btn btn-inverse">Cancelar</button>
               </div>
             </div>
           </form>

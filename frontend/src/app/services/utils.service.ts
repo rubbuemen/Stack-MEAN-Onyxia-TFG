@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 const mongoose = require('mongoose');
 
@@ -19,7 +19,7 @@ export class UtilsService {
     let dtOptions: DataTables.Settings = {};
     dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 10,
       processing: true,
       columnDefs: [
         {

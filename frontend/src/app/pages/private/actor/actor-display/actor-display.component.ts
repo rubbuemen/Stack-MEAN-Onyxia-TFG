@@ -4,6 +4,8 @@ import { ActorService } from '../../../../services/private/actor.service';
 import { UtilsService } from '../../../../services/utils.service';
 
 import { AuthService } from '../../../../auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ObjectId } from 'mongoose';
 
 @Component({
   selector: 'app-actor-display',
@@ -11,40 +13,51 @@ import { AuthService } from '../../../../auth/auth.service';
   styles: [],
 })
 export class ActorDisplayComponent implements OnInit {
-  public actorLogeado: any;
+  public actor: any;
   public esVisitante: boolean = false;
+  private idObject: ObjectId;
 
   constructor(
     private actorService: ActorService,
     private utils: UtilsService,
-    private authService: AuthService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.esVisitante = this.authService.tieneRol('VISITANTE');
-    this.getMisDatos();
+    this.route.params.subscribe((params) => {
+      this.getDatos(params['id']);
+    });
   }
 
-  private getMisDatos(): void {
-    this.actorService.getMisDatos().subscribe((actor) => {
-      if (this.utils.existe(actor.fotografia)) {
-        let imagen =
-          'data:' +
-          actor.fotografia.mimetype +
-          ';base64,' +
-          actor.fotografia.data;
+  private getDatos(id: string): void {
+    this.idObject = this.utils.convertirObjectId(id);
+    if (this.idObject !== undefined) {
+      this.actorService.getDatos(this.idObject).subscribe((actor) => {
+        this.esVisitante = actor.cuentaUsuario.autoridad === 'VISITANTE';
+        if (this.utils.existe(actor.fotografia)) {
+          let imagen =
+            'data:' +
+            actor.fotografia.mimetype +
+            ';base64,' +
+            actor.fotografia.data;
 
-        const imagenSRC = this.utils.usarImagenBase64(imagen);
-        actor.fotografia = imagenSRC;
-      }
-      if (!this.utils.existe(actor.alias)) actor.alias = '-';
-      if (!this.utils.existe(actor.numeroTelefono)) actor.numeroTelefono = '-';
-      if (this.esVisitante) {
-        actor.rol = 'Visitante';
-      } else {
-        actor.rol = actor.rol.toLowerCase();
-      }
-      this.actorLogeado = actor;
-    });
+          const imagenSRC = this.utils.usarImagenBase64(imagen);
+          actor.fotografia = imagenSRC;
+        }
+        if (!this.utils.existe(actor.alias)) actor.alias = '-';
+        if (!this.utils.existe(actor.numeroTelefono))
+          actor.numeroTelefono = '-';
+        if (this.esVisitante) {
+          actor.rol = 'Visitante';
+        } else {
+          actor.rol =
+            actor.rol[0].toUpperCase() + actor.rol.substr(1).toLowerCase();
+          if (actor.rol === 'Estandar') {
+            actor.rol = 'Miembro estandar';
+          }
+        }
+        this.actor = actor;
+      });
+    }
   }
 }

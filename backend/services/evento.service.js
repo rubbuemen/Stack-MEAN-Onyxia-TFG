@@ -317,24 +317,21 @@ exports.publicarEvento = async (eventoId, usuarioLogeado) => {
       '/' +
       ultimoDia.getFullYear();
   }
-  await enviarNotificacionAutomatica(
-    {
-      asunto: 'Un nuevo evento ha sido publicado: ' + evento.nombre,
-      cuerpo:
-        'El evento ' +
-        evento.nombre +
-        ' ha sido publicado. Dicho evento se celebrará en ' +
-        evento.lugar +
-        ' durante ' +
-        mensajeDia +
-        '. El cupo inicial para poder inscribirse es de ' +
-        evento.cupoInscripciones +
-        ' miembros.',
-      receptoresMiembros: receptores,
-      receptoresVisitantes: [],
-    },
-    usuarioLogeado
-  );
+  await enviarNotificacionAutomatica({
+    asunto: 'Un nuevo evento ha sido publicado: ' + evento.nombre,
+    cuerpo:
+      'El evento ' +
+      evento.nombre +
+      ' ha sido publicado. Dicho evento se celebrará en ' +
+      evento.lugar +
+      ' durante ' +
+      mensajeDia +
+      '. El cupo inicial para poder inscribirse es de ' +
+      evento.cupoInscripciones +
+      ' miembros.',
+    receptoresMiembros: receptores,
+    receptoresVisitantes: [],
+  });
   return evento;
 };
 

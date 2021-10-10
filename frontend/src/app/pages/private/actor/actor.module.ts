@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataTablesModule } from 'angular-datatables';
 
 //Modulo compartido
 import { SharedModule } from '../../../shared/shared.module';
@@ -11,10 +12,10 @@ import { SharedModule } from '../../../shared/shared.module';
 import { ActorDisplayComponent } from './actor-display/actor-display.component';
 import { ActorSelfDisplayComponent } from './actor-self-display/actor-self-display.component';
 import { ActorFormComponent } from './actor-form/actor-form.component';
-import { ActorListComponent } from './actor-list/actor-list.component';
-import { MiembrosListComponent } from './miembros-list/miembros-list.component';
-import { VisitantesListComponent } from './visitantes-list/visitantes-list.component';
+import { MiembroListComponent } from './miembro-list/miembro-list.component';
+import { VisitanteListComponent } from './visitante-list/visitante-list.component';
 import { ActorSelfFormComponent } from './actor-self-form/actor-self-form.component';
+import { ConvertirMiembroComponent } from './convertir-miembro/convertir-miembro.component';
 
 @NgModule({
   declarations: [
@@ -22,16 +23,18 @@ import { ActorSelfFormComponent } from './actor-self-form/actor-self-form.compon
     ActorSelfDisplayComponent,
     ActorSelfFormComponent,
     ActorFormComponent,
-    ActorListComponent,
-    MiembrosListComponent,
-    VisitantesListComponent,
+    MiembroListComponent,
+    VisitanteListComponent,
+    ConvertirMiembroComponent,
   ],
   exports: [
     ActorDisplayComponent,
     ActorSelfDisplayComponent,
     ActorSelfFormComponent,
     ActorFormComponent,
-    ActorListComponent,
+    MiembroListComponent,
+    VisitanteListComponent,
+    ConvertirMiembroComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +43,7 @@ import { ActorSelfFormComponent } from './actor-self-form/actor-self-form.compon
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    DataTablesModule,
   ],
 })
 export class ActorModule {}

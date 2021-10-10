@@ -209,6 +209,9 @@ exports.editarDatosActorId = async (parametros, imagen, actorId) => {
         { new: true }
       );
     } else {
+      if (!imagen) {
+        imagen = actor.fotografia; // Para el caso que se ha editado pero no se ha cambiado la imagen
+      }
       actor = await Miembro.findOneAndUpdate(
         { _id: actor._id },
         {

@@ -16,10 +16,20 @@ exports.rellenarSolicitudMiembro = async (req, res) => {
   }
 };
 
-exports.getEstadoSolicitudMiembro = async (req, res) => {
+exports.getMiSolicitudMiembro = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
-    const solicitudMiembro = await solicitudMiembroService.getEstadoSolicitudMiembro(usuarioLogeado);
+    const solicitudMiembro = await solicitudMiembroService.getMiSolicitudMiembro(usuarioLogeado);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getSolicitudMiembroByActorId = async (req, res) => {
+  try {
+    const actorId = req.params.actorId;
+    const solicitudMiembro = await solicitudMiembroService.getSolicitudMiembroByActorId(actorId);
     return res.status(200).send({ solicitudMiembro });
   } catch (error) {
     return controlError(error, res);
@@ -115,7 +125,6 @@ exports.establecerPagadoSolicitudMiembro = async (req, res) => {
 exports.pagarAutomaticoSolicitudMiembro = async (req, res) => {
   try {
     const solicitudMiembroId = req.params.solicitudMiembroId;
-    console.log(req.body);
     const { nombre, cantidad, token } = req.body;
     if (!nombre || !cantidad || !token) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const solicitudMiembro = await solicitudMiembroService.pagarAutomaticoSolicitudMiembro(req.body, solicitudMiembroId);

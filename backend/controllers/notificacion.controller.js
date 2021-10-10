@@ -52,8 +52,6 @@ exports.eliminarNotificaciones = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
     const { notificaciones } = req.body;
-    console.log(req.body);
-    console.log(notificaciones);
     if (!notificaciones) throw errorLanzado(400, 'No ha seleccionado ninguna notificación');
     const notificacionesTratadas = await notificacionService.eliminarNotificaciones(req.body, usuarioLogeado);
     return res.status(200).send({ notificacionesTratadas });
