@@ -48,6 +48,24 @@ export class SolicitudMiembroService {
       );
   }
 
+  public getSolicitudMiembro(id: ObjectId): Observable<SolicitudMiembro> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/display`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro],
+        id
+      )
+      .pipe(
+        map(
+          (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
   public realizarPago(
     data: FormData,
     id: ObjectId
@@ -65,6 +83,150 @@ export class SolicitudMiembroService {
       .pipe(
         map(
           (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
+  public aceptarSolicitud(id: ObjectId): Observable<SolicitudMiembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/solicitudMiembro/aceptar`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro],
+        id
+      )
+      .pipe(
+        map(
+          (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
+  public rechazarSolicitud(id: ObjectId): Observable<SolicitudMiembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/solicitudMiembro/rechazar`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro],
+        id
+      )
+      .pipe(
+        map(
+          (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
+  public establecerPagado(id: ObjectId): Observable<SolicitudMiembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/solicitudMiembro/establecerPagado`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro],
+        id
+      )
+      .pipe(
+        map(
+          (res: { solicitudMiembro: SolicitudMiembro }) => res.solicitudMiembro
+        )
+      );
+  }
+
+  public getSolicitudesPendientes(): Observable<SolicitudMiembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/listPendientes`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro]
+      )
+      .pipe(
+        map(
+          (res: { solicitudesMiembros: SolicitudMiembro[] }) =>
+            res.solicitudesMiembros
+        )
+      );
+  }
+
+  public getSolicitudesRechazadas(): Observable<SolicitudMiembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/listRechazadas`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro]
+      )
+      .pipe(
+        map(
+          (res: { solicitudesMiembros: SolicitudMiembro[] }) =>
+            res.solicitudesMiembros
+        )
+      );
+  }
+
+  public getSolicitudesAceptadas(): Observable<SolicitudMiembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/listAceptadas`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro]
+      )
+      .pipe(
+        map(
+          (res: { solicitudesMiembros: SolicitudMiembro[] }) =>
+            res.solicitudesMiembros
+        )
+      );
+  }
+
+  public getSolicitudesPendientesPago(): Observable<SolicitudMiembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/listPendientePago`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro]
+      )
+      .pipe(
+        map(
+          (res: { solicitudesMiembros: SolicitudMiembro[] }) =>
+            res.solicitudesMiembros
+        )
+      );
+  }
+
+  public getSolicitudesPagadas(): Observable<SolicitudMiembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/solicitudMiembro/listPagadas`,
+        {},
+        {},
+        true,
+        [SolicitudMiembro]
+      )
+      .pipe(
+        map(
+          (res: { solicitudesMiembros: SolicitudMiembro[] }) =>
+            res.solicitudesMiembros
         )
       );
   }

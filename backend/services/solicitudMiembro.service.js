@@ -41,6 +41,12 @@ exports.getMiSolicitudMiembro = async usuarioLogeado => {
   return actorConectado.solicitudMiembro;
 };
 
+exports.getSolicitudMiembroById = async id => {
+  const solicitud = await SolicitudMiembro.findById(id).populate({ path: 'miembrosConocidos' });
+  if (!solicitud) throw errorLanzado(404, 'No existe ninguna solicitud de miembro con la id indicada');
+  return solicitud;
+};
+
 exports.getSolicitudMiembroByActorId = async actorId => {
   const actor = await Visitante.findById(actorId).populate({
     path: 'solicitudMiembro',
@@ -194,7 +200,7 @@ exports.getSolicitudesMiembrosPendientes = async () => {
 
 exports.getSolicitudesMiembrosAceptadas = async () => {
   const solicitudesMiembros = await SolicitudMiembro.aggregate([
-    { $match: { estadoSolicitud: 'ACEPTADO' } },
+    { $match: { estadoSolicitud: 'ACEPTADO', estaPagado: false } },
     {
       $lookup: {
         from: Visitante.collection.name,

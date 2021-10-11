@@ -1,0 +1,48 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Solicitudes aceptadas pendientes de pago</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="solicitudes" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre completo</th>
+                  <th>Habilidades</th>
+                  <th>Ideas</th>
+                  <th>Tiene coche propio</th>
+                  <th class="no-sort">Ver más</th>
+                  <th class="no-sort" width="1">Establecer como pagado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let solicitud of solicitudesMiembros">
+                  <td>{{solicitud.visitante.nombre}} {{solicitud.visitante.apellidos}} <span
+                      *ngIf="solicitud.visitante.alias && solicitud.visitante.alias.length !== 0">({{solicitud.visitante.alias}})</span></td>
+                  <td>{{solicitud.habilidades}}</td>
+                  <td>{{solicitud.ideas}}</td>
+                  <td>{{solicitud.tieneCochePropio ? 'Sí' : 'No'}}</td>
+                  <td class="text-center"><a class="cursor-pointer" [routerLink]="['/private/solicitud-miembro/display', solicitud._id]" data-toggle="tooltip"
+                      data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="establecerPagado(solicitud._id)" data-toggle="tooltip"
+                      data-original-title="Establecer como pagado">
+                      <i class="mdi mdi-credit-card text-inverse"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

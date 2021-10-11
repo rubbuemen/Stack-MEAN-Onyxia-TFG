@@ -91,23 +91,14 @@
                   </div>
                 </div>
               </div>
-              <div class="form-actions">
+              <div class="form-actions" *ngIf="solicitudMiembro.estadoSolicitud === 'ACEPTADO' && !solicitudMiembro.estaPagado">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-offset-3 col-md-9">
-                        <button *ngIf="solicitudMiembro.estadoSolicitud === 'PENDIENTE'" [routerLink]=" ['/private/solicitud-miembro/pendientes']" type="button"
-                          class="btn btn-inverse">
-                          Volver</button>
-                        <button *ngIf="solicitudMiembro.estadoSolicitud === 'ACEPTADO' && !solicitudMiembro.estaPagado"
-                          [routerLink]=" ['/private/solicitud-miembro/aceptadas']" type="button" class="btn btn-inverse">
-                          Volver</button>
-                        <button *ngIf="solicitudMiembro.estadoSolicitud === 'RECHAZADO'" [routerLink]=" ['/private/solicitud-miembro/rechazadas']" type="button"
-                          class="btn btn-inverse">
-                          Volver</button>
-                        <button *ngIf="solicitudMiembro.estadoSolicitud === 'ACEPTADO' && solicitudMiembro.estaPagado"
-                          [routerLink]=" ['/private/solicitud-miembro/list']" type="button" class="btn btn-inverse">
-                          Volver</button></div>
+                        <button [routerLink]="['/private/solicitud-miembro/pago', solicitudMiembro._id]" type="submit" class="btn btn-info"> <i
+                            class="fa fa-credit-card"></i>
+                          Realizar pago</button> </div>
                     </div>
                   </div>
                   <div class="col-md-6"> </div>

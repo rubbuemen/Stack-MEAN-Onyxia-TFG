@@ -49,7 +49,6 @@ export class ActorDisplayComponent implements OnInit {
             actor.fotografia.mimetype +
             ';base64,' +
             actor.fotografia.data;
-
           const imagenSRC = this.utils.usarImagenBase64(imagen);
           actor.fotografia = imagenSRC;
         }

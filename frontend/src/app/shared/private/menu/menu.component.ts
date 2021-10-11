@@ -117,6 +117,31 @@ export class MenuPrivateComponent implements OnInit {
         });
       }
     }
+    if (this.actor.cuentaUsuario.autoridad === 'PRESIDENTE') {
+      this.menuLateral.push({
+        titulo: 'Solicitudes para ser miembro',
+        identificador: 'solicitudes',
+        claseIcono: 'mdi mdi-content-duplicate',
+        submenu: [
+          {
+            titulo: 'Solicitudes pendientes',
+            url: '/private/solicitud-miembro/pendientes',
+          },
+          {
+            titulo: 'Solicitudes rechazadas',
+            url: '/private/solicitud-miembro/rechazadas',
+          },
+          {
+            titulo: 'Solicitudes aceptadas pendientes de pago',
+            url: '/private/solicitud-miembro/aceptadas',
+          },
+          {
+            titulo: 'Solicitudes aceptadas y pagadas',
+            url: '/private/solicitud-miembro/list',
+          },
+        ],
+      });
+    }
   }
 
   public logout() {

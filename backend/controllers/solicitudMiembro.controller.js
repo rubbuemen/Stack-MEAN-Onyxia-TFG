@@ -26,6 +26,16 @@ exports.getMiSolicitudMiembro = async (req, res) => {
   }
 };
 
+exports.getSolicitudMiembroById = async (req, res) => {
+  try {
+    const solicitudMiembroId = req.params.id;
+    const solicitudMiembro = await solicitudMiembroService.getSolicitudMiembroById(solicitudMiembroId);
+    return res.status(200).send({ solicitudMiembro });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.getSolicitudMiembroByActorId = async (req, res) => {
   try {
     const actorId = req.params.actorId;
