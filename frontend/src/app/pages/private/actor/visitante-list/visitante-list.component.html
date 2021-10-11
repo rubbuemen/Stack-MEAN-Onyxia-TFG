@@ -19,8 +19,8 @@
                   <th>Correo electrónico</th>
                   <th>Estado cuenta</th>
                   <th class="no-sort" width="1">Ver más</th>
-                  <th class="no-sort" width="1">Editar</th>
-                  <th class="no-sort" width="1">Banear / Desbanear</th>
+                  <th *ngIf="rolMiembro && rolMiembro === 'PRESIDENTE'" class="no-sort" width="1">Editar</th>
+                  <th *ngIf="rolMiembro && rolMiembro === 'PRESIDENTE'" class="no-sort" width="1">Banear / Desbanear</th>
                   <th class="no-sort" width="1">Convertir en miembro</th>
                 </tr>
               </thead>
@@ -34,13 +34,14 @@
                       data-original-title="Ver más">
                       <i class="fa fa-eye text-inverse"></i> </a>
                   </td>
-                  <td class="text-center"><a class="cursor-pointer" [routerLink]="['/private/actor/form', visitante._id]" data-toggle="tooltip"
-                      data-original-title="Editar">
+                  <td *ngIf="rolMiembro && rolMiembro === 'PRESIDENTE'" class="text-center"><a class="cursor-pointer"
+                      [routerLink]="['/private/actor/form', visitante._id]" data-toggle="tooltip" data-original-title="Editar">
                       <i class="fa fa-pencil text-inverse"></i> </a>
                   </td>
-                  <td class="text-center" width="1"><a class="cursor-pointer" (click)="banearDesbanearVisitante(visitante._id)" data-toggle="tooltip"
-                      data-original-title="Banear / Desbanear">
-                      <i class="fa fa-ban text-danger"></i></a>
+                  <td *ngIf="rolMiembro && rolMiembro === 'PRESIDENTE'" class="text-center" width="1"><a class="cursor-pointer"
+                      (click)="banearDesbanearVisitante(visitante._id)" data-toggle="tooltip" data-original-title="Banear / Desbanear">
+                      <i *ngIf="visitante.cuentaUsuario.estado" class="fa fa-ban text-danger"></i>
+                      <i *ngIf="!visitante.cuentaUsuario.estado" class="fa fa-undo text-success"></i></a>
                   </td>
                   <td class="text-center"><a *ngIf="visitante.solicitudMiembro && visitante.solicitudMiembro.estaPagado" class="cursor-pointer"
                       [routerLink]="['/private/actor/convertirMiembro', visitante._id]" data-toggle="tooltip" data-original-title="Convertir en miembro">

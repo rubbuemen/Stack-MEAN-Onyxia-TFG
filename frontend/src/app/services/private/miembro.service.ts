@@ -59,4 +59,32 @@ export class MiembroService {
       )
       .pipe(map((res: { miembro }) => res.miembro));
   }
+
+  public darBaja(id: ObjectId): Observable<Miembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/miembro/darBaja`,
+        {},
+        {},
+        true,
+        [Miembro],
+        id
+      )
+      .pipe(map((res: { miembro }) => res.miembro));
+  }
+
+  public darAlta(id: ObjectId): Observable<Miembro> {
+    return this.requestConstructorService
+      .request(
+        'PUT',
+        `${base_url}/miembro/darAltaExMiembro`,
+        {},
+        {},
+        true,
+        [Miembro],
+        id
+      )
+      .pipe(map((res: { miembro }) => res.miembro));
+  }
 }

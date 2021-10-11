@@ -169,9 +169,11 @@
                 <div class="col-md-6">
                   <div class="row">
                     <div class="col-md-offset-3 col-md-12">
-                      <button [routerLink]="['/private/actor/form', actor._id]" type="submit" class="btn btn-info"> <i class="fa fa-pencil"></i>
+                      <button *ngIf="rolMiembro === 'PRESIDENTE'" [routerLink]="['/private/actor/form', actor._id]" type="submit" class="btn btn-info"> <i
+                          class="fa fa-pencil"></i>
                         Editar</button>
-                      <button [routerLink]="['/private/red-social/list', actor._id]" type="submit" class="btn btn-info"> <i class="fa fa-eye"></i>
+                      <button *ngIf="rolMiembro === 'PRESIDENTE'" [routerLink]="['/private/red-social/list', actor._id]" type="submit" class="btn btn-info"> <i
+                          class="fa fa-eye"></i>
                         Ver redes sociales</button>
                       <button *ngIf="esVisitante" type="button" [routerLink]="['/private/actor/list/visitante']" class=" btn btn-inverse">Volver</button>
                       <button *ngIf="!esVisitante" type="button" [routerLink]="['/private/actor/list/miembro']" class=" btn btn-inverse">Volver</button>

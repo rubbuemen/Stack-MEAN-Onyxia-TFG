@@ -17,6 +17,7 @@ import { SolicitudMiembroService } from '../../../../services/private/solicitud-
 })
 export class VisitanteListComponent implements OnDestroy, OnInit {
   public actorLogeado: Visitante;
+  public rolMiembro: string;
   public visitantes: Visitante[] = [];
   private idObject: ObjectId;
 
@@ -25,6 +26,7 @@ export class VisitanteListComponent implements OnDestroy, OnInit {
 
   constructor(
     private cuentaUsuarioService: CuentaUsuarioService,
+    private actorService: ActorService,
     private visitanteService: VisitanteService,
     private solicitudMiembroService: SolicitudMiembroService,
     private utils: UtilsService
@@ -50,7 +52,11 @@ export class VisitanteListComponent implements OnDestroy, OnInit {
           });
       });
       this.visitantes = visitantes;
-      this.dtTrigger.next();
+      this.actorService.getMisDatos().subscribe((actor) => {
+        this.actorLogeado = actor;
+        this.rolMiembro = actor.cuentaUsuario.autoridad;
+        this.dtTrigger.next();
+      });
     });
   }
 

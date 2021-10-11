@@ -86,22 +86,36 @@ export class MenuPrivateComponent implements OnInit {
         ],
       });
     }
-    if (this.actor.cuentaUsuario.autoridad === 'PRESIDENTE') {
+    if (
+      this.actor.cuentaUsuario.autoridad === 'PRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VICEPRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VOCAL' ||
+      this.actor.cuentaUsuario.autoridad === 'SECRETARIO' ||
+      this.actor.cuentaUsuario.autoridad === 'MIEMBRO'
+    ) {
       this.menuLateral.push({
         titulo: 'Listado de usuarios',
         identificador: 'usuarios',
         claseIcono: 'mdi mdi-account-multiple',
         submenu: [
           {
-            titulo: 'Listado de visitantes',
-            url: '/private/actor/list/visitante',
-          },
-          {
             titulo: 'Listado de miembros',
             url: '/private/actor/list/miembro',
           },
         ],
       });
+      if (
+        this.actor.cuentaUsuario.autoridad === 'PRESIDENTE' ||
+        this.actor.cuentaUsuario.autoridad === 'SECRETARIO'
+      ) {
+        let index = this.menuLateral.findIndex(
+          (menu) => menu.identificador === 'usuarios'
+        );
+        this.menuLateral[index]['submenu'].splice(1, 0, {
+          titulo: 'Listado de visitantes',
+          url: '/private/actor/list/visitante',
+        });
+      }
     }
   }
 

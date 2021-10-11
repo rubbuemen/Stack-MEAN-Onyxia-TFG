@@ -180,7 +180,8 @@ exports.editarDatosActorId = async (req, res) => {
       throw errorLanzado(400, 'El correo electrónico insertado no mantiene el formato x@y.z');
     if (numeroSocio && numeroSocio <= 0) throw errorLanzado(400, 'El número de socio no puede ser menor a 1');
     const ultimoNumeroSocio = await actorService.getUltimoNumeroSocio();
-    if (numeroSocio && numeroSocio < ultimoNumeroSocio)
+    const actorEdit = await actorService.getDatosByActorId(actorId);
+    if (numeroSocio && actorEdit.numeroSocio != numeroSocio && numeroSocio < ultimoNumeroSocio)
       throw errorLanzado(400, 'El número de socio no puede ser menor que el número del último socio: ' + ultimoNumeroSocio);
     if (numeroTelefono && !/\d{9,10}/.test(numeroTelefono)) throw errorLanzado(400, 'El teléfono insertado debe tener 9 o 10 dígitos');
     if (usuario.length < 5 || usuario.length > 32) throw errorLanzado(400, 'El usuario insertado debe contener entre 5 y 32 caracteres');

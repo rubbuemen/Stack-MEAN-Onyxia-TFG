@@ -6,6 +6,7 @@ import { UtilsService } from '../../../../services/utils.service';
 import { AuthService } from '../../../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObjectId } from 'mongoose';
+import { Miembro } from 'src/app/models/miembro.model';
 
 @Component({
   selector: 'app-actor-display',
@@ -14,6 +15,7 @@ import { ObjectId } from 'mongoose';
 })
 export class ActorDisplayComponent implements OnInit {
   public actor: any;
+  public rolMiembro: string;
   public esVisitante: boolean = false;
   private idObject: ObjectId;
 
@@ -24,8 +26,15 @@ export class ActorDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getMisDatos();
     this.route.params.subscribe((params) => {
       this.getDatos(params['id']);
+    });
+  }
+
+  private getMisDatos(): void {
+    this.actorService.getMisDatos().subscribe((actor) => {
+      this.rolMiembro = actor.cuentaUsuario.autoridad;
     });
   }
 

@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { ActorService } from '../../../../services/private/actor.service';
 import { CuentaUsuarioService } from '../../../../services/private/cuenta-usuario.service';
 import { Console } from 'console';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-miembro-list',
@@ -17,6 +18,7 @@ import { Console } from 'console';
 })
 export class MiembroListComponent implements OnDestroy, OnInit {
   public actorLogeado: Miembro;
+  public rolMiembro: string;
   public miembros: Miembro[] = [];
   private idObject: ObjectId;
 
@@ -31,7 +33,6 @@ export class MiembroListComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getMisDatos();
     this.dtTrigger = new Subject<any>();
     this.dtOptions = this.utils.configurarOpcionesTabla();
     this.getMiembros();
@@ -40,17 +41,14 @@ export class MiembroListComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
-
-  private getMisDatos(): void {
-    this.actorService.getMisDatos().subscribe((actor) => {
-      this.actorLogeado = actor;
-    });
-  }
-
   private getMiembros(): void {
     this.miembroService.getMiembros().subscribe((miembros) => {
       this.miembros = miembros;
-      this.dtTrigger.next();
+      this.actorService.getMisDatos().subscribe((actor) => {
+        this.actorLogeado = actor;
+        this.rolMiembro = actor.cuentaUsuario.autoridad;
+        this.dtTrigger.next();
+      });
     });
   }
 
@@ -108,6 +106,61 @@ export class MiembroListComponent implements OnDestroy, OnInit {
                       swal.fire('Error', error.error.error, 'error');
                     }
                   );
+              }
+            }
+          });
+      });
+    }
+  }
+
+  public darBajaAltaMiembro(id: string): void {
+    this.idObject = this.utils.convertirObjectId(id);
+    if (this.idObject !== undefined) {
+      this.miembroService.getMiembro(this.idObject).subscribe((miembro) => {
+        const titleBan = miembro.estaDeAlta ? 'dar de baja' : 'reactivar alta';
+        const textoBan = miembro.estaDeAlta ? 'perderá' : 'recuperará';
+        swal
+          .fire({
+            title: '¿Estás seguro de ' + titleBan + ' este miembro?',
+            text: 'Dicho miembro ' + textoBan + ' el acceso a la plataforma',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#06d79c',
+            cancelButtonColor: '#2f3d4a',
+            confirmButtonText: 'Sí, confirmar',
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              if (miembro.estaDeAlta) {
+                this.miembroService.darBaja(miembro._id).subscribe(
+                  () => {
+                    swal
+                      .fire(
+                        'Miembro dado de baja',
+                        'Se ha dado de baja al miembro correctamente',
+                        'success'
+                      )
+                      .then(() => this.ngOnInit());
+                  },
+                  (error) => {
+                    swal.fire('Error', error.error.error, 'error');
+                  }
+                );
+              } else {
+                this.miembroService.darAlta(miembro._id).subscribe(
+                  () => {
+                    swal
+                      .fire(
+                        'Ex-Miembro dado de alta de nuevo',
+                        'Se ha dado de alta al miembro correctamente',
+                        'success'
+                      )
+                      .then(() => this.ngOnInit());
+                  },
+                  (error) => {
+                    swal.fire('Error', error.error.error, 'error');
+                  }
+                );
               }
             }
           });
