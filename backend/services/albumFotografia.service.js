@@ -20,8 +20,8 @@ exports.getAlbumFotografiasById = async id => {
   return albumFotografias;
 };
 
-exports.crearAlbumFotografias = async (parametros, imagen) => {
-  const checkEventoExistente = await Evento.findById(parametros.evento);
+exports.crearAlbumFotografias = async (parametros, imagen, eventoId) => {
+  const checkEventoExistente = await Evento.findById(eventoId);
   if (!checkEventoExistente) throw errorLanzado(404, 'El evento que ha seleccionado no existe');
   if (checkEventoExistente.estadoEvento !== 'REALIZADO')
     throw errorLanzado(403, 'No se puede crear un álbum de fotografias para este evento porque no se ha realizado');
@@ -32,6 +32,7 @@ exports.crearAlbumFotografias = async (parametros, imagen) => {
     size: imagen.size,
   };
   fotografia = await fotografia.save();
+  parametros.evento = checkEventoExistente;
   let albumFotografia = new AlbumFotografia(parametros);
   albumFotografia.fotografias = [fotografia._id];
   albumFotografia = await albumFotografia.save();
@@ -41,15 +42,10 @@ exports.crearAlbumFotografias = async (parametros, imagen) => {
 exports.editarAlbumFotografias = async (parametros, albumFotografiaId) => {
   const checkExistencia = await AlbumFotografia.findById(albumFotografiaId);
   if (!checkExistencia) throw errorLanzado(404, 'El álbum de fotografías que intenta editar no existe');
-  const checkEventoExistente = await Evento.findById(parametros.evento);
-  if (!checkEventoExistente) throw errorLanzado(404, 'El evento que ha seleccionado no existe');
-  if (checkEventoExistente.estadoEvento !== 'REALIZADO')
-    throw errorLanzado(403, 'No se puede editar el álbum de fotografias para asociarlo a este evento porque no se ha realizado');
   const albumFotografia = await AlbumFotografia.findOneAndUpdate(
     { _id: albumFotografiaId },
     {
       nombre: parametros.nombre,
-      evento: parametros.evento,
     },
     { new: true }
   );

@@ -44,6 +44,8 @@ import { DiaEventoRoutingModule } from './private/dia-evento/dia-evento.routing'
 import { TramoHorarioRoutingModule } from './private/tramo-horario/tramo-horario.routing';
 import { InscripcionEventoRoutingModule } from './private/inscripcion-evento/inscripcion-evento.routing';
 import { ActividadMiembroTramoRoutingModule } from './private/actividad-miembro-tramo/actividad-miembro-tramo.routing';
+import { AlbumFotografiaRoutingModule } from './private/album-fotografia/album-fotografia.routing';
+import { FotografiaRoutingModule } from './private/fotografia/fotografia.routing';
 
 const routes: Routes = [
   {
@@ -120,6 +122,8 @@ const routes: Routes = [
     TramoHorarioRoutingModule,
     InscripcionEventoRoutingModule,
     ActividadMiembroTramoRoutingModule,
+    AlbumFotografiaRoutingModule,
+    FotografiaRoutingModule,
   ],
   exports: [RouterModule],
 })

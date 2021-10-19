@@ -33,11 +33,12 @@ exports.getAlbumFotografiasById = async (req, res) => {
 
 exports.crearAlbumFotografias = async (req, res) => {
   try {
-    const { nombre, evento } = req.body;
+    const { nombre } = req.body;
+    const eventoId = req.params.eventoId;
     const imagen = req.file;
-    if (!nombre || !evento || !imagen) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!nombre || !imagen) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     req.file.data = convertirImagenABase64(imagen);
-    const albumFotografia = await albumFotografiaService.crearAlbumFotografias(req.body, req.file);
+    const albumFotografia = await albumFotografiaService.crearAlbumFotografias(req.body, req.file, eventoId);
     return res.status(200).send({ albumFotografia });
   } catch (error) {
     return controlError(error, res);
@@ -47,8 +48,8 @@ exports.crearAlbumFotografias = async (req, res) => {
 exports.editarAlbumFotografias = async (req, res) => {
   try {
     const albumFotografiaId = req.params.id;
-    const { nombre, evento } = req.body;
-    if (!nombre || !evento) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    const { nombre } = req.body;
+    if (!nombre) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const albumFotografia = await albumFotografiaService.editarAlbumFotografias(req.body, albumFotografiaId);
     return res.status(200).send({ albumFotografia });
   } catch (error) {

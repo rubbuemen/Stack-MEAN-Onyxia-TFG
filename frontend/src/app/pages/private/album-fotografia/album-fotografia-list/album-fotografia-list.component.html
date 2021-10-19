@@ -1,0 +1,60 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Álbumes de fotografías</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="albumFotografias" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th class="no-sort w-25">Previsualización</th>
+                  <th class="no-sort">Ver fotografías</th>
+                  <th class="no-sort">Editar</th>
+                  <th class="no-sort">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let album of albumFotografias">
+                  <td>{{album.nombre}}</td>
+                  <td class="text-center"> <img [src]="album.fotografias[0].imagen" class="img-fluid w-50" /></td>
+                  <td class="text-center"><a [routerLink]="['/private/fotografia', album._id]" data-toggle="tooltip" data-original-title="Ver fotografías">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a [routerLink]="['/private/album-fotografia/form/edit', album._id]" data-toggle="tooltip"
+                      data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="eliminarAlbum(album._id)" data-toggle="tooltip" data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9" *ngIf="evento">
+                    <button [routerLink]="['/private/album-fotografia/form', evento._id]" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Añadir álbum nuevo</button>
+                    <button type="button" [routerLink]="['/private/evento/display', evento._id]" class=" btn btn-inverse">Volver</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

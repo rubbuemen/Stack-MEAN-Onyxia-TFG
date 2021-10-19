@@ -137,6 +137,11 @@
                           <i class="mdi mdi-calendar-clock"></i>
                           Gestionar horarios de los miembros aceptados</button>
                       </div>
+                      <div class="col-md-offset-3 col-md-12 m-t-20" *ngIf="evento.estaPublicado && evento.estadoEvento === 'Realizado'">
+                        <button [routerLink]="['/private/album-fotografia', evento._id]" type="button" class="btn btn-warning">
+                          <i class="mdi mdi-image-multiple"></i>
+                          Gestionar álbumes de fotografías</button>
+                      </div>
                     </div>
                   </div>
                 </div>

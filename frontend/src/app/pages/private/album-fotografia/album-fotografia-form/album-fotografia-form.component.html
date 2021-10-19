@@ -1,0 +1,51 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="albumFotografiasForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del álbum de fotografías</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('nombre')}">
+                    <label for="nombre" class="control-label">Nombre</label>
+                    <div class="input-group">
+                      <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar un nombre</div>
+                  </div>
+                </div>
+                <div class="col-md-6" id="colFotografia">
+                  <div class="form-group">
+                    <label for="imagen" class="control-label">Primera imagen del álbum</label>
+                    <div class="input-group">
+                      <div class="input-group">
+                        <input name="File" type="file" id="imagen" class="dropify" data-height="300" data-allowed-file-extensions="png jpg jpeg"
+                          (change)="onFileChange($event)" data-default-file="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions" *ngIf="evento">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/album-fotografia', evento._id]" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

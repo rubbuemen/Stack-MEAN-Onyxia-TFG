@@ -19,13 +19,13 @@ export class RedSocialService {
 
   public getMisRedesSociales(): Observable<RedSocial[]> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/redsocial/mylist`, {}, {}, true, [RedSocial])
+      .request('GET', `${base_url}/redSocial/mylist`, {}, {}, true, [RedSocial])
       .pipe(map((res: { redesSociales: RedSocial[] }) => res.redesSociales));
   }
 
   public getRedSocial(id: ObjectId): Observable<RedSocial> {
     return this.requestConstructorService
-      .request('GET', `${base_url}/redsocial`, {}, {}, true, [RedSocial], id)
+      .request('GET', `${base_url}/redSocial`, {}, {}, true, [RedSocial], id)
       .pipe(map((res: { redSocial: RedSocial }) => res.redSocial));
   }
 
@@ -33,7 +33,7 @@ export class RedSocialService {
     return this.requestConstructorService
       .request(
         'GET',
-        `${base_url}/redsocial/list`,
+        `${base_url}/redSocial/list`,
         {},
         {},
         true,
@@ -47,7 +47,7 @@ export class RedSocialService {
     return this.requestConstructorService
       .request(
         'PUT',
-        `${base_url}/redsocial/edit`,
+        `${base_url}/redSocial/edit`,
         data,
         {},
         true,
@@ -59,7 +59,7 @@ export class RedSocialService {
 
   public crearRedSocial(data: FormData): Observable<RedSocial> {
     return this.requestConstructorService
-      .request('POST', `${base_url}/redsocial`, data, {}, true, [RedSocial])
+      .request('POST', `${base_url}/redSocial`, data, {}, true, [RedSocial])
       .pipe(map((res: { redSocial: RedSocial }) => res.redSocial));
   }
 
@@ -67,7 +67,7 @@ export class RedSocialService {
     return this.requestConstructorService
       .request(
         'DELETE',
-        `${base_url}/redsocial/delete`,
+        `${base_url}/redSocial/delete`,
         {},
         {},
         true,
