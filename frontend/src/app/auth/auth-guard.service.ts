@@ -95,6 +95,25 @@ export class MiembroGuardService implements CanActivate {
 @Injectable({
   providedIn: 'root',
 })
+export class JuntaDirectivaGuardService implements CanActivate {
+  constructor(private authService: AuthService, public router: Router) {}
+  canActivate(): boolean {
+    const tieneRol =
+      this.authService.tieneRol('SECRETARIO') ||
+      this.authService.tieneRol('VICEPRESIDENTE') ||
+      this.authService.tieneRol('PRESIDENTE') ||
+      this.authService.tieneRol('VOCAL');
+    if (this.authService.estaAutentificado() && !tieneRol) {
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class PresidenteSecretarioGuardService implements CanActivate {
   constructor(private authService: AuthService, public router: Router) {}
   canActivate(): boolean {

@@ -107,13 +107,22 @@ export class ActorFormComponent implements OnInit {
           this.perfilActorForm
             .get('tieneCochePropio')
             .setValue(this.actor.tieneCochePropio);
+          this.utils.setValoresSelectPicker(
+            'tieneCochePropio',
+            this.actor.tieneCochePropio.toString()
+          );
           this.perfilActorForm
             .get('estaDeAlta')
             .setValue(this.actor.estaDeAlta);
+          this.utils.setValoresSelectPicker(
+            'estaDeAlta',
+            this.actor.estaDeAlta.toString()
+          );
           this.perfilActorForm
             .get('cantidadPenalizaciones')
             .setValue(this.actor.cantidadPenalizaciones);
           this.perfilActorForm.get('rol').setValue(this.actor.rol);
+          this.utils.setValoresSelectPicker('rol', this.actor.rol.toString());
           this.perfilActorForm
             .get('numeroSocio')
             .setValue(this.actor.numeroSocio);

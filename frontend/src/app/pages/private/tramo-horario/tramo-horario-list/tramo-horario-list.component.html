@@ -1,0 +1,58 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="diaEvento && evento">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Tramos horarios del día</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="tramosHorarios" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Hora de inicio</th>
+                  <th>Hora de fin</th>
+                  <th *ngIf="evento.estadoEvento === 'PENDIENTE'" class="no-sort">Editar</th>
+                  <th *ngIf="evento.estadoEvento === 'PENDIENTE'" class="no-sort">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tramo of diaEvento.tramosHorarios">
+                  <td>{{tramo.horaInicio}}</td>
+                  <td>{{tramo.horaFin}}</td>
+                  <td *ngIf="evento.estadoEvento === 'PENDIENTE'" class="text-center"><a class="cursor-pointer"
+                      [routerLink]="['/private/tramo-horario/form/edit', tramo._id]" data-toggle="tooltip" data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td *ngIf="evento.estadoEvento === 'PENDIENTE'" class="text-center"><a class="cursor-pointer" (click)="eliminarTramoHorario(tramo._id)"
+                      data-toggle="tooltip" data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button *ngIf="evento.estadoEvento === 'PENDIENTE'" [routerLink]="['/private/tramo-horario/form', diaEvento._id]" type="submit"
+                      class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Añadir tramo horario</button>
+                    <button type="button" [routerLink]="['/private/dia-evento', evento._id]" class=" btn btn-inverse">Volver</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

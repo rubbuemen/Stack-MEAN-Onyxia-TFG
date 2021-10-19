@@ -3,8 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Subject } from 'rxjs';
-
 const mongoose = require('mongoose');
 
 declare const jQuery: any;
@@ -104,18 +102,52 @@ export class UtilsService {
     })(jQuery);
   }
 
+  public resetDropify() {
+    (function ($) {
+      $('.dropify').dropify();
+    })(jQuery);
+  }
+
+  public contieneImagenDropify() {
+    let cambiado = false;
+    (function ($) {
+      let input = $('input[name="File"]');
+      let wrapper = input.closest('.dropify-wrapper');
+      cambiado = wrapper.hasClass('has-preview');
+    })(jQuery);
+    return cambiado;
+  }
+
   public refrescarSelectPicker(nombreId: string) {
     setTimeout(() => {
       (function ($) {
         $('#' + nombreId).selectpicker('refresh');
       })(jQuery);
-    }, 500);
+    }, 300);
+  }
+
+  public setValoresSelectPicker(nombreId: string, valores: any) {
+    setTimeout(() => {
+      (function ($) {
+        $('#' + nombreId)
+          .selectpicker('val', valores)
+          .trigger('change');
+      })(jQuery);
+    }, 300);
   }
 
   public eliminarElementoJquery(nombreId: string) {
     (function ($) {
       $('#' + nombreId).remove();
     })(jQuery);
+  }
+
+  public obtenerElementosSeleccionados(nombreId: string) {
+    let res = [];
+    (function ($) {
+      res = $('#' + nombreId).val();
+    })(jQuery);
+    return res;
   }
 
   public generarFormData(

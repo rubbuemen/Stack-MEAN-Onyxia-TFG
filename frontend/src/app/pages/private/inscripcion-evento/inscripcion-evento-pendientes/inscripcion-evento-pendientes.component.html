@@ -1,0 +1,61 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Inscripciones al evento</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="inscripcionesEvento" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Miembro</th>
+                  <th>Problema alimenticio</th>
+                  <th>Tiene coche disponible</th>
+                  <th>Comentarios adicionales</th>
+                  <th>Actividades en las que tiene interés</th>
+                  <th *ngIf="evento !== undefined && evento.estadoEvento === 'PENDIENTE'" class="no-sort" width="1">Aceptar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let inscripcion of inscripcionesEvento">
+                  <td class="text-center">{{inscripcion.miembro.nombre}} {{inscripcion.miembro.apellidos}} ({{inscripcion.miembro.alias}})</td>
+                  <td class="text-center">{{inscripcion.problemaAlimenticio}}</td>
+                  <td class="text-center">{{inscripcion.tieneCocheDisponible}}</td>
+                  <td class="text-center">{{inscripcion.comentarioAdicional}}</td>
+                  <td *ngIf="inscripcion.actividadesInteres.length !== 0" class="text-center">
+                    <span *ngFor="let actividad of inscripcion.actividadesInteres; let i = index">{{actividad.nombre}}
+                      {{i ===  inscripcion.actividadesInteres.length - 1 ? '' : ', ' }}</span>
+                  </td>
+                  <td *ngIf="inscripcion.actividadesInteres.length === 0" class="text-center"> -
+                  </td>
+                  <td *ngIf="evento !== undefined && evento.estadoEvento === 'PENDIENTE'" class="text-center"><a class="cursor-pointer"
+                      (click)="aceptarInscripcion(inscripcion._id)" data-toggle="tooltip" data-original-title="Aceptar">
+                      <i class="mdi mdi-checkbox-multiple-marked text-success"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9" *ngIf="evento">
+                    <button type="button" [routerLink]="['/private/evento/display', evento._id]" class="btn btn-inverse">Volver</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

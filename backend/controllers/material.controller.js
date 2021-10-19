@@ -12,6 +12,25 @@ exports.getMaterialesByActividadId = async (req, res) => {
   }
 };
 
+exports.getMaterial = async (req, res) => {
+  try {
+    const materialId = req.params.id;
+    const material = await materialService.getMaterial(materialId);
+    return res.status(200).send({ material });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getMateriales = async (req, res) => {
+  try {
+    const materiales = await materialService.getMateriales();
+    return res.status(200).send({ materiales });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.crearMaterial = async (req, res) => {
   // Al crear un material, se asignará una cantidad de 1 disponible con su estado y si es propio
   //Si se quiere añadir más de ese material se creará nuevo inventario, que hará que se incremente en 1 la cantidad disponible
@@ -40,8 +59,12 @@ exports.editarMaterial = async (req, res) => {
     const materialId = req.params.id;
     const { nombre, descripcion } = req.body;
     const fotografia = req.file;
-    if (!nombre || !descripcion || !fotografia) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
-    req.file.data = convertirImagenABase64(fotografia);
+    if (!nombre || !descripcion) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (fotografia) {
+      req.file.data = convertirImagenABase64(fotografia);
+    } else {
+      req.file = undefined; // Para el caso que se ha editado pero no se ha cambiado la imagen
+    }
     const material = await materialService.editarMaterial(req.body, req.file, materialId);
     return res.status(200).send({ material });
   } catch (error) {

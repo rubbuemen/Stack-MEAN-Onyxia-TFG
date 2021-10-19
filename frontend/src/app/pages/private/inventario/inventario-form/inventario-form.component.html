@@ -1,0 +1,57 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">Creación</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="inventarioForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del inventario</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('estadoMaterial')}">
+                    <label for="estadoMaterial" class="control-label">Estado del inventario</label>
+                    <div class="input-group">
+                      <select id="estadoMaterial" formControlName="estadoMaterial" class="form-control selectpicker" title="Estado del inventario">
+                        <option value="OPERATIVO">Operativo</option>
+                        <option value="DETERIORADO">Deteriorado</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('estadoMaterial')" class="form-control-feedback">Debes indicar un estado del
+                      inventario para el inventario
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('esPropio')}">
+                    <label for="esPropio" class="control-label">Es propio de la asociación</label>
+                    <div class="input-group">
+                      <select id="esPropio" formControlName="esPropio" class="form-control selectpicker" title="Es propio de la asociación">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('esPropio')" class="form-control-feedback">Debes indicar si el inventario de inventario
+                      es propio de la asociación propio</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/inventario', material._id]" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -4,13 +4,13 @@ const { Evento } = require('../models/evento.model');
 const { Miembro } = require('../models/miembro.model');
 const { asyncForEach, calcularEdad } = require('../util/funciones.util');
 
-exports.getInscripcionesByEventoId = async (eventoId) => {
+exports.getInscripcionesByEventoId = async eventoId => {
   const evento = await Evento.findById(eventoId).populate({ path: 'inscripcionesEvento', populate: { path: 'miembro' } });
   if (!evento) throw errorLanzado(404, 'La ID del evento indicado no existe');
   return evento.inscripcionesEvento;
 };
 
-exports.getInscripcionesPendientesByEventoId = async (eventoId) => {
+exports.getInscripcionesPendientesByEventoId = async eventoId => {
   const evento = await Evento.findById(eventoId).populate({
     path: 'inscripcionesEvento',
     match: { estadoInscripcion: 'PENDIENTE' },
@@ -20,7 +20,7 @@ exports.getInscripcionesPendientesByEventoId = async (eventoId) => {
   return evento.inscripcionesEvento;
 };
 
-exports.getInscripcionesAceptadasByEventoId = async (eventoId) => {
+exports.getInscripcionesAceptadasByEventoId = async eventoId => {
   const evento = await Evento.findById(eventoId).populate({
     path: 'inscripcionesEvento',
     match: { estadoInscripcion: 'ACEPTADO' },
@@ -30,7 +30,7 @@ exports.getInscripcionesAceptadasByEventoId = async (eventoId) => {
   return evento.inscripcionesEvento;
 };
 
-exports.getMisInscripcionesEventos = async (usuarioLogeado) => {
+exports.getMisInscripcionesEventos = async usuarioLogeado => {
   const miembroConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
   const inscripcionesEventos = await InscripcionEvento.find({ miembro: miembroConectado._id })
     .populate({ path: 'evento' })
@@ -62,7 +62,7 @@ exports.inscribirseAEvento = async (parametros, eventoId, usuarioLogeado) => {
     if (miembroConectado.cantidadPenalizaciones > 0) throw errorLanzado(403, 'No te puedes inscribir al evento porque tienes penalizaciones');
     const edadMiembro = calcularEdad(miembroConectado.fechaNacimiento);
     if (evento.esFueraSevilla && edadMiembro < 18) throw errorLanzado(403, 'No te puedes inscribir al evento porque es fuera de Sevilla y eres menor de edad');
-    if (!parametros.actividadesInteres.every((actividad) => evento.actividadesEvento.includes(actividad)))
+    if (parametros.actividadesInteres !== undefined && !parametros.actividadesInteres.every(actividad => evento.actividadesEvento.includes(actividad)))
       throw errorLanzado(403, 'Hay actividades de las que tienes interés que no están adjudicadas al evento');
     inscripcionEvento = new InscripcionEvento(parametros);
     inscripcionEvento.miembro = miembroConectado;
@@ -95,7 +95,7 @@ exports.inscribirseAEvento = async (parametros, eventoId, usuarioLogeado) => {
   }
 };
 
-exports.aceptarInscripcionEvento = async (inscripcionEventoId) => {
+exports.aceptarInscripcionEvento = async inscripcionEventoId => {
   const checkExistenciaInscripcion = await InscripcionEvento.findById(inscripcionEventoId).populate({ path: 'evento' });
   if (!checkExistenciaInscripcion) throw errorLanzado(404, 'La inscripción al evento que intenta aceptar no existe');
   if (checkExistenciaInscripcion.estadoInscripcion !== 'PENDIENTE')
@@ -119,7 +119,7 @@ exports.aceptarInscripcionEvento = async (inscripcionEventoId) => {
   );
   const evento = await Evento.findById(inscripcionEvento.evento).populate({ path: 'inscripcionesEvento', match: { estadoInscripcion: 'PENDIENTE' } });
   if (evento.cupoInscripciones === 0) {
-    await asyncForEach(evento.inscripcionesEvento, async (inscripcion) => {
+    await asyncForEach(evento.inscripcionesEvento, async inscripcion => {
       await InscripcionEvento.findOneAndUpdate(
         { _id: inscripcion._id },
         {
@@ -130,4 +130,11 @@ exports.aceptarInscripcionEvento = async (inscripcionEventoId) => {
     });
   }
   return inscripcionEvento;
+};
+
+exports.tieneInscripcionMandada = async (eventoId, usuarioLogeado) => {
+  const miembroConectado = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
+  const evento = await Evento.findById(eventoId);
+  const checkInscripcionEvento = await InscripcionEvento.findOne({ miembro: miembroConectado._id, evento: evento._id });
+  return checkInscripcionEvento ? true : false;
 };

@@ -62,6 +62,6 @@ exports.eliminarAlbumFotografias = async albumFotografiaId => {
   await asyncForEach(checkExistencia.fotografias, async fotografia => {
     await Fotografia.findByIdAndDelete(fotografia);
   });
-  const albumFotografia = await AlbumFotografia.findOneAndDelete(albumFotografiaId);
+  const albumFotografia = await AlbumFotografia.findByIdAndDelete(albumFotografiaId);
   return albumFotografia;
 };

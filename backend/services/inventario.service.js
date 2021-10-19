@@ -2,10 +2,16 @@ const { errorLanzado } = require('../util/error.util');
 const { Inventario } = require('../models/inventario.model');
 const { Material } = require('../models/material.model');
 
-exports.getInventarioByMaterialId = async (materialId) => {
+exports.getInventarioByMaterialId = async materialId => {
   const material = await Material.findById(materialId).populate({ path: 'inventarios' });
   if (!material) throw errorLanzado(404, 'La ID del material indicado no existe');
   return material.inventarios;
+};
+
+exports.getInventario = async inventarioId => {
+  const inventario = await Inventario.findById(inventarioId);
+  if (!inventario) throw errorLanzado(404, 'La ID del inventario indicado no existe');
+  return inventario;
 };
 
 exports.addInventarioParaMaterialId = async (parametros, materialId) => {
@@ -32,7 +38,7 @@ exports.addInventarioParaMaterialId = async (parametros, materialId) => {
   }
 };
 
-exports.descatalogarInventario = async (inventarioId) => {
+exports.descatalogarInventario = async inventarioId => {
   let material;
   let inventario;
   try {
@@ -48,7 +54,7 @@ exports.descatalogarInventario = async (inventarioId) => {
       },
       { new: true }
     );
-    inventario = await Inventario.findOneAndDelete(inventarioId);
+    inventario = await Inventario.findByIdAndDelete(inventarioId);
     return inventario;
   } catch (error) {
     if (inventario) {
@@ -60,7 +66,7 @@ exports.descatalogarInventario = async (inventarioId) => {
   }
 };
 
-exports.deteriorarInventario = async (inventarioId) => {
+exports.deteriorarInventario = async inventarioId => {
   const checkExistencia = await Inventario.findById(inventarioId);
   if (!checkExistencia) throw errorLanzado(404, 'El inventario del material que intenta deteriorar no existe');
   if (checkExistencia.enUso) throw errorLanzado(403, 'No se puede deteriorar el inventario del material porque está en uso');
@@ -75,7 +81,7 @@ exports.deteriorarInventario = async (inventarioId) => {
   return inventario;
 };
 
-exports.arreglarInventario = async (inventarioId) => {
+exports.arreglarInventario = async inventarioId => {
   const checkExistencia = await Inventario.findById(inventarioId);
   if (!checkExistencia) throw errorLanzado(404, 'El inventario del material que intenta arreglar no existe');
   if (checkExistencia.enUso) throw errorLanzado(403, 'No se puede arreglar el inventario del material porque está en uso');

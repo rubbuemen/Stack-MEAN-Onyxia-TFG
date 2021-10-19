@@ -1,0 +1,60 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title m-t-30">Listado de horarios</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="table-responsive m-t-10">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="horarios" class="table table-bordered table-striped table-data">
+                  <thead>
+                    <tr>
+                      <th>Miembro</th>
+                      <th>Día</th>
+                      <th>Tramo horario</th>
+                      <th>Actividad</th>
+                      <th class="no-sort">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let horario of horarios">
+                      <td>{{horario.miembro.nombre}} {{horario.miembro.apellidos}} ({{horario.miembro.alias}})</td>
+                      <td><span *ngIf="horario.dia !== undefined">{{horario.dia.fecha | date: 'dd/MM/yyyy'}}</span></td>
+                      <td>{{horario.tramoHorario.horaInicio}} - {{horario.tramoHorario.horaFin}}</td>
+                      <td>{{horario.actividad.nombre}}</td>
+                      <td class="text-center"><a class="cursor-pointer" (click)="eliminarHorario(horario._id)" data-toggle="tooltip"
+                          data-original-title="Eliminar">
+                          <i class="fa fa-close text-danger"></i> </a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-9" *ngIf="evento">
+                        <button [routerLink]="['/private/horario/form', evento._id]" type="submit" class="btn btn-info">
+                          <i class="mdi mdi-creation"></i>
+                          Añadir nuevo horario</button>
+                        <button [routerLink]="['/private/evento/display', evento._id]" type="button" class=" btn btn-inverse">Volver</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

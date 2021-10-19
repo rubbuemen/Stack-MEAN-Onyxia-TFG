@@ -6,7 +6,8 @@ const { DiaEvento } = require('../models/diaEvento.model');
 const { Miembro } = require('../models/miembro.model');
 const { TramoHorario } = require('../models/tramoHorario.model');
 
-exports.getHorariosByEventoId = async (eventoId) => {
+exports.getHorariosByEventoId = async eventoId => {
+  let horariosFinales = [];
   const horarios = await Evento.findById(eventoId)
     .select('diasEvento -_id')
     .populate({
@@ -14,16 +15,32 @@ exports.getHorariosByEventoId = async (eventoId) => {
       select: 'fecha -_id',
       populate: {
         path: 'tramosHorarios',
-        select: 'horaInicio horaFin asociacionesActividadMiembroTramo -_id',
+        select: 'asociacionesActividadMiembroTramo -_id',
         populate: {
           path: 'asociacionesActividadMiembroTramo',
-          select: '-_id',
-          populate: { path: 'actividad miembro', select: 'actividad.nombre nombre apellidos alias -_id' },
+          populate: {
+            path: 'actividad miembro tramoHorario',
+            select: 'actividad.nombre nombre apellidos alias horaInicio horaFin',
+          },
         },
       },
     });
   if (!horarios) throw errorLanzado(404, 'La ID del evento indicado no existe');
-  return horarios;
+  if (horarios.diasEvento) {
+    horarios.diasEvento.forEach(diaEvento => {
+      if (diaEvento.tramosHorarios) {
+        diaEvento.tramosHorarios.forEach(tramoHorario => {
+          if (tramoHorario.asociacionesActividadMiembroTramo) {
+            tramoHorario.asociacionesActividadMiembroTramo.forEach(horario => {
+              horariosFinales.push(horario);
+            });
+          }
+        });
+      }
+    });
+  }
+
+  return horariosFinales;
 };
 
 exports.addHorarioParaEventoId = async (parametros, eventoId) => {
@@ -134,7 +151,7 @@ exports.addHorarioParaEventoId = async (parametros, eventoId) => {
   }
 };
 
-exports.deleteHorario = async (horarioId) => {
+exports.deleteHorario = async horarioId => {
   let actividad;
   let miembro;
   let tramoHorario;
@@ -143,7 +160,7 @@ exports.deleteHorario = async (horarioId) => {
     horario = await ActividadMiembroTramo.findById(horarioId);
     if (!horario) throw errorLanzado(404, 'La asociación del horario que intenta eliminar no existe');
     actividad = await Actividad.findOne({ asociacionesActividadMiembroTramo: { $in: [horario._id] } });
-    await Actividad.findOneAndUpdate(
+    await Actividad.findByIdAndUpdate(
       { _id: actividad._id },
       {
         $pull: { asociacionesActividadMiembroTramo: horario._id },
@@ -151,7 +168,7 @@ exports.deleteHorario = async (horarioId) => {
       { new: true }
     );
     miembro = await Miembro.findOne({ asociacionesActividadMiembroTramo: { $in: [horario._id] } });
-    await Miembro.findOneAndUpdate(
+    await Miembro.findByIdAndUpdate(
       { _id: miembro._id },
       {
         $pull: { asociacionesActividadMiembroTramo: horario._id },
@@ -159,14 +176,14 @@ exports.deleteHorario = async (horarioId) => {
       { new: true }
     );
     tramoHorario = await TramoHorario.findOne({ asociacionesActividadMiembroTramo: { $in: [horario._id] } });
-    await TramoHorario.findOneAndUpdate(
+    await TramoHorario.findByIdAndUpdate(
       { _id: tramoHorario._id },
       {
         $pull: { asociacionesActividadMiembroTramo: horario._id },
       },
       { new: true }
     );
-    horario = await ActividadMiembroTramo.findOneAndDelete(horarioId);
+    horario = await ActividadMiembroTramo.findByIdAndDelete(horarioId);
     return horario;
   } catch (error) {
     if (horario) {

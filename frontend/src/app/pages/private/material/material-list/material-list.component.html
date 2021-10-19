@@ -1,0 +1,67 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Materiales</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="materiales" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th class="no-sort">Fotografia</th>
+                  <th>Cantidad disponible</th>
+                  <th>Cantidad en uso</th>
+                  <th>Miembro creador</th>
+                  <th class="no-sort">Editar</th>
+                  <th class="no-sort">Ver inventario</th>
+                  <th class="no-sort">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let material of materiales">
+                  <td>{{material.nombre}}</td>
+                  <td>{{material.descripcion}}</td>
+                  <td class="text-center"> <img [src]="material.fotografia" class="img-fluid w-50" /></td>
+                  <td class="text-center">{{material.cantidadDisponible}}</td>
+                  <td class="text-center">{{material.cantidadEnUso}}</td>
+                  <td>{{material.miembroCreador.nombre}} {{material.miembroCreador.apellidos}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/material/form', material._id]" data-toggle="tooltip" data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a [routerLink]="['/private/inventario', material._id]" data-toggle="tooltip" data-original-title="Ver inventario">
+                      <i class="mdi mdi-dropbox text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="eliminarMaterial(material._id)" data-toggle="tooltip"
+                      data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button [routerLink]="['/private/material/form']" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Crear un nuevo material</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

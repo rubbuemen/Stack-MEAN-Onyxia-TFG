@@ -36,6 +36,14 @@ import { ActorRoutingModule } from './private/actor/actor.routing';
 import { NotificacionRoutingModule } from './private/notificacion/notificacion.routing';
 import { BuzonRoutingModule } from './private/buzon/buzon.routing';
 import { SolicitudMiembroRoutingModule } from './private/solicitud-miembro/solicitud-miembro.routing';
+import { MaterialRoutingModule } from './private/material/material.routing';
+import { InventarioRoutingModule } from './private/inventario/inventario.routing';
+import { ActividadRoutingModule } from './private/actividad/actividad.routing';
+import { EventoRoutingModule } from './private/evento/evento.routing';
+import { DiaEventoRoutingModule } from './private/dia-evento/dia-evento.routing';
+import { TramoHorarioRoutingModule } from './private/tramo-horario/tramo-horario.routing';
+import { InscripcionEventoRoutingModule } from './private/inscripcion-evento/inscripcion-evento.routing';
+import { ActividadMiembroTramoRoutingModule } from './private/actividad-miembro-tramo/actividad-miembro-tramo.routing';
 
 const routes: Routes = [
   {
@@ -104,6 +112,14 @@ const routes: Routes = [
     NotificacionRoutingModule,
     BuzonRoutingModule,
     SolicitudMiembroRoutingModule,
+    MaterialRoutingModule,
+    InventarioRoutingModule,
+    ActividadRoutingModule,
+    EventoRoutingModule,
+    DiaEventoRoutingModule,
+    TramoHorarioRoutingModule,
+    InscripcionEventoRoutingModule,
+    ActividadMiembroTramoRoutingModule,
   ],
   exports: [RouterModule],
 })

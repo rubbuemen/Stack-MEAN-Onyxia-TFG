@@ -13,10 +13,38 @@ exports.getActividadesPublicas = async (req, res) => {
   }
 };
 
+exports.getActividadesPublicasEnVigor = async (req, res) => {
+  try {
+    const actividades = await actividadService.getActividadesPublicasEnVigor();
+    return res.status(200).send({ actividades });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getActividadesEnVigor = async (req, res) => {
+  try {
+    const actividades = await actividadService.getActividadesEnVigor();
+    return res.status(200).send({ actividades });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.getActividadesPublicasPorEventoId = async (req, res) => {
   try {
     const eventoId = req.params.eventoId;
     const actividades = await eventoService.getActividadesPublicasPorEventoId(eventoId);
+    return res.status(200).send({ actividades });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getActividadesPorEventoId = async (req, res) => {
+  try {
+    const eventoId = req.params.eventoId;
+    const actividades = await eventoService.getActividadesPorEventoId(eventoId);
     return res.status(200).send({ actividades });
   } catch (error) {
     return controlError(error, res);
@@ -60,11 +88,16 @@ exports.crearActividad = async (req, res) => {
 exports.editarActividad = async (req, res) => {
   try {
     const actividadId = req.params.id;
-    const { nombre, descripcion, reglas, enVigor } = req.body;
+    const { nombre, descripcion, reglas, enVigor, estaPublicado, materiales } = req.body;
+    if (materiales === undefined) req.body.materiales = [];
     const fotografia = req.file;
-    if (!nombre || !descripcion || !reglas || enVigor === undefined || !fotografia)
+    if (!nombre || !descripcion || !reglas || enVigor === undefined || estaPublicado === undefined)
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
-    req.file.data = convertirImagenABase64(fotografia);
+    if (fotografia) {
+      req.file.data = convertirImagenABase64(fotografia);
+    } else {
+      req.file = undefined; // Para el caso que se ha editado pero no se ha cambiado la imagen
+    }
     const actividad = await actividadService.editarActividad(req.body, req.file, actividadId);
     return res.status(200).send({ actividad });
   } catch (error) {

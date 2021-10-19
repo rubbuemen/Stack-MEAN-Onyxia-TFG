@@ -1,0 +1,128 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="actividad">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title">Información de la actividad</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Nombre:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{actividad.nombre}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Descripción:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{actividad.descripcion}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Reglas:</label>
+                    <div class="col-8">
+                      <p class="form-control-static pintar-saltos-linea">{{actividad.reglas}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">En vigor:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{actividad.enVigor ? 'Sí' : 'No' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Publicado:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{actividad.estaPublicado ? 'Sí' : 'No' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Fecha de publicación</label>
+                    <div class="col-6">
+                      <p class="form-control-static">{{actividad.fechaPublicacion | date: 'dd/MM/yyyy HH:mm'}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Fotografía:</label>
+                    <div class="col-8">
+                      <img [src]="actividad.fotografia" class="form-control-static img-fluid img-thumbnail w-50" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Creador de la actividad</label>
+                    <div class="col-6">
+                      <p class="form-control-static">{{actividad.miembroCreador.nombre}} {{actividad.miembroCreador.apellidos}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-12">
+                        <button type="button" [routerLink]="['/private/actividad']" class=" btn btn-inverse">Volver</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="box-title m-t-30">Listado de materiales asignados</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="table-responsive m-t-10">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="materiales" class="table table-bordered table-striped table-data">
+                  <thead>
+                    <tr>
+                      <th class="w-25">Nombre</th>
+                      <th class="w-50">Descripción</th>
+                      <th class="no-sort" class="w-25">Fotografia</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let material of materiales">
+                      <td>{{material.nombre}}</td>
+                      <td>{{material.descripcion}}</td>
+                      <td class="text-center"> <img [src]="material.fotografia" class="img-fluid w-50" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

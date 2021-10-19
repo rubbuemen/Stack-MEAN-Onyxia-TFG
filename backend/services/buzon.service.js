@@ -147,7 +147,7 @@ exports.eliminarBuzon = async (usuarioLogeado, buzonId) => {
         { new: true }
       );
     });
-    buzon = await Buzon.findOneAndDelete(buzonId);
+    buzon = await Buzon.findByIdAndDelete(buzonId);
     return buzon;
   } catch (error) {
     if (buzon) {

@@ -17,7 +17,6 @@ import { ObjectId } from 'mongoose';
 })
 export class ConvertirMiembroComponent implements OnInit {
   public actor: any;
-  public esVisitante: boolean = false;
   public formEnviado: boolean = false;
   public perfilActorForm: FormGroup;
   private idObject: ObjectId;
@@ -75,14 +74,17 @@ export class ConvertirMiembroComponent implements OnInit {
         this.perfilActorForm
           .get('usuario')
           .setValue(this.actor.cuentaUsuario.usuario);
-        if (!this.esVisitante) {
-          this.perfilActorForm.get('direccion').setValue(this.actor.direccion);
-          this.perfilActorForm.get('dni').setValue(this.actor.dni);
-          this.perfilActorForm.get('aficiones').setValue(this.actor.aficiones);
-          this.perfilActorForm
-            .get('tieneCochePropio')
-            .setValue(this.actor.tieneCochePropio);
-        }
+        this.perfilActorForm.get('direccion').setValue(this.actor.direccion);
+        this.perfilActorForm.get('dni').setValue(this.actor.dni);
+        this.perfilActorForm.get('aficiones').setValue(this.actor.aficiones);
+        this.perfilActorForm
+          .get('tieneCochePropio')
+          .setValue(this.actor.tieneCochePropio);
+        this.utils.setValoresSelectPicker(
+          'tieneCochePropio',
+          this.actor.tieneCochePropio.toString()
+        );
+        this.utils.resetDropify();
       });
     }
   }

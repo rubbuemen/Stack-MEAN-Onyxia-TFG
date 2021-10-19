@@ -1,0 +1,121 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="material">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title">Información del material</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Nombre:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{material.nombre}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Descripción:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{material.descripcion}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Cantidad disponible:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{material.cantidadDisponible}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Cantidad en uso:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{material.cantidadEnUso}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Fotografía:</label>
+                    <div class="col-8">
+                      <img [src]="material.fotografia" class="form-control-static img-fluid img-thumbnail w-50" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Creador del material:</label>
+                    <div class="col-6">
+                      <p class="form-control-static">{{material.miembroCreador.nombre}} {{material.miembroCreador.apellidos}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="box-title m-t-30">Listado de inventarios</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="table-responsive m-t-10">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="inventarios" class="table table-bordered table-striped table-data">
+                  <thead>
+                    <tr>
+                      <th>Estado del material</th>
+                      <th>Es propio de la asociación</th>
+                      <th>En uso</th>
+                      <th class="no-sort">Deteriorar / Arreglar</th>
+                      <th class="no-sort">Descatalogar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let inventario of material.inventarios">
+                      <td>{{inventario.estadoMaterial}}</td>
+                      <td>{{inventario.esPropio ? 'Sí' : 'No'}}</td>
+                      <td>{{inventario.enUso ? 'Sí' : 'No'}}</td>
+                      <td class="text-center"><a class="cursor-pointer" (click)="deteriorarArreglarInventario(inventario._id)" data-toggle="tooltip"
+                          data-original-title="Deteriorar / Arreglar">
+                          <i class="mdi mdi-crop-rotate text-inverse"></i>
+                        </a></td>
+                      <td class="text-center"><a class="cursor-pointer" (click)="descatalogarInventario(inventario._id)" data-toggle="tooltip"
+                          data-original-title="Descatalogar">
+                          <i class="mdi mdi-layers-off text-inverse"></i>
+                        </a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-9">
+                        <button [routerLink]="['/private/inventario/form', material._id]" type="submit" class="btn btn-info">
+                          <i class="mdi mdi-creation"></i>
+                          Añadir nueva unidad del material</button>
+                        <button [routerLink]="['/private/material']" type="button" class=" btn btn-inverse">Volver</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

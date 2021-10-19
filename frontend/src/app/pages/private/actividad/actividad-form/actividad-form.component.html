@@ -1,0 +1,112 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="actividadForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información de la actividad</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('nombre')}">
+                    <label for="nombre" class="control-label">Nombre</label>
+                    <div class="input-group">
+                      <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar un nombre</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('descripcion')}">
+                    <label for="descripcion" class="control-label">Descripción</label>
+                    <div class="input-group">
+                      <input type="text" id="descripcion" formControlName="descripcion" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('descripcion')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('descripcion')" class="form-control-feedback">Debes indicar una descripción</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('reglas')}">
+                    <label for="reglas" class="control-label">Reglas</label>
+                    <div class="input-group">
+                      <textarea type="text" id="reglas" formControlName="reglas" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('reglas')}"> </textarea>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('reglas')" class="form-control-feedback">Debes indicar unas reglas</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('enVigor')}">
+                    <label for="enVigor" class="control-label">En vigor</label>
+                    <div class="input-group">
+                      <select id="enVigor" formControlName="enVigor" class="form-control selectpicker" title="Está en vigor">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('enVigor')" class="form-control-feedback">Debes indicar si está en vigor</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="fotografia" class="control-label">Fotografía</label>
+                    <div class="input-group">
+                      <div class="input-group">
+                        <input name="File" type="file" id="fotografia" class="dropify" data-height="300" data-allowed-file-extensions="png jpg jpeg"
+                          (change)="onFileChange($event)" data-default-file="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="materiales && materiales.length > 0">
+                  <div class="form-group">
+                    <label for="materialesSelect" class="control-label">Materiales asignados</label>
+                    <div class="input-group">
+                      <select id="materialesSelect" class="form-control selectpicker" title="Materiales" multiple data-live-search="true">
+                        <option *ngFor="let material of materiales" [value]="material._id">{{material.nombre}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('estaPublicado')}">
+                    <label for="estaPublicado" class="control-label">Publicar</label>
+                    <div class="input-group">
+                      <select id="estaPublicado" formControlName="estaPublicado" class="form-control selectpicker" title="Publicar">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('estaPublicado')" class="form-control-feedback">Debes indicar si publicar la actividad</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/actividad']" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

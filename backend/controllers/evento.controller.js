@@ -35,10 +35,21 @@ exports.crearEvento = async (req, res) => {
   // Se añade un tramo horario, se podrá añadir más una vez creado
   try {
     const usuarioLogeado = req.cuentaUsuario;
-    const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha, horaInicio, horaFin } = req.body;
+    const { nombre, descripcion, lugar, cupoInscripciones, esFueraSevilla, actividadesEvento, fecha, horaInicio, horaFin, estaPublicado } = req.body;
     const imagen = req.file;
     if (imagen) req.file.data = convertirImagenABase64(imagen);
-    if (!nombre || !descripcion || !lugar || !cupoInscripciones || esFueraSevilla === undefined || !actividadesEvento || !fecha || !horaInicio || !horaFin)
+    if (
+      !nombre ||
+      !descripcion ||
+      !lugar ||
+      !cupoInscripciones ||
+      esFueraSevilla === undefined ||
+      !actividadesEvento ||
+      !fecha ||
+      !horaInicio ||
+      !horaFin ||
+      estaPublicado === undefined
+    )
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     if (cupoInscripciones < 0) throw errorLanzado(400, 'El cupo de inscripciones no puede ser menor a 0');
     if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(horaInicio)) throw errorLanzado(400, 'La hora de inicio del tramo horario no mantiene el formato hh:mm');
@@ -57,11 +68,18 @@ exports.crearEvento = async (req, res) => {
 exports.editarEvento = async (req, res) => {
   try {
     const eventoId = req.params.id;
-    const { nombre, descripcion, lugar, cupoInscripciones, actividadesEvento } = req.body;
+    const { nombre, descripcion, lugar, cupoInscripciones, estaPublicado, esFueraSevilla, actividadesEvento, hayImagen } = req.body;
     const imagen = req.file;
-    if (imagen) req.file.data = convertirImagenABase64(imagen);
-    if (!nombre || !descripcion || !lugar || !cupoInscripciones || !actividadesEvento)
+    if (!nombre || !descripcion || !lugar || !cupoInscripciones || !actividadesEvento || esFueraSevilla === undefined || estaPublicado === undefined)
       throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (!imagen && hayImagen === 'true') {
+      req.file = undefined;
+    } else if (imagen) {
+      req.file.data = convertirImagenABase64(imagen);
+    } else {
+      req.file = undefined;
+    }
+
     const evento = await eventoService.editarEvento(req.body, req.file, eventoId);
     return res.status(200).send({ evento });
   } catch (error) {

@@ -1,0 +1,44 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Eventos</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="eventos" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Lugar</th>
+                  <th width="1">Cupo de inscripciones</th>
+                  <th>Estado</th>
+                  <th class="no-sort" width="1">Ver más</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let evento of eventos">
+                  <td>{{evento.nombre}}</td>
+                  <td>{{evento.descripcion}}</td>
+                  <td>{{evento.lugar}}</td>
+                  <td class="text-center">{{evento.cupoInscripciones}}</td>
+                  <td class="text-center">{{evento.estadoEvento}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/evento/displayPublico', evento._id]" data-toggle="tooltip" data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

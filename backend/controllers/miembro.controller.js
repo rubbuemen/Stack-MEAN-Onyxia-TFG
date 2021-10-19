@@ -20,6 +20,16 @@ exports.getMiembrosVigentes = async (req, res) => {
   }
 };
 
+exports.getMiembrosAceptadosByEventoId = async (req, res) => {
+  try {
+    const eventoId = req.params.eventoId;
+    const miembros = await miembroService.getMiembrosAceptadosByEventoId(eventoId);
+    return res.status(200).send({ miembros });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.getMiembrosJuntaSuperior = async (req, res) => {
   try {
     const miembros = await miembroService.getMiembrosJuntaSuperior();

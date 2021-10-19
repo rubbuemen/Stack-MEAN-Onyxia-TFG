@@ -12,6 +12,14 @@ import { ActorModule } from './private/actor/actor.module';
 import { NotificacionModule } from './private/notificacion/notificacion.module';
 import { BuzonModule } from './private/buzon/buzon.module';
 import { SolicitudMiembroModule } from './private/solicitud-miembro/solicitud-miembro.module';
+import { MaterialModule } from './private/material/material.module';
+import { InventarioModule } from './private/inventario/inventario.module';
+import { ActividadModule } from './private/actividad/actividad.module';
+import { EventoModule } from './private/evento/evento.module';
+import { DiaEventoModule } from './private/dia-evento/dia-evento.module';
+import { TramoHorarioModule } from './private/tramo-horario/tramo-horario.module';
+import { InscripcionEventoModule } from './private/inscripcion-evento/inscripcion-evento.module';
+import { ActividadMiembroTramoModule } from './private/actividad-miembro-tramo/actividad-miembro-tramo.module';
 
 //Módulos
 import { SharedModule } from '../shared/shared.module';
@@ -43,6 +51,14 @@ const token_stripe = environment.token_stripe;
     NotificacionModule,
     BuzonModule,
     SolicitudMiembroModule,
+    MaterialModule,
+    InventarioModule,
+    ActividadModule,
+    EventoModule,
+    DiaEventoModule,
+    TramoHorarioModule,
+    InscripcionEventoModule,
+    ActividadMiembroTramoModule,
     NgxStripeModule.forChild(token_stripe),
   ],
 })

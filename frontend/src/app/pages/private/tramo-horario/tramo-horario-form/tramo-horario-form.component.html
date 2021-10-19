@@ -1,0 +1,54 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="tramoHorarioForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del tramo horario</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaInicio')}">
+                    <label for="horaInicio" class="control-label">Hora de inicio</label>
+                    <div class="input-group">
+                      <input id="horaInicio" formControlName="horaInicio" type="text" onfocus="(this.type='time')" class="form-control"
+                        placeholder="Hora de inicio" required aria-describedby="horaInicio-help">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('horaInicio')" class="form-control-feedback">Debes indicar una hora de inicio</div>
+                    <small id="horaInicio-help" class="form-text text-muted">La hora de inicio debe coincidir con la hora de fin del anterior tramo si es que
+                      hay</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaFin')}">
+                    <label for="horaFin" class="control-label">Hora de fin</label>
+                    <div class="input-group">
+                      <input id="horaFin" formControlName="horaFin" type="text" onfocus="(this.type='time')" class="form-control" placeholder="Hora de fin">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('horaFin')" class="form-control-feedback">Debes indicar una hora de fin</div>
+                    <small id="horaInicio-help" class="form-text text-muted">La hora de fin debe coincidir con la hora de inicio del siguiente tramo si es que
+                      hay</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button *ngIf="diaEvento" type="button" [routerLink]="['/private/tramo-horario', diaEvento._id]" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

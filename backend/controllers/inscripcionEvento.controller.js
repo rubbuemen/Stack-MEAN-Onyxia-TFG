@@ -56,6 +56,8 @@ exports.inscribirseAEvento = async (req, res) => {
   try {
     const eventoId = req.params.eventoId;
     //problemaAlimenticio, tieneCocheDisponible, comentarioAdicional, actividadesInteres opcionales
+    const { tieneCocheDisponible } = req.body;
+    if (tieneCocheDisponible.length === 0) req.body.tieneCocheDisponible = null;
     const usuarioLogeado = req.cuentaUsuario;
     const inscripcionEvento = await inscripcionEventoService.inscribirseAEvento(req.body, eventoId, usuarioLogeado);
     return res.status(200).send({ inscripcionEvento });
@@ -69,6 +71,17 @@ exports.aceptarInscripcionEvento = async (req, res) => {
     const inscripcionEventoId = req.params.id;
     const inscripcionEvento = await inscripcionEventoService.aceptarInscripcionEvento(inscripcionEventoId);
     return res.status(200).send({ inscripcionEvento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.tieneInscripcionMandada = async (req, res) => {
+  try {
+    const usuarioLogeado = req.cuentaUsuario;
+    const eventoId = req.params.eventoId;
+    const tieneInscripcion = await inscripcionEventoService.tieneInscripcionMandada(eventoId, usuarioLogeado);
+    return res.status(200).send({ tieneInscripcion });
   } catch (error) {
     return controlError(error, res);
   }

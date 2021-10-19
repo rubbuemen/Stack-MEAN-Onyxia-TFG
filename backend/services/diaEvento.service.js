@@ -7,13 +7,25 @@ const { TramoHorario } = require('../models/tramoHorario.model');
 const { ActividadMiembroTramo } = require('../models/actividadMiembroTramo.model');
 const { asyncForEach } = require('../util/funciones.util');
 
-exports.getDiasByEventoId = async (eventoId) => {
+exports.getDiasByEventoId = async eventoId => {
   const evento = await Evento.findById(eventoId).populate({ path: 'diasEvento' });
   if (!evento) throw errorLanzado(404, 'La ID del evento indicado no existe');
   return evento.diasEvento;
 };
 
-exports.addDiaParaEventoId = async (eventoId) => {
+exports.getDiaEvento = async id => {
+  const diaEvento = await DiaEvento.findById(id).populate({ path: 'tramosHorarios', options: { sort: { horaInicio: 1 } } });
+  if (!diaEvento) throw errorLanzado(404, 'La ID del día del evento indicado no existe');
+  return diaEvento;
+};
+
+exports.getDiaEventoPorTramoHorarioId = async tramoHorarioId => {
+  const diaEvento = await DiaEvento.findOne({ tramosHorarios: { $in: [tramoHorarioId] } });
+  if (!diaEvento) throw errorLanzado(404, 'No se encuentra ningún día para el tramo de horario indicado');
+  return diaEvento;
+};
+
+exports.addDiaParaEventoId = async eventoId => {
   let diaEvento;
   try {
     const evento = await Evento.findById(eventoId).populate({ path: 'diasEvento', options: { sort: { fecha: -1 } } });
@@ -39,16 +51,16 @@ exports.addDiaParaEventoId = async (eventoId) => {
   }
 };
 
-exports.deleteDiaParaEventoId = async (eventoId) => {
+exports.deleteDiaParaEventoId = async eventoId => {
   // Se elimina el último día del evento
   const evento = await Evento.findById(eventoId).populate({ path: 'diasEvento', options: { sort: { fecha: -1 } } });
   if (!evento) throw errorLanzado(404, 'El evento al que intenta eliminar un día no existe');
   if (evento.estadoEvento !== 'PENDIENTE') throw errorLanzado(403, 'El evento al que intenta eliminar días debe estar en un estado de pendiente de realizarse');
   if (evento.diasEvento.length === 1) throw errorLanzado(403, 'No se puede eliminar el día del evento porque es el único día asignado');
   const diaEvento = evento.diasEvento[0];
-  await asyncForEach(diaEvento.tramosHorarios, async (tramo) => {
+  await asyncForEach(diaEvento.tramosHorarios, async tramo => {
     const actividadMiembroTramo = await ActividadMiembroTramo.findOne({ tramoHorario: tramo });
-    if (actividadMiembroTramo) {
+    if (actividadMiembroTramo !== null) {
       const actividad = await Actividad.findById(actividadMiembroTramo.actividad);
       const miembro = await Miembro.findById(actividadMiembroTramo.miembro);
       await Actividad.findOneAndUpdate(
@@ -65,9 +77,9 @@ exports.deleteDiaParaEventoId = async (eventoId) => {
         },
         { new: true }
       );
+      await ActividadMiembroTramo.findByIdAndDelete(actividadMiembroTramo._id);
     }
     await TramoHorario.findByIdAndDelete(tramo);
-    await ActividadMiembroTramo.findByIdAndDelete(actividadMiembroTramo._id);
   });
   await Evento.findOneAndUpdate(
     { _id: eventoId },

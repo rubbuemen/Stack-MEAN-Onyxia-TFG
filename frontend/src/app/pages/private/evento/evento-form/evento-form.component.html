@@ -1,0 +1,166 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="eventoForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del evento</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('nombre')}">
+                    <label for="nombre" class="control-label">Nombre</label>
+                    <div class="input-group">
+                      <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('nombre')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('nombre')" class="form-control-feedback">Debes indicar un nombre</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('descripcion')}">
+                    <label for="descripcion" class="control-label">Descripción</label>
+                    <div class="input-group">
+                      <input type="text" id="descripcion" formControlName="descripcion" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('descripcion')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('descripcion')" class="form-control-feedback">Debes indicar una descripción</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('lugar')}">
+                    <label for="lugar" class="control-label">Lugar</label>
+                    <div class="input-group">
+                      <input type="text" id="lugar" formControlName="lugar" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('lugar')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('lugar')" class="form-control-feedback">Debes indicar un lugar</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('cupoInscripciones')}">
+                    <label for="cupoInscripciones" class="control-label">Cupo de inscripciones</label>
+                    <div class="input-group">
+                      <input type="number" min=0 id="cupoInscripciones" formControlName="cupoInscripciones" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('cupoInscripciones')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('cupoInscripciones')" class="form-control-feedback">Debes indicar un cupo máximo de inscripciones
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('esFueraSevilla')}">
+                    <label for="esFueraSevilla" class="control-label">Es fuera de Sevilla</label>
+                    <div class="input-group">
+                      <select id="esFueraSevilla" formControlName="esFueraSevilla" class="form-control selectpicker" title="Es fuera de Sevilla">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('esFueraSevilla')" class="form-control-feedback">Debes indicar si el evento es fuera de Sevilla
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('estaPublicado')}">
+                    <label for="estaPublicado" class="control-label">Publicar</label>
+                    <div class="input-group">
+                      <select id="estaPublicado" formControlName="estaPublicado" class="form-control selectpicker" title="Publicar">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('estaPublicado')" class="form-control-feedback">Debes indicar si publicar el evento</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="imagen" class="control-label">Imagen</label>
+                    <div class="input-group">
+                      <div class="input-group">
+                        <input name="File" type="file" id="imagen" class="dropify" data-height="300" data-allowed-file-extensions="png jpg jpeg"
+                          (change)="onFileChange($event)" data-default-file="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="actividades">
+                  <div class="form-group">
+                    <label for="actividadesSelect" class="control-label">Actividades asignadas</label>
+                    <div class="input-group">
+                      <select id="actividadesSelect" class="form-control selectpicker" title="Actividades" multiple data-live-search="true">
+                        <option *ngFor="let actividad of actividades" [value]="actividad._id">{{actividad.nombre}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!edicion">
+                <h3 class="card-title p-t-30">Fecha y primer tramo horario para esa fecha</h3>
+                <hr>
+                <div class="row p-t-20">
+                  <div class="col-md-4">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('fecha')}">
+                      <label for="fecha" class="control-label">Fecha del evento</label>
+                      <div class="input-group">
+                        <input id="fecha" formControlName="fecha" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Fecha del evento"
+                          required aria-describedby="fecha-help">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('fecha')" class="form-control-feedback">Debes indicar una primera fecha para el evento
+                      </div>
+                      <small id="fecha-help" class="form-text text-muted">Formato correcto: dd/mm/aaaa. Podrás añadir más fechas desde el detalle</small>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaInicio')}">
+                      <label for="horaInicio" class="control-label">Hora de inicio del primer tramo horario</label>
+                      <div class="input-group">
+                        <input id="horaInicio" formControlName="horaInicio" type="text" onfocus="(this.type='time')" class="form-control"
+                          placeholder="Hora de inicio del primer tramo" required aria-describedby="horaInicio-help">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('horaInicio')" class="form-control-feedback">Debes indicar una hora de inicio para el primer tramo
+                        horario</div>
+                      <small id="horaInicio-help" class="form-text text-muted">Formato correcto: HH:mm. A lo largo del día hay varios tramos horarios, indique
+                        el
+                        primero. Por ejemplo si el evento empieza a las 9:00, un tramo horario sería 9:00-10:00</small>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaFin')}">
+                      <label for="horaFin" class="control-label">Hora de fin del primer tramo horario</label>
+                      <div class="input-group">
+                        <input id="horaFin" formControlName="horaFin" type="text" onfocus="(this.type='time')" class="form-control"
+                          placeholder="Hora de fin del primer tramo">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('horaFin')" class="form-control-feedback">Debes indicar una hora de fin para el tramo horario
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/evento/gestion']" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

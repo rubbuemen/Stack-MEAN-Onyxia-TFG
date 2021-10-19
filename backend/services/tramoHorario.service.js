@@ -1,16 +1,17 @@
 const { errorLanzado } = require('../util/error.util');
 const { DiaEvento } = require('../models/diaEvento.model');
-const { Evento } = require('../models/evento.model');
-const { Actividad } = require('../models/actividad.model');
-const { Miembro } = require('../models/miembro.model');
 const { TramoHorario } = require('../models/tramoHorario.model');
-const { ActividadMiembroTramo } = require('../models/actividadMiembroTramo.model');
-const { asyncForEach } = require('../util/funciones.util');
 
-exports.getTramosHorariosByDiaId = async (diaEventoId) => {
-  const diaEvento = await DiaEvento.findById(diaEventoId).populate({ path: 'tramosHorarios' });
+exports.getTramosHorariosByDiaId = async diaEventoId => {
+  const diaEvento = await DiaEvento.findById(diaEventoId).populate({ path: 'tramosHorarios', options: { sort: { horaInicio: 1 } } });
   if (!diaEvento) throw errorLanzado(404, 'La ID del día del evento indicado no existe');
   return diaEvento.tramosHorarios;
+};
+
+exports.getTramoHorario = async id => {
+  const tramoHorario = await TramoHorario.findById(id);
+  if (!tramoHorario) throw errorLanzado(404, 'La ID del tramo horario indicado no existe');
+  return tramoHorario;
 };
 
 exports.addTramoHorarioParaDiaId = async (parametros, diaEventoId) => {
@@ -111,7 +112,7 @@ exports.editarTramoHorario = async (parametros, tramoHorarioId) => {
   return tramoHorario;
 };
 
-exports.deleteTramoHorario = async (tramoHorarioId) => {
+exports.deleteTramoHorario = async tramoHorarioId => {
   let tramoHorario;
   try {
     tramoHorario = await TramoHorario.findById(tramoHorarioId);
@@ -121,7 +122,7 @@ exports.deleteTramoHorario = async (tramoHorarioId) => {
       options: { sort: { horaInicio: 1 } },
     });
     await DiaEvento.updateOne({ _id: diaEvento._id }, { $pull: { tramosHorarios: tramoHorario._id } });
-    tramoHorario = await TramoHorario.findOneAndDelete(tramoHorarioId);
+    tramoHorario = await TramoHorario.findByIdAndDelete(tramoHorarioId);
     //Si no es el primero o el último, se setea la hora de inicio del siguiente tramo con la hora de fin del tramo anterior
     if (tramoHorario.id !== diaEvento.tramosHorarios[0].id && tramoHorario.id !== diaEvento.tramosHorarios[diaEvento.tramosHorarios.length - 1].id) {
       let indiceActual = 0;

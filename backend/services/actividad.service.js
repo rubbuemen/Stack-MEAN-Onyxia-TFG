@@ -9,14 +9,30 @@ exports.getActividadesPublicas = async () => {
   return actividades;
 };
 
+exports.getActividadesPublicasEnVigor = async () => {
+  const actividades = await Actividad.find({ estaPublicado: true, enVigor: true }).populate({ path: 'miembroCreador' });
+  return actividades;
+};
+
+exports.getActividadesEnVigor = async () => {
+  const actividades = await Actividad.find({ enVigor: true }).populate({ path: 'miembroCreador' });
+  return actividades;
+};
+
 exports.getActividadesPublicasPorEventoId = async eventoId => {
   const evento = await Evento.findById(eventoId).populate({ path: 'actividadesEvento', match: { estaPublicado: true } });
   if (!evento) throw errorLanzado(404, 'La ID del evento indicado no existe');
   return evento.actividadesEvento;
 };
 
+exports.getActividadesPorEventoId = async eventoId => {
+  const evento = await Evento.findById(eventoId).populate({ path: 'actividadesEvento' });
+  if (!evento) throw errorLanzado(404, 'La ID del evento indicado no existe');
+  return evento.actividadesEvento;
+};
+
 exports.getActividad = async actividadId => {
-  const actividad = await Actividad.findById(actividadId).populate({ path: 'miembroCreador' });
+  const actividad = await Actividad.findById(actividadId).populate({ path: 'miembroCreador' }).populate({ path: 'materiales' });
   if (!actividad) throw errorLanzado(404, 'La actividad no existe');
   return actividad;
 };
@@ -48,6 +64,9 @@ exports.editarActividad = async (parametros, imagen, actividadId) => {
   if (parametros.materiales) {
     materiales = parametros.materiales;
   }
+  if (!imagen) {
+    imagen = checkExistencia.fotografia; // Para el caso que se ha editado pero no se ha cambiado la imagen
+  }
   const actividad = await Actividad.findOneAndUpdate(
     { _id: actividadId },
     {
@@ -55,6 +74,7 @@ exports.editarActividad = async (parametros, imagen, actividadId) => {
       descripcion: parametros.descripcion,
       reglas: parametros.reglas,
       enVigor: parametros.enVigor,
+      estaPublicado: parametros.estaPublicado,
       materiales: materiales,
       fotografia: {
         data: imagen.data,
@@ -74,7 +94,7 @@ exports.eliminarActividad = async actividadId => {
   if (estaEnEvento) throw errorLanzado(403, 'No se puede eliminar la actividad porque está asociada al evento ' + estaEnEvento.nombre);
   const estaEnAsociacionActividadMiembroTramo = await ActividadMiembroTramo.findOne({ actividades: { $in: [checkExistencia._id] } });
   if (estaEnAsociacionActividadMiembroTramo) throw errorLanzado(403, 'No se puede eliminar la actividad porque está asociada al horario de un evento');
-  const actividad = await Actividad.findOneAndDelete(actividadId);
+  const actividad = await Actividad.findByIdAndDelete(actividadId);
   return actividad;
 };
 
@@ -114,6 +134,11 @@ exports.descatalogarActividad = async actividadId => {
   const checkExistencia = await Actividad.findById(actividadId);
   if (!checkExistencia) throw errorLanzado(404, 'La actividad que intenta descatalogar no existe');
   if (!checkExistencia.enVigor) throw errorLanzado(403, 'La actividad que intenta descatalogar ya lo está');
+  const estaEnEvento = await Evento.findOne({
+    $or: [{ estadoEvento: 'PENDIENTE' }, { estadoEvento: 'ENPROGRESO' }],
+    actividades: { $in: [checkExistencia._id] },
+  });
+  if (estaEnEvento) throw errorLanzado(403, 'No se puede descatalogar la actividad porque está asociada al evento ' + estaEnEvento.nombre);
   const actividad = await Actividad.findOneAndUpdate(
     { _id: actividadId },
     {

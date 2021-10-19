@@ -69,6 +69,6 @@ exports.editarNoticia = async (parametros, img, noticiaId) => {
 exports.eliminarNoticia = async noticiaId => {
   const checkExistencia = await Noticia.findById(noticiaId);
   if (!checkExistencia) throw errorLanzado(404, 'La noticia que intenta eliminar no existe');
-  const noticia = await Noticia.findOneAndDelete(noticiaId);
+  const noticia = await Noticia.findByIdAndDelete(noticiaId);
   return noticia;
 };

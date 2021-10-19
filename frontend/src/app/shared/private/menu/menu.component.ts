@@ -142,6 +142,61 @@ export class MenuPrivateComponent implements OnInit {
         ],
       });
     }
+    if (
+      this.actor.cuentaUsuario.autoridad === 'PRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VICEPRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VOCAL' ||
+      this.actor.cuentaUsuario.autoridad === 'SECRETARIO' ||
+      this.actor.cuentaUsuario.autoridad === 'MIEMBRO'
+    ) {
+      this.menuLateral.push({
+        titulo: 'Eventos',
+        identificador: 'eventos',
+        claseIcono: 'mdi mdi-domain',
+        submenu: [
+          {
+            titulo: 'Listado de eventos públicos',
+            url: '/private/evento/publicos',
+          },
+        ],
+      });
+    }
+    if (
+      this.actor.cuentaUsuario.autoridad === 'PRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VICEPRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VOCAL' ||
+      this.actor.cuentaUsuario.autoridad === 'SECRETARIO'
+    ) {
+      let index = this.menuLateral.findIndex(
+        (menu) => menu.identificador === 'eventos'
+      );
+      this.menuLateral[index]['submenu'].splice(1, 0, {
+        titulo: 'Gestionar eventos',
+        url: '/private/evento/gestion',
+      });
+      this.menuLateral.push({
+        titulo: 'Actividades',
+        identificador: 'actividades',
+        claseIcono: 'fa fa-tasks',
+        submenu: [
+          {
+            titulo: 'Gestionar actividades',
+            url: '/private/actividad',
+          },
+        ],
+      });
+      this.menuLateral.push({
+        titulo: 'Materiales',
+        identificador: 'materiales',
+        claseIcono: 'mdi mdi-archive',
+        submenu: [
+          {
+            titulo: 'Gestionar materiales',
+            url: '/private/material',
+          },
+        ],
+      });
+    }
   }
 
   public logout() {

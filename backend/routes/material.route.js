@@ -8,5 +8,7 @@ router.post('/', upload.single('fotografia'), auth.junta_directiva, (req, res) =
 router.put('/edit/:id', upload.single('fotografia'), auth.junta_directiva, (req, res) => materialController.editarMaterial(req, res));
 router.delete('/delete/:id', auth.junta_directiva, (req, res) => materialController.eliminarMaterial(req, res));
 router.get('/list/:actividadId', auth.junta_directiva, (req, res) => materialController.getMaterialesByActividadId(req, res));
+router.get('/list', auth.junta_directiva, (req, res) => materialController.getMateriales(req, res));
+router.get('/:id', auth.junta_directiva, (req, res) => materialController.getMaterial(req, res));
 
 module.exports = router;

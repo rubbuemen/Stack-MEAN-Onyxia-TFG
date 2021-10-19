@@ -38,7 +38,6 @@ export class NotificacionFormComponent implements OnInit {
     private actorService: ActorService,
     private utils: UtilsService,
     private authService: AuthService,
-    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder
   ) {}

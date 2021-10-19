@@ -1,0 +1,70 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row" *ngIf="evento">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">Realizar inscripción</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="inscripcionEventoForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información de la inscripción</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="problemaAlimenticio" class="control-label">Algún problema alimenticio</label>
+                    <div class="input-group">
+                      <input type="text" id="problemaAlimenticio" formControlName="problemaAlimenticio" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="tieneCocheDisponible" class="control-label">Tienes coche disponible</label>
+                    <div class="input-group">
+                      <select id="tieneCocheDisponible" formControlName="tieneCocheDisponible" class="form-control selectpicker"
+                        title="Tienes coche disponible">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="comentarioAdicional" class="control-label">Comentarios adicionales</label>
+                    <div class="input-group">
+                      <textarea type="text" id="comentarioAdicional" formControlName="comentarioAdicional" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="actividadesInteres">
+                  <div class="form-group">
+                    <label for="actividadesSelect" class="control-label">Actividades en las que tienes interés</label>
+                    <div class="input-group">
+                      <select id="actividadesSelect" class="form-control selectpicker" title="Actividades" multiple data-live-search="true">
+                        <option *ngFor="let actividad of actividadesInteres" [value]="actividad._id">{{actividad.nombre}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Enviar</button>
+                <button type="button" [routerLink]="['/private/evento/displayPublico', evento._id]" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

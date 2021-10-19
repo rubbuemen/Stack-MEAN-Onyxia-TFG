@@ -11,6 +11,26 @@ exports.getDiasByEventoId = async (req, res) => {
   }
 };
 
+exports.getDiaEvento = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const diaEvento = await diaEventoService.getDiaEvento(id);
+    return res.status(200).send({ diaEvento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
+exports.getDiaEventoPorTramoHorarioId = async (req, res) => {
+  try {
+    const tramoHorarioId = req.params.tramoHorarioId;
+    const diaEvento = await diaEventoService.getDiaEventoPorTramoHorarioId(tramoHorarioId);
+    return res.status(200).send({ diaEvento });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.addDiaParaEventoId = async (req, res) => {
   try {
     const eventoId = req.params.eventoId;

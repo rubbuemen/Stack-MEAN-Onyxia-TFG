@@ -1,0 +1,78 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Eventos</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="eventos" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Lugar</th>
+                  <th width="1">Cupo de inscripciones</th>
+                  <th>Estado</th>
+                  <th width="1">Publicado</th>
+                  <th class="no-sort" width="1">Ver más</th>
+                  <th class="no-sort" width="1">Editar</th>
+                  <th class="no-sort" width="1">Cancelar</th>
+                  <th class="no-sort" width="1">Publicar / Ocultar</th>
+                  <th class="no-sort" width="1">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let evento of eventos">
+                  <td>{{evento.nombre}}</td>
+                  <td>{{evento.descripcion}}</td>
+                  <td>{{evento.lugar}}</td>
+                  <td class="text-center">{{evento.cupoInscripciones}}</td>
+                  <td class="text-center">{{evento.estadoEvento}}</td>
+                  <td class="text-center">{{evento.estaPublicado ? 'Sí' : 'No'}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/evento/display', evento._id]" data-toggle="tooltip" data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a *ngIf="evento.estadoEvento === 'Pendiente'" [routerLink]="['/private/evento/form', evento._id]"
+                      data-toggle="tooltip" data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a *ngIf="evento.estadoEvento === 'Pendiente'" class="cursor-pointer" (click)="cancelarEvento(evento._id)"
+                      data-toggle="tooltip" data-original-title="Cancelar">
+                      <i class="mdi mdi-bookmark-remove text-danger m-r-10"></i></a>
+                  </td>
+                  <td class="text-center"><a *ngIf="evento.estadoEvento === 'Pendiente'" class="cursor-pointer" (click)="publicarOcultarEvento(evento._id)"
+                      data-toggle="tooltip" data-original-title="Publicar / Ocultar">
+                      <i *ngIf="evento.estaPublicado" class="mdi mdi-eye-outline-off text-danger m-r-10"></i>
+                      <i *ngIf="!evento.estaPublicado" class="mdi mdi-eye-outline text-success m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="eliminarEvento(evento._id)" data-toggle="tooltip" data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button [routerLink]="['/private/evento/form']" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Crear un nuevo evento</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

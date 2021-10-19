@@ -1,0 +1,75 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Actividades</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="actividades" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th class="no-sort" width="400">Fotografia</th>
+                  <th width="1">En vigor</th>
+                  <th width="1">Publicada</th>
+                  <th class="no-sort" width="1">Ver más</th>
+                  <th class="no-sort" width="1">Editar</th>
+                  <th class="no-sort" width="1">Catalogar / Descatalogar</th>
+                  <th class="no-sort" width="1">Publicar / Ocultar</th>
+                  <th class="no-sort" width="1">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let actividad of actividades">
+                  <td>{{actividad.nombre}}</td>
+                  <td class="text-center"> <img [src]="actividad.fotografia" class="img-fluid w-50" /></td>
+                  <td class="text-center">{{actividad.enVigor ? 'Sí' : 'No'}}</td>
+                  <td class="text-center">{{actividad.estaPublicado ? 'Sí' : 'No'}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/actividad/display', actividad._id]" data-toggle="tooltip" data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a [routerLink]="['/private/actividad/form', actividad._id]" data-toggle="tooltip" data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="catalogarDescatalogarActividad(actividad._id)" data-toggle="tooltip"
+                      data-original-title="Catalogar / Descatalogar">
+                      <i *ngIf="actividad.enVigor" class="mdi mdi-folder-remove text-danger m-r-10"></i>
+                      <i *ngIf="!actividad.enVigor" class="mdi mdi-folder-plus text-success m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="publicarOcultarActividad(actividad._id)" data-toggle="tooltip"
+                      data-original-title="Publicar / Ocultar">
+                      <i *ngIf="actividad.estaPublicado" class="mdi mdi-eye-outline-off text-danger m-r-10"></i>
+                      <i *ngIf="!actividad.estaPublicado" class="mdi mdi-eye-outline text-success m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="eliminarActividad(actividad._id)" data-toggle="tooltip"
+                      data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button [routerLink]="['/private/actividad/form']" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Crear una nueva actividad</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

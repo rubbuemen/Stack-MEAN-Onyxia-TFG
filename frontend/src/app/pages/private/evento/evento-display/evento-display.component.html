@@ -1,0 +1,174 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="evento">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title">Información del evento</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Nombre:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.nombre}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Descripción:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.descripcion}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Lugar:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.lugar}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Cupo de inscripciones:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.cupoInscripciones}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Es fuera de Sevilla:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.esFueraSevilla ? 'Sí' : 'No' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Estado del evento:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.estadoEvento}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Publicado:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{evento.estaPublicado ? 'Sí' : 'No' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Fecha y horario:</label>
+                    <div class="row col-8">
+                      <div class="col-8" *ngFor="let dia of evento.diasEvento">
+                        <p class="form-control-static">{{dia.fecha | date: 'dd/MM/yyyy'}}
+                          <span *ngIf="dia.horaInicio !== undefined || dia.horaFinal !== undefined; then pintarTramo else noPintarTramo"></span>
+                          <ng-template #pintarTramo>
+                            {{dia.horaInicio}} - {{dia.horaFinal}}
+                          </ng-template>
+                          <ng-template #noPintarTramo>
+                            Sin definir
+                          </ng-template>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6" *ngIf="evento.imagen">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Imagen:</label>
+                    <div class="col-8">
+                      <img [src]="evento.imagen" class="form-control-static img-fluid img-thumbnail w-50" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Creador del evento</label>
+                    <div class="col-6">
+                      <p class="form-control-static">{{evento.miembroCreador.nombre}} {{evento.miembroCreador.apellidos}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-12">
+                        <button type="button" [routerLink]="['/private/evento/gestion']" class=" btn btn-inverse">Volver</button>
+                        <button [routerLink]="['/private/dia-evento', evento._id]" type="button" class="btn btn-info">
+                          <i class="mdi mdi-eye"></i>
+                          Ver días del evento</button>
+                      </div>
+                      <div class="col-md-offset-3 col-md-12 m-t-20" *ngIf="evento.estaPublicado">
+                        <!-- Se comprueba si está publicado porque no se puede cambiar una vez se inscribe gente -->
+                        <button [routerLink]="['/private/inscripcion-evento/pendientes', evento._id]" type="button" class="btn btn-info">
+                          <i class="mdi mdi-account-edit"></i>
+                          Inscripciones pendientes</button>
+                        <button [routerLink]="['/private/inscripcion-evento/aceptadas', evento._id]" type="button" class="btn btn-info">
+                          <i class="mdi mdi-account-check"></i>
+                          Inscripciones aceptadas</button>
+                      </div>
+                      <div class="col-md-offset-3 col-md-12 m-t-20" *ngIf="evento.estaPublicado && evento.estadoEvento === 'Pendiente'">
+                        <button [routerLink]="['/private/horario', evento._id]" type="button" class="btn btn-warning">
+                          <i class="mdi mdi-calendar-clock"></i>
+                          Gestionar horarios de los miembros aceptados</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="box-title m-t-30">Listado de actividades asignadas</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="table-responsive m-t-10">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="actividades" class="table table-bordered table-striped table-data">
+                  <thead>
+                    <tr>
+                      <th class="w-25">Nombre</th>
+                      <th class="w-40">Descripción</th>
+                      <th class="w-5">Publico</th>
+                      <th class="w-5">En vigor</th>
+                      <th class="no-sort" class="w-25">Fotografia</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let actividad of actividades">
+                      <td>{{actividad.nombre}}</td>
+                      <td>{{actividad.descripcion}}</td>
+                      <td>{{actividad.estaPublicado ? 'Sí' : 'No'}}</td>
+                      <td>{{actividad.enVigor ? 'Sí' : 'No'}}</td>
+                      <td class="text-center"> <img [src]="actividad.fotografia" class="img-fluid w-50" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

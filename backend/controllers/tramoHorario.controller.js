@@ -11,6 +11,16 @@ exports.getTramosHorariosByDiaId = async (req, res) => {
   }
 };
 
+exports.getTramoHorario = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const tramoHorario = await tramoHorarioService.getTramoHorario(id);
+    return res.status(200).send({ tramoHorario });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.addTramoHorarioParaDiaId = async (req, res) => {
   try {
     const diaEventoId = req.params.diaEventoId;

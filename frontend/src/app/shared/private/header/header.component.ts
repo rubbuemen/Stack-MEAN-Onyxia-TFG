@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActorService } from 'src/app/services/private/actor.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { AuthService } from '../../../auth/auth.service';
@@ -20,7 +21,8 @@ export class HeaderPrivateComponent implements OnInit {
     private buzonService: BuzonService,
     private notificacionService: NotificacionService,
     private utils: UtilsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -28,29 +30,34 @@ export class HeaderPrivateComponent implements OnInit {
   }
 
   private getMisDatos(): void {
-    this.actorService.getMisDatos().subscribe((actor) => {
-      if (this.utils.existe(actor.fotografia)) {
-        let imagen =
-          'data:' +
-          actor.fotografia.mimetype +
-          ';base64,' +
-          actor.fotografia.data;
-        const imagenSRC = this.utils.usarImagenBase64(imagen);
-        actor.fotografia = imagenSRC;
-      } else {
-        actor.fotografia = this.imageDefault;
+    this.actorService.getMisDatos().subscribe(
+      (actor) => {
+        if (this.utils.existe(actor.fotografia)) {
+          let imagen =
+            'data:' +
+            actor.fotografia.mimetype +
+            ';base64,' +
+            actor.fotografia.data;
+          const imagenSRC = this.utils.usarImagenBase64(imagen);
+          actor.fotografia = imagenSRC;
+        } else {
+          actor.fotografia = this.imageDefault;
+        }
+        this.buzonService.getBuzonEntrada().subscribe((buzon) => {
+          this.notificacionService
+            .getNotificacionesLeidasByBuzonId(buzon._id)
+            .subscribe((notificaciones) => {
+              if (notificaciones.length !== 0) {
+                this.hayNotificacionesNuevas = true;
+              }
+            });
+        });
+        this.actor = actor;
+      },
+      (error) => {
+        this.router.navigate(['/private']);
       }
-      this.buzonService.getBuzonEntrada().subscribe((buzon) => {
-        this.notificacionService
-          .getNotificacionesLeidasByBuzonId(buzon._id)
-          .subscribe((notificaciones) => {
-            if (notificaciones.length !== 0) {
-              this.hayNotificacionesNuevas = true;
-            }
-          });
-      });
-      this.actor = actor;
-    });
+    );
   }
 
   public logout() {

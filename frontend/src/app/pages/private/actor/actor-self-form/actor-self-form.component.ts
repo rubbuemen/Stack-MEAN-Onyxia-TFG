@@ -98,6 +98,10 @@ export class ActorSelfFormComponent implements OnInit {
         this.perfilActorForm
           .get('tieneCochePropio')
           .setValue(this.actor.tieneCochePropio);
+        this.utils.setValoresSelectPicker(
+          'tieneCochePropio',
+          this.actor.tieneCochePropio.toString()
+        );
         if (this.utils.existe(actor.fotografia)) {
           let imagen =
             'data:' +

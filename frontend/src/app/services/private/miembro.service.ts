@@ -43,7 +43,21 @@ export class MiembroService {
   public getMiembro(id: ObjectId): Observable<Miembro> {
     return this.requestConstructorService
       .request('GET', `${base_url}/actor`, {}, {}, true, [Miembro], id)
-      .pipe(map((res: { datosActor }) => res.datosActor));
+      .pipe(map((res: { datosActor: Miembro }) => res.datosActor));
+  }
+
+  public getMiembrosParaHorario(eventoId: ObjectId): Observable<Miembro[]> {
+    return this.requestConstructorService
+      .request(
+        'GET',
+        `${base_url}/miembro/eventoAceptados`,
+        {},
+        {},
+        true,
+        [Miembro],
+        eventoId
+      )
+      .pipe(map((res: { miembros: Miembro[] }) => res.miembros));
   }
 
   public penalizarMiembro(id: ObjectId): Observable<Miembro> {

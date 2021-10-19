@@ -73,7 +73,7 @@ exports.eliminarRedSocial = async (usuarioLogeado, redSocialId) => {
     } else {
       await Miembro.updateOne({ _id: actorConectado._id }, { $pull: { redSocials: redSocial._id } });
     }
-    redSocial = await RedSocial.findOneAndDelete(redSocialId);
+    redSocial = await RedSocial.findByIdAndDelete(redSocialId);
     return redSocial;
   } catch (error) {
     if (redSocial) {

@@ -1,5 +1,6 @@
 const { errorLanzado } = require('../util/error.util');
 const { Miembro } = require('../models/miembro.model');
+const { Evento } = require('../models/evento.model');
 const { CuentaUsuario } = require('../models/cuentaUsuario.model');
 const cron = require('cron');
 const d3 = require('d3-time');
@@ -51,6 +52,20 @@ exports.penalizarMiembro = async miembroId => {
 
 exports.getMiembrosVigentes = async () => {
   const miembros = await Miembro.find({ estaDeAlta: true }).populate({ path: 'cuentaUsuario' });
+  return miembros;
+};
+
+exports.getMiembrosAceptadosByEventoId = async eventoId => {
+  let miembros = [];
+  const evento = await Evento.findById(eventoId).populate({
+    path: 'inscripcionesEvento',
+    match: { estadoInscripcion: 'ACEPTADO' },
+    populate: { path: 'miembro' },
+  });
+  if (!evento) throw errorLanzado(404, 'El evento indicado no existe');
+  evento.inscripcionesEvento.forEach(inscripcion => {
+    miembros.push(inscripcion.miembro);
+  });
   return miembros;
 };
 

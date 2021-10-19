@@ -3658,6 +3658,10 @@ form label {
   padding-bottom: 20px;
 }
 
+.pintar-saltos-linea{
+  white-space: pre-line;
+}
+
 /*******************
 Form Dropzone
 ******************/

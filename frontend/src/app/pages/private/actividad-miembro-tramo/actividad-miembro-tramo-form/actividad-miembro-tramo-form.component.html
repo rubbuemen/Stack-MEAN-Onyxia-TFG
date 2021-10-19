@@ -1,0 +1,82 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row" *ngIf="evento">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">Añadir horario</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="horarioForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del horario</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6" *ngIf="miembros">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('miembro')}">
+                    <label for="miembrosSelect" class="control-label">Miembros inscritos aceptados</label>
+                    <div class="input-group">
+                      <select id="miembrosSelect" formControlName="miembro" class="form-control selectpicker" title="Miembros inscritos aceptados"
+                        data-live-search="true">
+                        <option *ngFor="let miembro of miembros" [value]="miembro._id">{{miembro.nombre}} {{miembro.apellidos}} ({{miembro.alias}})</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('miembro')" class="form-control-feedback">Debes indicar un miembro de los inscritos y aceptados
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="actividades">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('actividad')}">
+                    <label for="actividadesSelect" class="control-label">Actividades del evento</label>
+                    <div class="input-group">
+                      <select id="actividadesSelect" formControlName="actividad" class="form-control selectpicker" title="Actividades del evento"
+                        data-live-search="true">
+                        <option *ngFor="let actividad of actividades" [value]="actividad._id">{{actividad.nombre}}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('actividad')" class="form-control-feedback">Debes indicar una actividad del evento</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6" *ngIf="dias">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('diaEvento')}">
+                    <label for="diasSelect" class="control-label">Días del evento</label>
+                    <div class="input-group">
+                      <select (change)="onChange($event.target.value)" id="diasSelect" formControlName="diaEvento" class="form-control selectpicker"
+                        title="Días del evento" data-live-search="true">
+                        <option *ngFor="let dia of dias" [value]="dia._id">{{dia.fecha | date: 'dd/MM/yyyy'}}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('diaEvento')" class="form-control-feedback">Debes indicar un día del evento</div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="tramosHorarios">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('tramoHorario')}">
+                    <label for="tramosHorariosSelect" class="control-label">Tramos horarios del día seleccionado</label>
+                    <div class="input-group">
+                      <select id="tramosHorariosSelect" formControlName="tramoHorario" class="form-control selectpicker"
+                        title="Tramos horarios del día seleccionado" data-live-search="true">
+                        <option *ngFor="let tramo of tramosHorarios" [value]="tramo._id">{{tramo.horaInicio}} - {{tramo.horaFin}}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('tramoHorario')" class="form-control-feedback">Debes indicar un tramo horario para el día del evento
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/horario', evento._id]" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

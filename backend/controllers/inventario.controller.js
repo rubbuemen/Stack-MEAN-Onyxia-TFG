@@ -11,6 +11,16 @@ exports.getInventarioByMaterialId = async (req, res) => {
   }
 };
 
+exports.getInventario = async (req, res) => {
+  try {
+    const inventarioId = req.params.id;
+    const inventario = await inventarioService.getInventario(inventarioId);
+    return res.status(200).send({ inventario });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.addInventarioParaMaterialId = async (req, res) => {
   try {
     const materialId = req.params.materialId;
