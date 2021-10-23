@@ -19,12 +19,6 @@ const noticiaSchema = new mongoose.Schema({
   fechaPublicacion: {
     type: Date,
     required: [true, 'No se ha asignado ninguna fecha de publicación'],
-    validate: {
-      validator: fechaAlta => {
-        return fechaAlta < new Date();
-      },
-      message: 'Inserte una fecha de publicación en pasado',
-    },
     default: Date.now,
   },
   miembroCreador: {

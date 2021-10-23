@@ -11,6 +11,17 @@ exports.getAsistenciasReunion = async (req, res) => {
   }
 };
 
+exports.tieneAsistenciaMarcadaReunion = async (req, res) => {
+  try {
+    const usuarioLogeado = req.cuentaUsuario;
+    const reunionId = req.params.reunionId;
+    const tieneAsistenciaMarcada = await asistenciaMiembroReunionService.tieneAsistenciaMarcadaReunion(reunionId, usuarioLogeado);
+    return res.status(200).send({ tieneAsistenciaMarcada });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.marcarAsistenciaReunion = async (req, res) => {
   try {
     const usuarioLogeado = req.cuentaUsuario;
@@ -24,12 +35,13 @@ exports.marcarAsistenciaReunion = async (req, res) => {
   }
 };
 
-exports.verificarAsistenciaMiembroReunion = async (req, res) => {
+exports.verificarAsistenciaMiembrosReunion = async (req, res) => {
   try {
-    const miembroId = req.params.miembroId;
     const reunionId = req.params.reunionId;
-    const asistencia = await asistenciaMiembroReunionService.verificarAsistenciaMiembroReunion(miembroId, reunionId);
-    return res.status(200).send({ asistencia });
+    const { asistencias } = req.body;
+    if (!asistencias) throw errorLanzado(400, 'No ha seleccionado ninguna asistencia');
+    const asistenciasVerificadas = await asistenciaMiembroReunionService.verificarAsistenciaMiembrosReunion(req.body, reunionId);
+    return res.status(200).send({ asistenciasVerificadas });
   } catch (error) {
     return controlError(error, res);
   }

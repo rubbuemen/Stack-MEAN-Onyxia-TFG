@@ -2,13 +2,19 @@ const { errorLanzado } = require('../util/error.util');
 const { Reunion } = require('../models/reunion.model');
 const { Miembro } = require('../models/miembro.model');
 const { AsistenciaMiembroReunion } = require('../models/asistenciaMiembroReunion.model');
-const { asyncForEach, esHoy } = require('../util/funciones.util');
+const { asyncForEach, esHoy, esPasado } = require('../util/funciones.util');
 const cron = require('cron');
 const { enviarNotificacionAutomatica } = require('./notificacion.service');
 
 exports.getReuniones = async () => {
   const reuniones = await Reunion.find();
   return reuniones;
+};
+
+exports.getReunion = async reunionId => {
+  const reunion = await Reunion.findById(reunionId);
+  if (!reunion) throw errorLanzado(404, 'La reunion no existe');
+  return reunion;
 };
 
 exports.getReunionesPendientes = async () => {
@@ -185,9 +191,9 @@ exports.cambiarReunionesARealizado = async () => {
     rebuildPeriod,
     async () => {
       console.log('Verificando reuniones realizadas...');
-      const reuniones = await Reunion.find({ estadoReunion: 'ENPROGRESO' });
+      const reuniones = await Reunion.find({ $or: [{ estadoReunion: 'PENDIENTE' }, { estadoReunion: 'ENPROGRESO' }] });
       reuniones.forEach(async reunion => {
-        if (!esHoy(reunion.fecha)) {
+        if (esPasado(reunion.fecha)) {
           await Reunion.findByIdAndUpdate(
             { _id: reunion._id },
             {

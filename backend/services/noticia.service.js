@@ -32,6 +32,9 @@ exports.editarNoticia = async (parametros, img, noticiaId) => {
   const checkExistencia = await Noticia.findById(noticiaId);
   if (!checkExistencia) throw errorLanzado(404, 'La noticia que intenta editar no existe');
   let noticia;
+  if (!img && parametros.hayImagen === 'true') {
+    img = evento.imagen; // Para el caso que se ha editado pero no se ha cambiado la imagen
+  }
   if (img) {
     noticia = await Noticia.findOneAndUpdate(
       { _id: noticiaId },

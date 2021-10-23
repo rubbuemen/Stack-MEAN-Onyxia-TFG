@@ -1,0 +1,61 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Noticias</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="noticias" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Cuerpo</th>
+                  <th class="no-sort" width="400">Imagen</th>
+                  <th>Fecha de publicación</th>
+                  <th class="no-sort" width="1">Editar</th>
+                  <th class="no-sort" width="1">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let noticia of noticias">
+                  <td>{{noticia.titulo}}</td>
+                  <td>{{noticia.cuerpo}}</td>
+                  <td class="text-center">
+                    <img *ngIf="noticia.imagen" [src]="noticia.imagen" class="img-fluid w-50" />
+                    <span *ngIf="!noticia.imagen">Sin asignar</span>
+                  </td>
+                  <td>{{noticia.fechaPublicacion | date: 'dd/MM/yyyy HH:mm'}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/noticia/form', noticia._id]" data-toggle="tooltip" data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="eliminarNoticia(noticia._id)" data-toggle="tooltip" data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button [routerLink]="['/private/noticia/form']" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Crear una nueva noticia</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

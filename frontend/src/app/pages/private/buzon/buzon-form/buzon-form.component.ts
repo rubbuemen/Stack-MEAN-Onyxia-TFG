@@ -77,7 +77,9 @@ export class BuzonFormComponent implements OnInit {
                 'Se ha editado el buzón correctamente',
                 'success'
               )
-              .then(() => this.router.navigate(['/private/notificacion']));
+              .then(() =>
+                this.router.navigate(['/private/notificacion/bandeja'])
+              );
           },
           (error) => {
             swal.fire('Error', error.error.error, 'error');
@@ -92,7 +94,9 @@ export class BuzonFormComponent implements OnInit {
                 'Se ha creado el buzón correctamente',
                 'success'
               )
-              .then(() => this.router.navigate(['/private/notificacion']));
+              .then(() =>
+                this.router.navigate(['/private/notificacion/bandeja'])
+              );
           },
           (error) => {
             swal.fire('Error', error.error.error, 'error');

@@ -1,0 +1,126 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body" *ngIf="reunionForm">
+          <form autocomplete="off" [formGroup]="reunionForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información del reunión</h3>
+              <hr>
+              <div *ngIf="!realizado">
+                <div class="row p-t-20">
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('fecha')}">
+                      <label for="fecha" class="control-label">Fecha de la reunión</label>
+                      <div class="input-group">
+                        <input id="fecha" formControlName="fecha" type="text" onfocus="(this.type='date')" class="form-control" required
+                          aria-describedby="fecha-help">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('fecha')" class="form-control-feedback">Debes indicar una fecha para la reunión
+                      </div>
+                      <small id="fecha-help" class="form-text text-muted">Formato correcto: dd/mm/aaaa.</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('temasATratar')}">
+                      <label for="temasATratar" class="control-label">Temas a tratar</label>
+                      <div class="input-group">
+                        <textarea id="temasATratar" formControlName="temasATratar" type="text" class="form-control"></textarea>
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('temasATratar')" class="form-control-feedback">Debes indicar los temas a tratar
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaInicio')}">
+                      <label for="horaInicio" class="control-label">Hora de inicio</label>
+                      <div class="input-group">
+                        <input id="horaInicio" formControlName="horaInicio" type="text" onfocus="(this.type='time')" class="form-control" required
+                          aria-describedby="horaInicio-help">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('horaInicio')" class="form-control-feedback">Debes indicar una hora de inicio
+                      </div>
+                      <small id="horaInicio-help" class="form-text text-muted">Formato correcto: HH:mm</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('horaFin')}">
+                      <label for="horaFin" class="control-label">Hora de fin</label>
+                      <div class="input-group">
+                        <input id="horaFin" formControlName="horaFin" type="text" onfocus="(this.type='time')" class="form-control"
+                          aria-describedby="horaFin-help">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('horaFin')" class="form-control-feedback">Debes indicar una hora de fin
+                      </div>
+                      <small id="horaFin-help" class="form-text text-muted">Formato correcto: HH:mm</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('lugar')}">
+                      <label for="lugar" class="control-label">Lugar</label>
+                      <div class="input-group">
+                        <input type="text" id="lugar" formControlName="lugar" class="form-control"
+                          [ngClass]="{'form-control-danger': formEnviado && validarCampo('lugar')}">
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('lugar')" class="form-control-feedback">Debes indicar un lugar</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('tipoReunion')}">
+                      <label for="tipoReunion" class="control-label">Tipo de reunión</label>
+                      <div class="input-group">
+                        <select id="tipoReunion" formControlName="tipoReunion" class="form-control selectpicker" title="Tipo de reunión">
+                          <option value="ASOCIACION">Asociación</option>
+                          <option value="JUNTADIRECTIVA">Junta directiva</option>
+                        </select>
+                      </div>
+                      <div *ngIf="formEnviado && validarCampo('tipoReunion')" class="form-control-feedback">Debes indicar el tipo de la reunión
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row p-t-20" *ngIf="realizado">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('decisionesTomadas')}">
+                    <label for="decisionesTomadas" class="control-label">Decisiones tomadas</label>
+                    <div class="input-group">
+                      <textarea id="decisionesTomadas" formControlName="decisionesTomadas" type="text" class="form-control"></textarea>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('decisionesTomadas')" class="form-control-feedback">Debes indicar las decisiones tomadas en la
+                      reunión</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]="{'has-danger': formEnviado && validarCampo('actaReunion')}">
+                    <label for="actaReunion" class="control-label">Acta de reunión</label>
+                    <div class="input-group">
+                      <textarea id="actaReunion" formControlName="actaReunion" type="text" class="form-control"></textarea>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('actaReunion')" class="form-control-feedback">Debes indicar el acta de reunión</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/reunion/gestion']" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -22,6 +22,8 @@ import { InscripcionEventoModule } from './private/inscripcion-evento/inscripcio
 import { ActividadMiembroTramoModule } from './private/actividad-miembro-tramo/actividad-miembro-tramo.module';
 import { AlbumFotografiaModule } from './private/album-fotografia/album-fotografia.module';
 import { FotografiaModule } from './private/fotografia/fotografia.module';
+import { ReunionModule } from './private/reunion/reunion.module';
+import { NoticiaModule } from './private/noticia/noticia.module';
 
 //Módulos
 import { SharedModule } from '../shared/shared.module';
@@ -63,6 +65,8 @@ const token_stripe = environment.token_stripe;
     ActividadMiembroTramoModule,
     AlbumFotografiaModule,
     FotografiaModule,
+    ReunionModule,
+    NoticiaModule,
     NgxStripeModule.forChild(token_stripe),
   ],
 })

@@ -1,0 +1,130 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="reunion">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-body">
+              <h3 class="box-title">Información de la reunión</h3>
+              <hr class="m-t-0 m-b-40">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Fecha y hora:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{reunion.fecha | date: 'dd/MM/yyyy'}} {{reunion.horaInicio}} - {{reunion.horaFin}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Lugar:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{reunion.lugar}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Estado de la reunión:</label>
+                    <div class="col-8">
+                      <p class="form-control-static">{{reunion.estadoReunion}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="reunion.temasATratar">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Temas a tratar:</label>
+                    <div class="col-8">
+                      <p class="form-control-static pintar-saltos-linea">{{reunion.temasATratar}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="reunion.estadoReunion === 'Realizado'">
+                <div class="col-md-6" *ngIf="reunion.decisionesTomadas">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Desiciones tomadas:</label>
+                    <div class="col-8">
+                      <p class="form-control-static pintar-saltos-linea">{{reunion.decisionesTomadas}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="reunion.actaReunion">
+                  <div class="form-group row">
+                    <label class="control-label col-4">Acta de reunión:</label>
+                    <div class="col-8">
+                      <p class="form-control-static pintar-saltos-linea">{{reunion.actaReunion}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-offset-3 col-md-12">
+                        <button type="button" [routerLink]="['/private/reunion/pendientes']" class=" btn btn-inverse">Ir a reuniones pendientes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form autocomplete="off" [formGroup]="asistenciaForm" (ngSubmit)="onSubmit($event)"
+            *ngIf="reunion.estadoReunion === 'Realizado' && esPresidente && asistencias">
+            <h3 class="card-title p-t-10">Listado de asistencias a la reunión</h3>
+            <hr>
+            <button type="submit" name="verificar" class="btn btn-info"><i class="mdi mdi-check-all"></i> Verificar asistencias</button>
+            <div class="card b-all shadow-none m-t-10">
+              <div class="inbox-center table-responsive">
+                <table class="table table-bordered table-striped table-data">
+                  <thead>
+                    <tr>
+                      <th style="width:40px">
+                        Verificar
+                      </th>
+                      <th class="text-left">Miembro</th>
+                      <th class="text-center">Marcó asistencia</th>
+                      <th class="text-center">Comentarios adicionales</th>
+                      <th class="text-center">Asistencia verificada</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr formArrayName="asistencias" *ngFor="let asistencia of asistenciasFormArray().controls; let i = index">
+                      <td style="width:40px" *ngIf="!asistencias[i].haAsistido">
+                        <div class="text-center checkbox m-l-10">
+                          <input type="checkbox" [formControlName]="i" id="{{asistencias[i]._id}}">
+                          <label for="{{asistencias[i]._id}}"></label>
+                        </div>
+                      </td>
+                      <td style="width:40px" *ngIf="asistencias[i].haAsistido">
+                        <div class="text-center">
+                          <i class="mdi mdi-check text-success"></i>
+                        </div>
+                      </td>
+                      <td class="text-left cursor-pointer">{{asistencias[i].miembro.nombre}} {{asistencias[i].miembro.apellidos}}
+                        ({{asistencias[i].miembro.alias}})</td>
+                      <td class="text-center cursor-pointer">{{asistencias[i].haMarcadoAsistencia ? 'Sí' : 'No'}}</td>
+                      <td class="text-center cursor-pointer">{{asistencias[i].comentarioAdicional}}</td>
+                      <td class="text-center cursor-pointer">{{asistencias[i].haAsistido ? 'Sí' : 'No'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

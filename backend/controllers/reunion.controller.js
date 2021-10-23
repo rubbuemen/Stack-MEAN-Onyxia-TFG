@@ -10,6 +10,16 @@ exports.getReuniones = async (req, res) => {
   }
 };
 
+exports.getReunion = async (req, res) => {
+  try {
+    const reunionId = req.params.id;
+    const reunion = await reunionService.getReunion(reunionId);
+    return res.status(200).send({ reunion });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.getReunionesPendientes = async (req, res) => {
   try {
     const reuniones = await reunionService.getReunionesPendientes();
@@ -70,7 +80,7 @@ exports.añadirInformacionReunionRealizada = async (req, res) => {
   try {
     const reunionId = req.params.id;
     const { decisionesTomadas, actaReunion } = req.body;
-    if (!decisionesTomadas || !actaReunion) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
+    if (decisionesTomadas === undefined || actaReunion === undefined) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const reunion = await reunionService.añadirInformacionReunionRealizada(req.body, reunionId);
     return res.status(200).send({ reunion });
   } catch (error) {

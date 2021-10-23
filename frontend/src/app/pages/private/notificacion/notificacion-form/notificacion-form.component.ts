@@ -109,7 +109,9 @@ export class NotificacionFormComponent implements OnInit {
               'La notificación ha sido enviada correctamente',
               'success'
             )
-            .then(() => this.router.navigate(['/private/notificacion']));
+            .then(() =>
+              this.router.navigate(['/private/notificacion/bandeja'])
+            );
         },
         (error) => {
           swal.fire('Error', error.error.error, 'error');

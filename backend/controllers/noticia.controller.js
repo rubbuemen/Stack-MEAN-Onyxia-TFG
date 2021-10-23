@@ -38,9 +38,15 @@ exports.crearNoticia = async (req, res) => {
 exports.editarNoticia = async (req, res) => {
   try {
     const noticiaId = req.params.id;
-    const { titulo, cuerpo } = req.body;
+    const { titulo, cuerpo, hayImagen } = req.body;
     const imagen = req.file;
-    if (imagen) req.file.data = convertirImagenABase64(imagen);
+    if (!imagen && hayImagen === 'true') {
+      req.file = undefined;
+    } else if (imagen) {
+      req.file.data = convertirImagenABase64(imagen);
+    } else {
+      req.file = undefined;
+    }
     if (!titulo || !cuerpo) throw errorLanzado(400, 'Hay datos obligatorios del formulario que no se han enviado');
     const noticia = await noticiaService.editarNoticia(req.body, req.file, noticiaId);
     return res.status(200).send({ noticia });

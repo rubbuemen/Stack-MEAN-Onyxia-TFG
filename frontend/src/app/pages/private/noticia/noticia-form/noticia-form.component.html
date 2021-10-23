@@ -1,0 +1,63 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-purple">
+          <h4 class="m-b-0 text-white">{{edicion ? 'Edición' : 'Creación'}}</h4>
+        </div>
+        <div class="card-body">
+          <form autocomplete="off" [formGroup]="noticiaForm" (ngSubmit)="guardarForm()">
+            <div class="form-body">
+              <h3 class="card-title">Información de la noticia</h3>
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('titulo')}">
+                    <label for="titulo" class="control-label">Titulo</label>
+                    <div class="input-group">
+                      <input type="text" id="titulo" formControlName="titulo" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('titulo')}">
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('titulo')" class="form-control-feedback">Debes indicar un título</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group" [ngClass]=" {'has-danger': formEnviado && validarCampo('cuerpo')}">
+                    <label for="cuerpo" class="control-label">Cuerpo</label>
+                    <div class="input-group">
+                      <textarea type="text" id="cuerpo" formControlName="cuerpo" class="form-control"
+                        [ngClass]="{'form-control-danger': formEnviado && validarCampo('cuerpo')}"></textarea>
+                    </div>
+                    <div *ngIf="formEnviado && validarCampo('cuerpo')" class="form-control-feedback">Debes indicar un cuerpo</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="imagen" class="control-label">Imagen</label>
+                    <div class="input-group">
+                      <div class="input-group">
+                        <input name="File" type="file" id="imagen" class="dropify" data-height="300" data-allowed-file-extensions="png jpg jpeg"
+                          (change)="onFileChange($event)" data-default-file="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                <button type="button" [routerLink]="['/private/noticia']" class=" btn btn-inverse">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

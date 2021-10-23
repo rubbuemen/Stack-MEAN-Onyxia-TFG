@@ -1,0 +1,38 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Reuniones</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="reuniones" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Lugar</th>
+                  <th class="no-sort" width="1">Ver más</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reunion of reuniones">
+                  <td>{{reunion.fecha | date: 'dd/MM/yyyy'}} {{reunion.horaInicio}} - {{reunion.horaFin}}</td>
+                  <td>{{reunion.lugar}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/reunion/display', reunion._id]" data-toggle="tooltip" data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

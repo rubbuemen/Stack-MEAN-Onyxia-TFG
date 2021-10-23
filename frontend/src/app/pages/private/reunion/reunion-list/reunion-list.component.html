@@ -1,0 +1,70 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Listado</h4>
+          <h6 class="card-subtitle">Reuniones</h6>
+          <div class="table-responsive m-t-10">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="reuniones" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Lugar</th>
+                  <th>Estado</th>
+                  <th>Tipo de reunión</th>
+                  <th class="no-sort" width="1">Ver más</th>
+                  <th class="no-sort" width="1">Editar</th>
+                  <th class="no-sort" width="1">Cancelar</th>
+                  <th class="no-sort" width="1">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reunion of reuniones">
+                  <td>{{reunion.fecha | date: 'dd/MM/yyyy'}} {{reunion.horaInicio}} - {{reunion.horaFin}}</td>
+                  <td>{{reunion.lugar}}</td>
+                  <td class="text-center">{{reunion.estadoReunion}}</td>
+                  <td class="text-center">{{reunion.tipoReunion}}</td>
+                  <td class="text-center"><a [routerLink]="['/private/reunion/display', reunion._id]" data-toggle="tooltip" data-original-title="Ver más">
+                      <i class="fa fa-eye text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center">
+                    <a *ngIf="reunion.estadoReunion !== 'Cancelado'" [routerLink]="['/private/reunion/form', reunion._id]" data-toggle="tooltip"
+                      data-original-title="Editar">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a *ngIf="reunion.estadoReunion === 'Pendiente'" class="cursor-pointer" (click)="cancelarReunion(reunion._id)"
+                      data-toggle="tooltip" data-original-title="Cancelar">
+                      <i class="mdi mdi-bookmark-remove text-danger m-r-10"></i></a>
+                  </td>
+                  <td class="text-center"><a *ngIf="reunion.estadoReunion === 'Pendiente'" class="cursor-pointer" (click)="eliminarReunion(reunion._id)"
+                      data-toggle="tooltip" data-original-title="Eliminar">
+                      <i class="fa fa-close text-danger"></i> </a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-9">
+                    <button [routerLink]="['/private/reunion/form']" type="submit" class="btn btn-info">
+                      <i class="mdi mdi-creation"></i>
+                      Crear una nueva reunión</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

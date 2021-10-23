@@ -16,6 +16,11 @@ exports.esHoy = function esHoy(fecha) {
   return fecha.getDate() == hoy.getDate() && fecha.getMonth() == hoy.getMonth() && fecha.getFullYear() == hoy.getFullYear();
 };
 
+exports.esPasado = function esHoy(fecha) {
+  const hoy = new Date();
+  return fecha < hoy;
+};
+
 exports.calcularEdad = function calcularEdad(fechaNacimiento) {
   const hoy = new Date();
   let thisYear = 0;

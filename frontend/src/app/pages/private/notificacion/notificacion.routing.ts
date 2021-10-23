@@ -16,7 +16,7 @@ const routes: Routes = [
     component: PagesPrivateComponent,
     children: [
       {
-        path: '',
+        path: 'bandeja',
         canActivate: [AuthGuardService],
         component: NotificacionListComponent,
         data: { titulo: 'Listado de notificaciones' },

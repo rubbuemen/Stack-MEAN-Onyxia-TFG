@@ -64,7 +64,10 @@ export class MenuPrivateComponent implements OnInit {
         identificador: 'notificaciones',
         claseIcono: 'mdi mdi-email',
         submenu: [
-          { titulo: 'Bandeja de entrada', url: '/private/notificacion' },
+          {
+            titulo: 'Bandeja de entrada',
+            url: '/private/notificacion/bandeja',
+          },
           { titulo: 'Nueva notificación', url: '/private/notificacion/form' },
         ],
       },
@@ -150,6 +153,21 @@ export class MenuPrivateComponent implements OnInit {
       this.actor.cuentaUsuario.autoridad === 'MIEMBRO'
     ) {
       this.menuLateral.push({
+        titulo: 'Reuniones',
+        identificador: 'reuniones',
+        claseIcono: 'fa fa-group',
+        submenu: [
+          {
+            titulo: 'Listado de reuniones pendientes',
+            url: '/private/reunion/pendientes',
+          },
+          {
+            titulo: 'Listado de reuniones realizadas',
+            url: '/private/reunion/realizadas',
+          },
+        ],
+      });
+      this.menuLateral.push({
         titulo: 'Eventos',
         identificador: 'eventos',
         claseIcono: 'mdi mdi-domain',
@@ -167,12 +185,19 @@ export class MenuPrivateComponent implements OnInit {
       this.actor.cuentaUsuario.autoridad === 'VOCAL' ||
       this.actor.cuentaUsuario.autoridad === 'SECRETARIO'
     ) {
-      let index = this.menuLateral.findIndex(
+      let indexEventos = this.menuLateral.findIndex(
         (menu) => menu.identificador === 'eventos'
       );
-      this.menuLateral[index]['submenu'].splice(1, 0, {
+      this.menuLateral[indexEventos]['submenu'].splice(1, 0, {
         titulo: 'Gestionar eventos',
         url: '/private/evento/gestion',
+      });
+      let indexReuniones = this.menuLateral.findIndex(
+        (menu) => menu.identificador === 'reuniones'
+      );
+      this.menuLateral[indexReuniones]['submenu'].splice(2, 0, {
+        titulo: 'Gestionar reuniones',
+        url: '/private/reunion/gestion',
       });
       this.menuLateral.push({
         titulo: 'Actividades',
@@ -193,6 +218,17 @@ export class MenuPrivateComponent implements OnInit {
           {
             titulo: 'Gestionar materiales',
             url: '/private/material',
+          },
+        ],
+      });
+      this.menuLateral.push({
+        titulo: 'Noticias',
+        identificador: 'noticias',
+        claseIcono: 'mdi mdi-newspaper',
+        submenu: [
+          {
+            titulo: 'Gestionar noticias',
+            url: '/private/noticia',
           },
         ],
       });
