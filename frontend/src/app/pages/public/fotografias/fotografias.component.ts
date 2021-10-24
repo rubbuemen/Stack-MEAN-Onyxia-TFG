@@ -15,6 +15,7 @@ import { AlbumFotografiaService } from '../../../services/public/album-fotografi
 })
 export class FotografiasPublicComponent implements OnInit {
   public fotografias: Fotografia[] = [];
+  public page: number;
   public nombreAlbum: String;
 
   constructor(

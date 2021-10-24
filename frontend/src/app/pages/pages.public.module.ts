@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //Parte pública
 import { InicioPublicComponent } from './public/inicio/inicio.component';
@@ -71,6 +72,7 @@ import { PagesPublicComponent } from './pages.public.component';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ],
 })
 export class PagesPublicModule {}

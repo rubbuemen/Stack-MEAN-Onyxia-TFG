@@ -14,6 +14,7 @@ import { TramoHorarioService } from '../../../services/public/tramo-horario.serv
 })
 export class EventosPublicComponent implements OnInit {
   public eventosPublicos: Evento[] = [];
+  public page: number;
 
   constructor(
     private eventoService: EventoService,

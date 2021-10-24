@@ -7,12 +7,13 @@
         </div>
       </section>
       <section class="row">
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb" *ngFor="let fotografia of fotografias">
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb" *ngFor="let fotografia of fotografias | paginate: { itemsPerPage: 10, currentPage: page }">
           <a [href]="fotografia.imagen" data-fancybox="gallery" rel="ligthbox">
             <img [src]="fotografia.imagen" class="zoom img-fluid img-thumbnail">
           </a>
         </div>
       </section>
     </div>
+    <pagination-controls class="text-center" (pageChange)="page=$event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
   </article>
 </main>

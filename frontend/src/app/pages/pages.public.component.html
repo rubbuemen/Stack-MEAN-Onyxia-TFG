@@ -1,3 +1,5 @@
 <app-header-public class="public"></app-header-public>
-<router-outlet></router-outlet>
+<router-outlet *ngIf="!modoMantenimiento || (modoMantenimiento && esLogin)"></router-outlet>
+<app-modo-mantenimiento *ngIf="modoMantenimiento && !esLogin"></app-modo-mantenimiento>
+
 <app-footer-public class="public"></app-footer-public>

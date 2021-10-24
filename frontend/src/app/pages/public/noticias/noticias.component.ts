@@ -18,6 +18,8 @@ export class NoticiasPublicComponent implements OnInit {
   faCalendar = faCalendarAlt;
 
   public noticias: Noticia[] = [];
+  public page: number;
+
   constructor(
     private noticiaService: NoticiaService,
     private utils: UtilsService
@@ -30,7 +32,7 @@ export class NoticiasPublicComponent implements OnInit {
   private getNoticias(): void {
     this.noticiaService.getNoticias().subscribe((noticias) => {
       noticias.forEach((noticia) => {
-        if (noticia.imagen !== undefined) {
+        if (this.utils.existe(noticia.imagen)) {
           let imagen =
             'data:' +
             noticia.imagen.mimetype +

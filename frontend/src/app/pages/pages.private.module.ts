@@ -24,6 +24,8 @@ import { AlbumFotografiaModule } from './private/album-fotografia/album-fotograf
 import { FotografiaModule } from './private/fotografia/fotografia.module';
 import { ReunionModule } from './private/reunion/reunion.module';
 import { NoticiaModule } from './private/noticia/noticia.module';
+import { ConfiguracionModule } from './private/configuracion/configuracion.module';
+import { BannerModule } from './private/banner/banner.module';
 
 //Módulos
 import { SharedModule } from '../shared/shared.module';
@@ -67,6 +69,8 @@ const token_stripe = environment.token_stripe;
     FotografiaModule,
     ReunionModule,
     NoticiaModule,
+    ConfiguracionModule,
+    BannerModule,
     NgxStripeModule.forChild(token_stripe),
   ],
 })

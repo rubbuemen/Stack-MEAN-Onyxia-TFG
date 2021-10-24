@@ -233,6 +233,23 @@ export class MenuPrivateComponent implements OnInit {
         ],
       });
     }
+    if (this.actor.cuentaUsuario.autoridad === 'PRESIDENTE') {
+      this.menuLateral.push({
+        titulo: 'Configuración de la parte pública',
+        identificador: 'configuracion',
+        claseIcono: 'mdi mdi-settings',
+        submenu: [
+          {
+            titulo: 'Gestión de parte pública',
+            url: '/private/configuracion/gestion',
+          },
+          {
+            titulo: 'Gestión de banners',
+            url: '/private/banner',
+          },
+        ],
+      });
+    }
   }
 
   public logout() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfiguracionService } from '../services/public/configuracion.service';
 
 declare const jQuery: any;
 declare const window: any;
@@ -10,7 +11,13 @@ declare let transition: any;
   templateUrl: './pages.public.component.html',
 })
 export class PagesPublicComponent implements OnInit {
-  constructor(private router: Router) {
+  public modoMantenimiento: boolean = false;
+  public esLogin: boolean = false;
+
+  constructor(
+    private configuracionService: ConfiguracionService,
+    private router: Router
+  ) {
     this.router.events.subscribe((event) => {
       (function ($) {
         $('#main_nav').collapse('hide');
@@ -20,6 +27,14 @@ export class PagesPublicComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.configuracionService.setearLogin();
+    this.configuracionService.esLogin.subscribe(
+      (esLogin) => (this.esLogin = esLogin)
+    );
+    this.configuracionService.getConfiguracion().subscribe((configuracion) => {
+      this.modoMantenimiento = configuracion.modoMantenimiento;
+    });
+
     (function ($) {
       'use strict';
 
@@ -117,9 +132,8 @@ export class PagesPublicComponent implements OnInit {
           $.fn.emulateTransitionEnd = transitionEndEmulator;
 
           if (Util.supportsTransitionEnd()) {
-            $.event.special[
-              Util.TRANSITION_END
-            ] = getSpecialTransitionEndEvent();
+            $.event.special[Util.TRANSITION_END] =
+              getSpecialTransitionEndEvent();
           }
         }
 

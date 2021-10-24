@@ -18,7 +18,7 @@
 
   <article class="w-100 mb-5 posts">
     <div class="container">
-      <div class="card mb-4" *ngFor="let actividad of actividadesPublicas">
+      <div class="card mb-4" *ngFor="let actividad of actividadesPublicas | paginate: { itemsPerPage: 4, currentPage: page }">
         <div class="row no-gutters justify-content-center">
           <div class="col-12 col-lg-auto fondo-imagen text-center d-lg-flex flex-lg-column">
             <img class="img-fluid my-lg-auto" [src]="actividad.fotografia" alt="{{actividad.nombre}}" *ngIf="actividad.fotografia">
@@ -33,11 +33,12 @@
             <div class=" card-footer text-muted mt-auto">
               Publicado por {{actividad.miembroCreador.alias}} el {{actividad.fechaPublicacion | date: 'dd/MM/yyyy'}}
             </div>
-
           </div>
         </div>
       </div>
     </div>
+    <pagination-controls class="text-center" (pageChange)="page=$event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+
   </article>
 
 </main>

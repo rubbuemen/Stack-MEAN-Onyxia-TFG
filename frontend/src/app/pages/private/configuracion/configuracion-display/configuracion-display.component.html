@@ -1,0 +1,46 @@
+<main class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <app-titulo-private></app-titulo-private>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Detalle</h4>
+          <h6 class="card-subtitle">Configuración de la parte pública</h6>
+          <div class="table-responsive m-t-10">
+            <table id="configuracion" class="table table-bordered table-striped table-data">
+              <thead>
+                <tr>
+                  <th class="text-center">Modo mantenimiento activo</th>
+                  <th class="text-center">Banners ocultos</th>
+                  <th class="no-sort text-center">Activar / Desactivar modo mantenimiento</th>
+                  <th class="no-sort text-center">Mostrar / Ocultar banners</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">{{configuracion.modoMantenimiento ? 'Sí' : 'No'}}</td>
+                  <td class="text-center">{{configuracion.ocultarBanners ? 'Sí' : 'No'}}</td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="activarDesactivarModoMantenimiento()" data-toggle="tooltip"
+                      data-original-title="Activar / Desactivar modo mantenimiento">
+                      <i *ngIf="configuracion.modoMantenimiento" class="mdi mdi-sync-off text-success m-r-10"></i>
+                      <i *ngIf="!configuracion.modoMantenimiento" class="mdi mdi-sync-alert text-danger m-r-10"></i> </a>
+                  </td>
+                  <td class="text-center"><a class="cursor-pointer" (click)="mostrarOcultarBanners()" data-toggle="tooltip"
+                      data-original-title="Mostrar / Ocultar banners">
+                      <i *ngIf="configuracion.ocultarBanners" class="mdi mdi-eye-outline text-success m-r-10"></i>
+                      <i *ngIf="!configuracion.ocultarBanners" class="mdi mdi-eye-outline-off text-danger m-r-10"></i> </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

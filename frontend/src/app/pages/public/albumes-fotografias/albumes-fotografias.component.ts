@@ -12,6 +12,8 @@ import { AlbumFotografia } from '../../../models/album-fotografia.model';
 })
 export class AlbumesFotografiasPublicComponent implements OnInit {
   public albumesFotografias: AlbumFotografia[] = [];
+  public page: number;
+
   constructor(
     private albumFotografiaService: AlbumFotografiaService,
     private utils: UtilsService

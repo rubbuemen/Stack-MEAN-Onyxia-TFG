@@ -49,10 +49,10 @@
 .public .btn-outline-primary:focus,
 .public .btn-primary.focus,
 .public .btn-primary:focus {
-  color: #FFF;
+  color: #fff;
   background-color: #230058;
   border-color: #230058;
-  box-shadow: 0 0 0 0.2rem rgba(14, 0, 35, .5);
+  box-shadow: 0 0 0 0.2rem rgba(14, 0, 35, 0.5);
 }
 
 .public .bootstrap-select .dropdown-menu li a:hover,
@@ -62,11 +62,11 @@
 }
 
 .public .menu-border .dropdown-menu {
-    margin-bottom: -9px;
+  margin-bottom: -9px;
 }
 
 .public a {
-  color: #5b2b79
+  color: #5b2b79;
 }
 
 .public a:hover {
@@ -99,35 +99,33 @@
 .public .btn-primary:hover {
   background-color: #230058;
   border-color: #230058;
-  color: #FFF;
+  color: #fff;
 }
 
 .public .btn-primary {
   background-color: #5b2b79;
   border-color: #5b2b79;
-  color: #FFF;
+  color: #fff;
 }
-
 
 .public .btn-outline-primary:not(:disabled):not(.disabled).active,
 .public .btn-outline-primary:not(:disabled):not(.disabled):active,
-.public .show>.btn-outline-primary.dropdown-toggle,
+.public .show > .btn-outline-primary.dropdown-toggle,
 .public .btn-primary:not(:disabled):not(.disabled).active,
 .public .btn-primary:not(:disabled):not(.disabled):active,
-.public .show>.btn-primary.dropdown-toggle {
+.public .show > .btn-primary.dropdown-toggle {
   background-color: #5b2b79;
   border-color: #5b2b79;
 }
 
 .public .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 .public .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
-.public .show>.btn-outline-primary.dropdown-toggle:focus,
+.public .show > .btn-outline-primary.dropdown-toggle:focus,
 .public .btn-primary:not(:disabled):not(.disabled).active:focus,
 .public .btn-primary:not(:disabled):not(.disabled):active:focus,
-.public .show>.btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(36, 17, 47, .5);
+.public .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(36, 17, 47, 0.5);
 }
-
 
 .public .img-reduced {
   height: 300px;
@@ -139,10 +137,9 @@
   width: auto;
 }
 
-
 /* Para los selects forms de un estilo concreto*/
 .public .select-style .btn-light {
-  background-color: #FFF;
+  background-color: #fff;
   border: none;
 }
 
@@ -158,7 +155,11 @@
   padding-right: 5px;
 }
 
-.public .select-style .bootstrap-select>select.mobile-device:focus+.dropdown-toggle,
+.public
+  .select-style
+  .bootstrap-select
+  > select.mobile-device:focus
+  + .dropdown-toggle,
 .public .select-style .bootstrap-select .dropdown-toggle:focus {
   outline: none !important;
 }
@@ -175,7 +176,7 @@
   outline: #666 auto 1px;
 }
 
-.public .select-style .bootstrap-select>.dropdown-toggle.bs-placeholder {
+.public .select-style .bootstrap-select > .dropdown-toggle.bs-placeholder {
   color: #666;
 }
 
@@ -209,4 +210,8 @@
   box-shadow: none;
   border-radius: none;
   margin-bottom: 0;
+}
+
+.public .ngx-pagination .current {
+  background: #230058 !important;
 }

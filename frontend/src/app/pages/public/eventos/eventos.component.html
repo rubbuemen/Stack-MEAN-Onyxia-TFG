@@ -20,8 +20,8 @@
   <article class="w-100 mb-4 posts">
     <div class="container">
       <div class="row">
-        <section class="col-lg-6 d-flex align-items-stretch" *ngFor="let evento of eventosPublicos">
-          <div class="card mb-4">
+        <section class="col-lg-6 d-flex align-items-stretch" *ngFor="let evento of eventosPublicos | paginate: { itemsPerPage: 4, currentPage: page }">
+          <div class="card w-100 mb-4">
             <img class="card-img-top" [src]="evento.imagen" alt="{{evento.nombre}}" *ngIf="evento.imagen">
             <div class="card-body text-justify">
               <h2 class="card-title">{{evento.nombre}}</h2>
@@ -52,7 +52,7 @@
           </div>
         </section>
       </div>
-
+      <pagination-controls class="text-center" (pageChange)="page=$event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
     </div>
   </article>
 

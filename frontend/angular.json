@@ -40,7 +40,10 @@
               "node_modules/sparkline/lib/sparkline.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
               "node_modules/dropify/dist/js/dropify.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js"
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/tinymce/tinymce.min.js",
+              "node_modules/tinymce/themes/silver/theme.js",
+              "node_modules/tinymce/icons/default/icons.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

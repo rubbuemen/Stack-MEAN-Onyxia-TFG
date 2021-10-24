@@ -11,6 +11,16 @@ exports.getBanners = async (req, res) => {
   }
 };
 
+exports.getBanner = async (req, res) => {
+  try {
+    const bannerId = req.params.id;
+    const banner = await bannerService.getBanner(bannerId);
+    return res.status(200).send({ banner });
+  } catch (error) {
+    return controlError(error, res);
+  }
+};
+
 exports.añadirBanner = async (req, res) => {
   try {
     const imagen = req.file;

@@ -20,7 +20,7 @@
   <article class="w-100 mb-4 posts">
     <div class="container">
       <div class="row">
-        <section class="col-md-4 d-flex align-items-stretch" *ngFor="let album of albumesFotografias">
+        <section class="col-md-4 d-flex align-items-stretch" *ngFor="let album of albumesFotografias | paginate: { itemsPerPage: 4, currentPage: page }">
           <div class="card mb-4">
             <img class="card-img-top" [src]="album.fotografias[0].imagen" alt="{{album.nombre}}" *ngIf="album.fotografias.length !== 0">
             <div class="card-body text-justify">
@@ -36,6 +36,7 @@
           </div>
         </section>
       </div>
+      <pagination-controls class="text-center" (pageChange)="page=$event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
     </div>
   </article>
 

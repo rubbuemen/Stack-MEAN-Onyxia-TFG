@@ -48,6 +48,8 @@ import { AlbumFotografiaRoutingModule } from './private/album-fotografia/album-f
 import { FotografiaRoutingModule } from './private/fotografia/fotografia.routing';
 import { ReunionRoutingModule } from './private/reunion/reunion.routing';
 import { NoticiaRoutingModule } from './private/noticia/noticia.routing';
+import { ConfiguracionRoutingModule } from './private/configuracion/configuracion.routing';
+import { BannerRoutingModule } from './private/banner/banner.routing';
 
 const routes: Routes = [
   {
@@ -128,6 +130,8 @@ const routes: Routes = [
     FotografiaRoutingModule,
     ReunionRoutingModule,
     NoticiaRoutingModule,
+    ConfiguracionRoutingModule,
+    BannerRoutingModule,
   ],
   exports: [RouterModule],
 })

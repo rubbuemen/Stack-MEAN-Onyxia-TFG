@@ -12,6 +12,7 @@ import { Actividad } from '../../../models/actividad.model';
 })
 export class ActividadesPublicComponent implements OnInit {
   public actividadesPublicas: Actividad[] = [];
+  public page: number;
 
   constructor(
     private actividadService: ActividadService,

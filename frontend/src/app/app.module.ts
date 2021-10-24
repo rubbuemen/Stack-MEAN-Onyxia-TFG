@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { ErrorComponent } from './error/error.component';
 import { CookiesAlertComponent } from './components/cookies-alert/cookies-alert.component';
 import { NgxStripeModule } from 'ngx-stripe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //Servicios
 import { CookieService } from 'ngx-cookie-service';
@@ -29,6 +30,7 @@ const token_stripe = environment.token_stripe;
     PagesPublicModule,
     PagesPrivateModule,
     AuthModule,
+    NgxPaginationModule,
     NgxStripeModule.forRoot(token_stripe),
   ],
   providers: [CookieService],

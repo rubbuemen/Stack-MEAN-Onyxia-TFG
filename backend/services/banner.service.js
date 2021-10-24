@@ -7,6 +7,12 @@ exports.getBanners = async () => {
   return banners;
 };
 
+exports.getBanner = async bannerId => {
+  const banner = await Banner.findById(bannerId);
+  if (!banner) throw errorLanzado(404, 'La banner con la ID indicada no existe');
+  return banner;
+};
+
 exports.añadirBanner = async (parametros, img) => {
   let banner = new Banner(parametros);
   banner.imagen = {
