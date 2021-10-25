@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Configuracion } from '../../../../models/configuracion.model';
 import { ConfiguracionService } from '../../../../services/private/configuracion.service';
-import { UtilsService } from '../../../../services/utils.service';
 
 import swal from 'sweetalert2';
 

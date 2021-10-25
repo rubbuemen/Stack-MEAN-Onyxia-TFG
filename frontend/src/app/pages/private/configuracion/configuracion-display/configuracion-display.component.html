@@ -25,8 +25,7 @@
                 <tr>
                   <td class="text-center">{{configuracion.modoMantenimiento ? 'Sí' : 'No'}}</td>
                   <td class="text-center">{{configuracion.ocultarBanners ? 'Sí' : 'No'}}</td>
-                  <td class="text-center"><a class="cursor-pointer" (click)="activarDesactivarModoMantenimiento()" data-toggle="tooltip"
-                      data-original-title="Activar / Desactivar modo mantenimiento">
+                  <td class="text-center"><a class="cursor-pointer" (click)="activarDesactivarModoMantenimiento()" data-toggle="tooltip">
                       <i *ngIf="configuracion.modoMantenimiento" class="mdi mdi-sync-off text-success m-r-10"></i>
                       <i *ngIf="!configuracion.modoMantenimiento" class="mdi mdi-sync-alert text-danger m-r-10"></i> </a>
                   </td>
