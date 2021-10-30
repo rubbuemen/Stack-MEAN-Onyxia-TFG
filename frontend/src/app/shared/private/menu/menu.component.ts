@@ -195,10 +195,12 @@ export class MenuPrivateComponent implements OnInit {
       let indexReuniones = this.menuLateral.findIndex(
         (menu) => menu.identificador === 'reuniones'
       );
-      this.menuLateral[indexReuniones]['submenu'].splice(2, 0, {
-        titulo: 'Gestionar reuniones',
-        url: '/private/reunion/gestion',
-      });
+      if (this.actor.cuentaUsuario.autoridad === 'PRESIDENTE') {
+        this.menuLateral[indexReuniones]['submenu'].splice(2, 0, {
+          titulo: 'Gestionar reuniones',
+          url: '/private/reunion/gestion',
+        });
+      }
       this.menuLateral.push({
         titulo: 'Actividades',
         identificador: 'actividades',
@@ -221,6 +223,12 @@ export class MenuPrivateComponent implements OnInit {
           },
         ],
       });
+    }
+    if (
+      this.actor.cuentaUsuario.autoridad === 'PRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'VICEPRESIDENTE' ||
+      this.actor.cuentaUsuario.autoridad === 'SECRETARIO'
+    ) {
       this.menuLateral.push({
         titulo: 'Noticias',
         identificador: 'noticias',

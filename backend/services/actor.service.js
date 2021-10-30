@@ -119,7 +119,7 @@ exports.getMiembros = async () => {
 
 exports.getDatosByActorId = async actorId => {
   const datosActor =
-    (await Visitante.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' })) ||
+    (await Visitante.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' }).populate({ path: 'solicitudMiembro' })) ||
     (await Miembro.findOne({ _id: actorId }).populate({ path: 'redSocials' }).populate({ path: 'cuentaUsuario' }));
   if (!datosActor) throw errorLanzado(404, 'La ID del actor indicado no existe');
   return datosActor;

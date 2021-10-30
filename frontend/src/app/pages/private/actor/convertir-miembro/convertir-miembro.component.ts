@@ -31,6 +31,7 @@ export class ConvertirMiembroComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.utils.resetDropify();
     this.utils.refrescarSelectPicker('tieneCochePropio');
     this.perfilActorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -79,10 +80,10 @@ export class ConvertirMiembroComponent implements OnInit {
         this.perfilActorForm.get('aficiones').setValue(this.actor.aficiones);
         this.perfilActorForm
           .get('tieneCochePropio')
-          .setValue(this.actor.tieneCochePropio);
+          .setValue(this.actor.solicitudMiembro.tieneCochePropio);
         this.utils.setValoresSelectPicker(
           'tieneCochePropio',
-          this.actor.tieneCochePropio.toString()
+          this.actor.solicitudMiembro.tieneCochePropio.toString()
         );
         this.utils.resetDropify();
       });

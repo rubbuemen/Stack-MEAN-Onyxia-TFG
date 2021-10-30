@@ -26,6 +26,7 @@ export class SolicitudMiembroSelfDisplayComponent implements OnInit {
 
   private getMiSolicitud(): void {
     this.solicitudMiembroService.getMiSolicitud().subscribe((solicitud) => {
+      solicitud.intereses = this.convertirIntereses(solicitud.intereses);
       this.solicitudMiembro = solicitud;
     });
   }
@@ -39,5 +40,35 @@ export class SolicitudMiembroSelfDisplayComponent implements OnInit {
       case 'RECHAZADO':
         return 'alert-danger';
     }
+  }
+
+  private convertirIntereses(intereses: string[]) {
+    if (intereses) {
+      let interesesConvertidos = [];
+      intereses.forEach((interes) => {
+        switch (interes) {
+          case 'BAILE':
+            interesesConvertidos.push('Baile / K-Pop');
+            break;
+          case 'DIBUJO':
+            interesesConvertidos.push('Dibujo');
+            break;
+          case 'SOFTCOMBAT':
+            interesesConvertidos.push('Softcombat');
+            break;
+          case 'TALLERESMANUALIDADES':
+            interesesConvertidos.push('Talleres y manualidades');
+            break;
+          case 'VIDEOJUEGOS':
+            interesesConvertidos.push('Videojuegos');
+            break;
+          case 'COSPLAY':
+            interesesConvertidos.push('Cosplay');
+            break;
+        }
+      });
+      return interesesConvertidos;
+    }
+    return [];
   }
 }

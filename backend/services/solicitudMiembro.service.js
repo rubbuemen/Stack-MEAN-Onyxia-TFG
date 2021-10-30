@@ -160,34 +160,6 @@ exports.getSolicitudesMiembrosPendientes = async () => {
     },
     {
       $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'visitante.redSocials',
-        foreignField: '_id',
-        as: 'visitante.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$visitante.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'miembro.redSocials',
-        foreignField: '_id',
-        as: 'miembro.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$miembro.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
         from: Miembro.collection.name,
         localField: 'miembrosConocidos',
         foreignField: '_id',
@@ -226,34 +198,6 @@ exports.getSolicitudesMiembrosAceptadas = async () => {
     {
       $unwind: {
         path: '$miembro',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'visitante.redSocials',
-        foreignField: '_id',
-        as: 'visitante.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$visitante.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'miembro.redSocials',
-        foreignField: '_id',
-        as: 'miembro.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$miembro.redSocials',
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -302,34 +246,6 @@ exports.getSolicitudesMiembrosRechazadas = async () => {
     },
     {
       $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'visitante.redSocials',
-        foreignField: '_id',
-        as: 'visitante.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$visitante.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'miembro.redSocials',
-        foreignField: '_id',
-        as: 'miembro.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$miembro.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
         from: Miembro.collection.name,
         localField: 'miembrosConocidos',
         foreignField: '_id',
@@ -368,34 +284,6 @@ exports.getSolicitudesMiembrosPagadas = async () => {
     {
       $unwind: {
         path: '$miembro',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'visitante.redSocials',
-        foreignField: '_id',
-        as: 'visitante.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$visitante.redSocials',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: RedSocial.collection.name,
-        localField: 'miembro.redSocials',
-        foreignField: '_id',
-        as: 'miembro.redSocials',
-      },
-    },
-    {
-      $unwind: {
-        path: '$miembro.redSocials',
         preserveNullAndEmptyArrays: true,
       },
     },
