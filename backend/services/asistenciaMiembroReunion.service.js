@@ -23,8 +23,6 @@ exports.marcarAsistenciaReunion = async (parametros, reunionId, usuarioLogeado) 
     throw errorLanzado(403, 'La reunión a la que intenta marcar asistencia no puede hacerse porque está en un estado diferente a pendiente');
   const miembro = await Miembro.findOne({ cuentaUsuario: { _id: usuarioLogeado._id } });
   let asistencia = await AsistenciaMiembroReunion.findOne({ reunion: reunionId, miembro: miembro._id });
-  console.log(asistencia);
-
   asistencia = await AsistenciaMiembroReunion.findOneAndUpdate(
     { _id: asistencia._id },
     {
