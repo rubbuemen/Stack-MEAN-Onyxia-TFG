@@ -35,7 +35,8 @@
                   <label for="receptores" class="control-label">Receptores</label>
                   <div class="input-group">
                     <select id="receptores" formControlName="receptores" class="form-control selectpicker" title="Receptores" multiple data-live-search="true">
-                      <option *ngFor="let receptor of receptores" [value]="receptor._id">{{receptor.nombre }} {{receptor.apellidos}} ({{receptor.alias}}) |
+                      <option *ngFor="let receptor of receptores" [value]="receptor._id">{{receptor.nombre }} {{receptor.apellidos}}
+                        <span *ngIf="receptor.alias">({{receptor.alias}})</span> |
                         {{receptor.cuentaUsuario.autoridad}}
                       </option>
                     </select>
