@@ -3,12 +3,6 @@ const mongoose = require('mongoose');
 const reunionSchema = new mongoose.Schema({
   fecha: {
     type: Date,
-    validate: {
-      validator: (fecha) => {
-        return fecha > new Date();
-      },
-      message: 'Inserte una fecha en futuro',
-    },
     required: [true, 'Inserte la fecha del día de la reunión'],
   },
   horaInicio: {
