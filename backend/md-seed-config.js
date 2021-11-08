@@ -34,7 +34,7 @@ module.exports.connect = async () =>
   await mongoose.connect(mongoDBURI, {
     poolSize: 10, // Up to 10 sockets
     connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
-    socketTimeoutMS: 20000, // Close sockets after 45 seconds of inactivity
+    socketTimeoutMS: 200000, // Close sockets after 45 seconds of inactivity
     family: 4, // skip trying IPv6
     useNewUrlParser: true,
     useFindAndModify: false,

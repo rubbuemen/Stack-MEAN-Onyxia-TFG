@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.prod';
 
 import { RequestsConstructorService } from '../requests-constructor.service';
-import { Notificacion } from '../../models/Notificacion.model';
+import { Notificacion } from '../../models/notificacion.model';
 
 import { ObjectId } from 'mongoose';
 

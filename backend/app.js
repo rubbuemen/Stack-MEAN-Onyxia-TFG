@@ -99,7 +99,9 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => console.log('Conectado a MongoDB'))
-  .catch(error => console.log('Ha ocurrido un error al intentar conectarse a MongoDB'));
+  .catch(error => {
+    console.log('Ha ocurrido un error al intentar conectarse a MongoDB');
+  });
 
 exports.dropdb = async () => mongoose.connection.db.dropDatabase();
 exports.seedersList = {};
