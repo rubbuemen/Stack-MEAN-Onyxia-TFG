@@ -5,6 +5,7 @@ const { ActividadesMiembroTramo } = require('./seeders/actividadMiembroTramo.see
 const { AlbumFotografias } = require('./seeders/albumFotografia.seeder');
 const { AsistenciaMiembroReuniones } = require('./seeders/asistenciaMiembroReunion.seeder');
 const { Banners } = require('./seeders/banner.seeder');
+const { Buzones } = require('./seeders/buzon.seeder');
 const { Configuracion } = require('./seeders/configuracion.seeder');
 const { CuentasUsuarios } = require('./seeders/cuentaUsuario.seeder');
 const { DiaEventos } = require('./seeders/diaEvento.seeder');
@@ -47,6 +48,7 @@ module.exports.seedersList = {
   ActividadesMiembroTramo,
   AlbumFotografias,
   AsistenciaMiembroReuniones,
+  Buzones,
   Banners,
   Configuracion,
   CuentasUsuarios,
