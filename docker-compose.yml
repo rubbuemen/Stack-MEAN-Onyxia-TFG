@@ -8,13 +8,27 @@ services:
       - '4200:4200' # specify port mapping
 
   backend: # name of the second service
-    build: backend # specify the directory of the Dockerfile
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile.backend # specify the directory of the Dockerfile
     environment:
       - DB_HOSTNAME=database
     ports:
       - '3000:3000' #specify ports mapping
     depends_on:
       - database
+    links:
+      - database # link this service to the database service
+
+  populate: # name of the second service
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile.populate # specify the directory of the Dockerfile
+    environment:
+      - DB_HOSTNAME=database
+    depends_on:
+      - database
+      - backend
     links:
       - database # link this service to the database service
 
