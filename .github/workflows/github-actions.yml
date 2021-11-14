@@ -4,27 +4,7 @@ on:
     branches:
       - develop
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       name: Check out repository
-  #     - uses: actions/setup-node@v2
-  #       name: Setup node version
-  #       with:
-  #         node-version: '14'
-  #     - name: Build project and run tests
-  #       working-directory: ./frontend
-  #       run: |
-  #         npm install
-  #         npm install -g @angular/cli
-  #         npm install codacy-coverage
-  #         npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox --code-coverage
-  #         npm run build
-  #         # npm run codacy
-  #     - run: echo "🍏 This job's status is ${{ job.status }}."
   codacy-coverage-reporter:
-    # needs: build
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
@@ -45,6 +25,4 @@ jobs:
         name: Run codacy-coverage-reporter
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          # or
-          # api-token: ${{ secrets.CODACY_API_TOKEN }}
           coverage-reports: frontend/coverage/frontend/lcov.info
