@@ -20,4 +20,5 @@ jobs:
           npm install -g @angular/cli
           npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox --code-coverage
           npm run build
+          npm run codacy
       - run: echo "🍏 This job's status is ${{ job.status }}."
