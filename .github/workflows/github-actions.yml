@@ -17,6 +17,7 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
+          npm install -g @angular/cli
           npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox --code-coverage
           npm run build
       - run: echo "🍏 This job's status is ${{ job.status }}."
