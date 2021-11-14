@@ -1,7 +1,10 @@
 name: GitHub Actions
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 jobs:
-  Run tests with coverage:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,8 +19,4 @@ jobs:
           npm install
           npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox --code-coverage
           npm run build
-
-  Check job status:
-    runs-on: ubuntu-latest
-    steps:
       - run: echo "🍏 This job's status is ${{ job.status }}."
