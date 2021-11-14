@@ -1,11 +1,11 @@
 setup:
-  config: 
-    DB_HOSTNAME=database
+  config:
+    DB_HOSTNAME: database
 build:
   docker:
     backend: backend/Dockerfile.backend
     frontend: frontend/Dockerfile
     database: Dockerfile.db
     populate: backend/Dockerfile.populate
-  config: 
-    DB_HOSTNAME=database
+  config:
+    DB_HOSTNAME: database
