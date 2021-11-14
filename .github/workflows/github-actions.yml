@@ -24,6 +24,7 @@ jobs:
           # npm run codacy
       - run: echo "🍏 This job's status is ${{ job.status }}."
   codacy-coverage-reporter:
+    needs: build
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
@@ -34,4 +35,4 @@ jobs:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           # or
           # api-token: ${{ secrets.CODACY_API_TOKEN }}
-          coverage-reports: .frontend/coverage/frontend/lcov.info
+          coverage-reports: ./frontend/coverage/frontend/lcov.info
