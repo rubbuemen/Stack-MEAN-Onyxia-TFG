@@ -18,7 +18,7 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          npm install -g @angular/cli
+          npm install -g @angular/cli@12.1.4
           npm install codacy-coverage
           npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox --code-coverage
           npm run build
